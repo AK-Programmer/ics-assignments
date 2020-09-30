@@ -1,0 +1,12 @@
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.csprojAssemblyReference.cache
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/bin/Debug/netcoreapp3.1/PASS1.deps.json
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/bin/Debug/netcoreapp3.1/PASS1.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/bin/Debug/netcoreapp3.1/PASS1.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/bin/Debug/netcoreapp3.1/PASS1.dll
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/bin/Debug/netcoreapp3.1/PASS1.pdb
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.dll
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.pdb
+/Users/adarkahiri/ICS Assignments/PASS1/PASS1/obj/Debug/netcoreapp3.1/PASS1.genruntimeconfig.cache
