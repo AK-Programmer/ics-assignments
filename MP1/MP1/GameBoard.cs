@@ -146,7 +146,6 @@ namespace MP1
                 }
             }
 
-
             if (colsArray[lastCol, 1] == 0 || colsArray[lastCol, 1] == letter + 1)
             {
                 colsArray[lastCol, 1] = letter + 1;
@@ -179,7 +178,6 @@ namespace MP1
                     return true;
                 }
             }
-
             return false; 
         }
     }

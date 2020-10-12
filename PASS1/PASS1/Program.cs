@@ -15,7 +15,6 @@ namespace PASS1
 
         //Global Variables
 
-
         static bool exit = false;  //Used to let the user exit the program. 
 
         //side length of the cubic game board 

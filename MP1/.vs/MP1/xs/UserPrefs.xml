@@ -1,17 +1,18 @@
 ﻿<Properties StartupConfiguration="{093B0592-45F0-48D9-8A57-8C1CB16A61BE}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../PASS1/PASS1/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MP1/Program.cs">
     <Files>
-      <File FileName="MP1/Program.cs" Line="12" Column="2" />
-      <File FileName="MP1/Player.cs" Line="1" Column="1" />
-      <File FileName="MP1/GameBoard.cs" Line="1" Column="1" />
-      <File FileName="../PASS1/PASS1/Program.cs" Line="1" Column="1" />
+      <File FileName="MP1/Program.cs" Line="156" Column="1" />
+      <File FileName="MP1/Player.cs" />
+      <File FileName="../PASS1/PASS1/Program.cs" />
+      <File FileName="MP1/GameBoard.cs" />
+      <File FileName="../../Projects/ConsoleGraphics/ConsoleGraphics/Program.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MP1" expanded="True">
             <Node name="MP1" expanded="True">
-              <Node name="Player.cs" selected="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -24,5 +25,5 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MP1 FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.MP1 PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
