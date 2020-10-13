@@ -7,7 +7,7 @@ namespace MP1
         private int boardLen; 
         private int[,] gameBoard;
 
-        string[] playerNames; 
+        private string[] playerNames; 
 
         static string[] numToLetter = { " ", "X", "O" };
 
@@ -81,7 +81,7 @@ namespace MP1
 
 
 
-        public void PrintGameBoard(int playerTurn)
+        public void PrintGameBoard(int playerTurn, int pieceBeingPlaced)
         {
 
             string board = "";
@@ -125,7 +125,7 @@ namespace MP1
 
             // The ternary expression here returns an 'X' if playerTurn is equal to zero, and an 'O' otherwise. This makes sense since 'X' always goes first.
             Console.Clear();
-            Console.WriteLine($"{playerNames[playerTurn]}'s Turn ({numToLetter[playerTurn + 1]}) \n-----------------------\n");
+            Console.WriteLine($"{playerNames[playerTurn]}'s Turn ({numToLetter[pieceBeingPlaced + 1]}) \n-----------------------\n");
 
             Console.WriteLine(board);
         }

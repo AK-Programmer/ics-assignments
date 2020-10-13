@@ -131,6 +131,7 @@ namespace MP1
             numLosses += gameOutcome == 2 ? 1 : 0;
             numTies += gameOutcome == 0 ? 1 : 0;
 
+            
 
             numWinsX += (gameOutcome % 2) * ((letterPlayed + 1) % 2);
             numWinsO += (gameOutcome % 2) * letterPlayed;

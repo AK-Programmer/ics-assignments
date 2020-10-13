@@ -1,4 +1,9 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Program.cs
+//Project Name: MP1
+//Creation Date: October 7, 2020
+//Modified Date: October 13, 2020
+using System;
 using System.Threading;
 
 namespace MP1
@@ -14,9 +19,16 @@ namespace MP1
 
         static string[] numToLetter = { " ", "X", "O" }; //An array that determines whether to place a space, an X, or an O in each piece depending on the contents of the game board at specific locations. 
 
+        static string[] playerNames = { "Player 1", "Player 2" };
+
+        //Putting the players in an array makes it easier to access them using the playerTurn variable
+        static Player[] players = { new Player(playerNames[0]), new Player(playerNames[1]) }; 
+
+        static Random rnd = new Random(); //Used to generate random numbers
+
 
         static void Main(string[] args)
-        {   
+        {
             //This is the main loop of the program. After each complete game, the user is redirected to the menu, where they can choose to quit or play again. 
             while (!exit)
             {
@@ -67,33 +79,14 @@ namespace MP1
         public static void MainGameLoop()
         {
 
-            int playerTurn = 0;
+            int playerTurn = rnd.Next(0, 2); ; //This determines whose turn it is
+            int pieceBeingPlaced = 0; //This keeps track of which piece should be placed
 
             bool gameOver = false;
+
             int count = 0;
 
-            Random rnd = new Random();
-            int randInt = rnd.Next(0, 2);
-
-            string[] playerNames;
-
-            //Putting the players in an array makes it easier to access them using playerTurn
-            Player[] players = new Player[2];
-
-            if (randInt == 0)
-            {
-                playerNames = new string[] { "Player 1", "Player 2" };
-            }
-            else
-            {
-                playerNames = new string[] { "Player 2", "Player 1" };
-            }
-
-
             GameBoard board = new GameBoard(BOARD_LEN, playerNames);
-
-            players[0] = new Player(playerNames[0]);
-            players[1] = new Player(playerNames[1]);
 
             while (!gameOver)
             {
@@ -107,10 +100,10 @@ namespace MP1
 
                 while(!breakErrorLoop)
                 {
-                    board.PrintGameBoard(playerTurn);
+                    board.PrintGameBoard(playerTurn, pieceBeingPlaced);
 
                     //Here the numToLetter array (globally defined) converts the integer player value into its corresponding playing piece
-                    Console.WriteLine($"Enter the row and column in which you'd like to place your {numToLetter[playerTurn + 1]}.");
+                    Console.WriteLine($"Enter the row and column in which you'd like to place your {numToLetter[pieceBeingPlaced + 1]}.");
 
                     Console.Write("Row: ");
                     rowStr = Console.ReadLine(); //Converts user char input to string for easier conversion to int
@@ -120,35 +113,38 @@ namespace MP1
 
                     Console.WriteLine(); //Creates a line break.
 
-                    breakErrorLoop = board.SetPiece(rowStr, colStr, playerTurn + 1);
+                    breakErrorLoop = board.SetPiece(rowStr, colStr, pieceBeingPlaced + 1);
                 }
 
                 count++;
 
-                bool win = board.CheckWin(Convert.ToInt32(rowStr) - 1, Convert.ToInt32(colStr) - 1, playerTurn + 1);
+                bool win = board.CheckWin(Convert.ToInt32(rowStr) - 1, Convert.ToInt32(colStr) - 1, pieceBeingPlaced + 1);
 
-                board.PrintGameBoard(playerTurn);
+                board.PrintGameBoard(playerTurn, pieceBeingPlaced);
 
                 if (win)
                 {
-                    players[playerTurn].IncrementStats(1, playerTurn);
-                    players[(playerTurn + 1) % 2].IncrementStats(2, (playerTurn + 1) % 2);
+                    players[playerTurn].IncrementStats(1, pieceBeingPlaced);
+                    players[(playerTurn + 1) % 2].IncrementStats(2, (pieceBeingPlaced + 1) % 2);
+
+                    gameOver = true;
 
                     Console.WriteLine($"{playerNames[playerTurn]} has won! (Press any key to continue.)");
-                    gameOver = true;
                     Console.ReadKey(); 
                 }
                 else if (count == BOARD_LEN * BOARD_LEN)
                 {
-                    players[playerTurn].IncrementStats(0, playerTurn + 1);
-                    players[(playerTurn + 1) % 2].IncrementStats(0, (playerTurn + 1) % 2 + 1);
+                    players[playerTurn].IncrementStats(0, pieceBeingPlaced);
+                    players[(playerTurn + 1) % 2].IncrementStats(0, (pieceBeingPlaced + 1) % 2);
+
+                    gameOver = true;
 
                     Console.WriteLine("It's a draw! (Press any key to continue.)");
-                    gameOver = true;
                     Console.ReadKey();
                 }
 
                 playerTurn = (playerTurn + 1) % 2;
+                pieceBeingPlaced = (pieceBeingPlaced + 1) % 2;
 
             }
         }
@@ -157,17 +153,15 @@ namespace MP1
         public static void ViewStats ()
         {
 
-            Player player1 = new Player("Player 1");
-            Player player2 = new Player("Player 2");
 
             Console.Clear();
             Console.WriteLine("VIEW STATISTICS \n-----------------------\n\n");
 
-            player1.PrintPlayerStats();
+            players[0].PrintPlayerStats();
 
             Console.WriteLine("\n\n");
 
-            player2.PrintPlayerStats();
+            players[1].PrintPlayerStats();
 
             Console.WriteLine("\n\n");
 
@@ -180,13 +174,11 @@ namespace MP1
         {
             Console.Clear();
 
-            Player player1 = new Player("Player 1");
-            Player player2 = new Player("Player 2");
 
-            player1.ResetStats();
-            player2.ResetStats();
+            players[0].ResetStats();
+            players[1].ResetStats();
 
-            string message = "Your statistics have been reset. ";
+            string message = "Your statistics have been reset.";
 
             for (int i = 0; i < message.Length; i++)
             {
