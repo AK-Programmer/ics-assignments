@@ -32,6 +32,5 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("Point y-coordinate", "The given y-coordinate for the point is outside the screen!");
         }
 
-
     }
 }

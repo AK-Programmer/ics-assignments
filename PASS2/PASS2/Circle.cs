@@ -18,9 +18,10 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("Circle", "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
 
             this.radius = radius;
-            SetSurfaceArea();
-            SetCircumference();
-            
+
+            surfaceArea = Math.PI * radius * radius;
+            perimeterEquiv = 2 * Math.PI * radius;
+
         }
 
         public override void ScaleShape(double scaleFactor)
@@ -35,10 +36,9 @@ namespace PASS2
 
 
             radius = potentialRad;
-            SetSurfaceArea();
-            SetCircumference();
+            surfaceArea *= scaleFactor * scaleFactor;
+            perimeterEquiv *= scaleFactor;
         }
-
 
         public override void PrintAttributes()
         {
@@ -68,27 +68,17 @@ namespace PASS2
         }
 
 
-        public override bool CheckIntersectionWithPoint(double x, double y)
+        public override bool CheckIntersectionWithPoint(Point point)
         {
             //This expression calculates the point's squared distance from the circle's center using the Euclidean distance formula
-            double squaredDistanceFromCenter = (x - points[0].x) * (x - points[0].x) + (y - points[0].y) * (y - points[0].y);
+            double squaredDistanceFromCenter = (point.x - points[0].x) * (point.x - points[0].x) + (point.y - points[0].y) * (point.y - points[0].y);
 
-            //Comparing the squared distance to the radius squared is more efficient than comparing the actual distance since the square root function is expensive
+            //Comparing the squared distance to the radius squared is more efficient than comparing the actual distance since the square root function is costly
             if (squaredDistanceFromCenter <= radius*radius)
                 return true;
 
             return false;
         }
 
-
-        public void SetSurfaceArea()
-        {
-            surfaceArea = Math.PI * radius * radius;
-        }
-
-        public void SetCircumference()
-        {
-            perimeterEquiv = 2 * Math.PI * radius;
-        }
     }
 }
