@@ -76,6 +76,7 @@ namespace MP1
             }
         }
 
+
         public void ReadFile()
         {
 
@@ -108,12 +109,17 @@ namespace MP1
                 UpdatePlayerFile();
                 ReadFile();
             }
-            catch (InvalidCastException e)
+            catch (FormatException e) //Data in the file isn't in the expected format
             {
-                Console.WriteLine("This file is missing or contains data that cannot be converted as necessary. It will be reset. Your statistics may be lost. (Press any key to continue.)");
+                Console.WriteLine($"The statistics file for {playerName} has been corrupted. The file and all statistics for {playerName} will be reset. (Press any key to continue.)");
                 Console.ReadKey();
-    
-                UpdatePlayerFile(); 
+
+                ResetStats();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.ReadKey();
             }
 
             
@@ -142,12 +148,12 @@ namespace MP1
             numTiesX += (gameOutcome == 0 ? 1 : 0) * ((letterPlayed + 1) % 2);
             numTiesO += (gameOutcome == 0 ? 1 : 0) * letterPlayed;
 
-            winPercent = (float) 100 * numWins / numGamesPlayed;
+            winPercent = (double) 100 * numWins / numGamesPlayed;
 
             if(numGamesPlayedX != 0)
-                winPercentX = (float) 100 * numWinsX / numGamesPlayedX;
+                winPercentX = (double) 100 * numWinsX / numGamesPlayedX;
             if (numGamesPlayedO != 0)
-                winPercentO = (float) 100 * numWinsO / numGamesPlayedO;
+                winPercentO = (double) 100 * numWinsO / numGamesPlayedO;
 
             UpdatePlayerFile();
         }

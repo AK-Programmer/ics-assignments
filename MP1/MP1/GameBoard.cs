@@ -80,7 +80,6 @@ namespace MP1
         }
 
 
-
         public void PrintGameBoard(int playerTurn, int pieceBeingPlaced)
         {
 
@@ -178,11 +177,8 @@ namespace MP1
                     return true;
                 }
             }
+
             return false; 
         }
     }
-
-
-
-
 }

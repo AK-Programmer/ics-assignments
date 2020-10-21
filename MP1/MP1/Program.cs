@@ -3,6 +3,11 @@
 //Project Name: MP1
 //Creation Date: October 7, 2020
 //Modified Date: October 13, 2020
+/*Description: This program lets the user(s) play Tic Tac Toe. It keeps track of each player's game statistics, such as the number of times they've won, 
+ * and stores this information in a file. Users are first shown the main menu, from which they can choose to play a round of Tic Tac Toe, view their statistics, reset their statistics, or exit the game. 
+ * In particular, this file acts as the 'driver' file, bringing together different objects created elsewhere to make the game work properly. 
+*/
+
 using System;
 using System.Threading;
 
@@ -118,10 +123,11 @@ namespace MP1
 
                 count++;
 
-                bool win = board.CheckWin(Convert.ToInt32(rowStr) - 1, Convert.ToInt32(colStr) - 1, pieceBeingPlaced + 1);
 
+                bool win = board.CheckWin(Convert.ToInt32(rowStr) - 1, Convert.ToInt32(colStr) - 1, pieceBeingPlaced + 1);
                 board.PrintGameBoard(playerTurn, pieceBeingPlaced);
 
+                 
                 if (win)
                 {
                     players[playerTurn].IncrementStats(1, pieceBeingPlaced);
@@ -148,7 +154,6 @@ namespace MP1
 
             }
         }
-
 
         public static void ViewStats ()
         {

@@ -1,0 +1,30 @@
+﻿<Properties StartupConfiguration="{6E6E4B61-FE10-44C8-94DB-AB9F6418718F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Point.cs">
+    <Files>
+      <File FileName="PASS2/Program.cs" Line="9" Column="32" />
+      <File FileName="PASS2/Shape.cs" Line="59" Column="1" />
+      <File FileName="PASS2/Circle.cs" Line="81" Column="10" />
+      <File FileName="PASS2/Line.cs" Line="53" Column="10" />
+      <File FileName="PASS2/Canvas.cs" Line="8" Column="1" />
+      <File FileName="PASS2/Point.cs" Line="29" Column="29" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PASS2" expanded="True">
+            <Node name="PASS2" expanded="True">
+              <Node name="Point.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.PASS2 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

@@ -1,10 +1,9 @@
 ﻿<Properties StartupConfiguration="{093B0592-45F0-48D9-8A57-8C1CB16A61BE}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MP1/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MP1/Player.cs">
     <Files>
-      <File FileName="MP1/Program.cs" Line="2" Column="1" />
-      <File FileName="MP1/Player.cs" Line="144" Column="1" />
-      <File FileName="../PASS1/PASS1/Program.cs" Line="48" Column="1" />
-      <File FileName="MP1/GameBoard.cs" Line="45" Column="1" />
+      <File FileName="MP1/Player.cs" Line="159" Column="10" />
+      <File FileName="../PASS1/PASS1/Program.cs" />
+      <File FileName="MP1/GameBoard.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,7 +11,7 @@
           <Node name="MP1" expanded="True">
             <Node name="MP1" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Program.cs" selected="True" />
+              <Node name="Player.cs" selected="True" />
             </Node>
           </Node>
         </State>
