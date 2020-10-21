@@ -7,13 +7,13 @@ namespace PASS2
 
         public Line(string colour, Point point1, Point point2) : base(colour, point1, point2)
         {
-            if (points[1].x < points[0].x)
+            if (points[1].X < points[0].X)
             {
                 Point tempPoint = points[0];
                 points[0] = points[1];
                 points[1] = tempPoint; 
             }
-            else if (points[1].x == points[0].x && points[1].y < points[0].y)
+            else if (points[1].X == points[0].X && points[1].Y < points[0].Y)
             {
                 Point tempPoint = points[0];
                 points[0] = points[1];
@@ -21,9 +21,9 @@ namespace PASS2
             }
 
             //Length is calculated using the euclidean distance formula
-            perimeterEquiv = Math.Sqrt((points[0].x - points[1].x) * (points[0].x - points[1].x) + (points[0].y - points[1].y) * (points[0].y - points[1].y));
+            perimeterEquiv = points[0].GetDistance(points[1]);
 
-            slope = (points[1].y - points[0].y) / (points[1].x - points[0].x);
+            slope = (points[1].Y - points[0].Y) / (points[1].X - points[0].X);
         }
 
 
@@ -49,13 +49,13 @@ namespace PASS2
         public override bool CheckIntersectionWithPoint(Point point)
         {
             //If the line is vertical and the x-coordinate of the point is the same as the x-coordinate of one of the endpoints, return true
-            if (Math.Abs(slope) == Double.PositiveInfinity && point.x == points[0].x)
+            if (Math.Abs(slope) == Double.PositiveInfinity && point.X == points[0].X)
                 return true;
 
             else
             {
                 //If the point (x, y) satisfies the equation defining the line and is within the interval the line segment spans on the x-axis, return true. The equation of the line is y = y_1 + m(x - x_1)
-                if (point.y == points[0].y + slope * (point.x - points[0].x) && point.x >= points[0].x && point.x <= points[1].x)
+                if (point.Y == points[0].Y + slope * (point.X - points[0].X) && point.X >= points[0].X && point.X <= points[1].X)
                     return true;
             }
 

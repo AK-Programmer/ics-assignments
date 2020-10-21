@@ -10,7 +10,7 @@ namespace PASS2
         private double diagLen;
 
 
-        public Rectangle(double length, double height, string colour, Point anchorPoint) : base(colour, anchorPoint, new Point(anchorPoint.x + length, anchorPoint.y), new Point(anchorPoint.x, anchorPoint.y - height), new Point(anchorPoint.x + length, anchorPoint.y - height))
+        public Rectangle(double length, double height, string colour, Point anchorPoint) : base(colour, anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
         {
             this.length = length;
             this.height = height;
@@ -29,12 +29,12 @@ namespace PASS2
             //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
             try
             {
-                points[1].x = points[0].x + potentialLength;
+                points[1].X = points[0].X + potentialLength;
 
-                points[2].y = points[0].y - potentialHeight;
+                points[2].Y = points[0].Y - potentialHeight;
 
-                points[3].x = points[0].x + potentialLength;
-                points[3].y = points[0].y - potentialHeight;
+                points[3].X = points[0].X + potentialLength;
+                points[3].Y = points[0].Y - potentialHeight;
 
                 length = potentialHeight;
                 height = potentialHeight;
@@ -45,7 +45,7 @@ namespace PASS2
             }
             catch(ArgumentOutOfRangeException)
             {
-                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this shape by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
+                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this rectangle by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
             }
         }
 
@@ -63,7 +63,7 @@ namespace PASS2
        
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            if (point.x >= points[0].x && point.x <= points[1].x && point.y <= points[0].y && point.y >= points[2].y)
+            if (point.X >= points[0].X && point.X <= points[1].X && point.Y <= points[0].Y && point.Y >= points[2].Y)
                 return true;
 
             return false;

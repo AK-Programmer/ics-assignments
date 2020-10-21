@@ -9,12 +9,11 @@ namespace PASS2
         private double radius;
         private double surfaceArea;
 
-
         public Circle(double radius, string colour, Point center): base(colour, center)
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException("Radius", "The radius must be a positive number");
-            else if (points[0].x + radius > Canvas.SCREEN_WIDTH || points[0].x - radius < 0 || points[0].y + radius > Canvas.SCREEN_HEIGHT || points[0].y - radius < 0)
+            else if (points[0].X + radius > Canvas.SCREEN_WIDTH || points[0].X - radius < 0 || points[0].Y + radius > Canvas.SCREEN_HEIGHT || points[0].Y - radius < 0)
                 throw new ArgumentOutOfRangeException("Circle", "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
 
             this.radius = radius;
@@ -22,16 +21,21 @@ namespace PASS2
             surfaceArea = Math.PI * radius * radius;
             perimeterEquiv = 2 * Math.PI * radius;
 
-        }
+            
+
+    }
 
         public override void ScaleShape(double scaleFactor)
         {
             double potentialRad = radius * scaleFactor;
 
+            double x = points[0].X;
+            double y = points[0].Y;
+
             if (scaleFactor <= 0)
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be a positive number!");
 
-            else if (points[0].x + potentialRad > Canvas.SCREEN_WIDTH || points[0].x - potentialRad < 0 || points[0].y + potentialRad > Canvas.SCREEN_HEIGHT || points[0].y - potentialRad < 0)
+            else if (y + potentialRad > Canvas.SCREEN_WIDTH || x - potentialRad < 0 || y + potentialRad > Canvas.SCREEN_HEIGHT || y - potentialRad < 0)
                 throw new ArgumentOutOfRangeException("Scale Factor", "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount of reposition it first");
 
 
@@ -50,11 +54,9 @@ namespace PASS2
 
         public override void TranslateShape(double translateX, double translateY)
         {
-
             //Will store the prospective values of x and y, and will be used to check if the shape can be translated to the desired location without going out of bounds
-            double potentialX = points[0].x + translateX;
-            double potentialY = points[0].y + translateY;
-
+            double potentialX = points[0].X + translateX;
+            double potentialY = points[0].Y + translateY;
 
             //These if statements handle all possible ways the circle could go out of bounds and deliver the appropriate message.
             if(potentialX + radius > Canvas.SCREEN_WIDTH)
@@ -67,14 +69,13 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less up.");
         }
 
-
         public override bool CheckIntersectionWithPoint(Point point)
         {
             //This expression calculates the point's squared distance from the circle's center using the Euclidean distance formula
-            double squaredDistanceFromCenter = (point.x - points[0].x) * (point.x - points[0].x) + (point.y - points[0].y) * (point.y - points[0].y);
+            double DistanceFromCenter = point.GetDistance(points[0]);
 
             //Comparing the squared distance to the radius squared is more efficient than comparing the actual distance since the square root function is costly
-            if (squaredDistanceFromCenter <= radius*radius)
+            if (DistanceFromCenter <= radius)
                 return true;
 
             return false;

@@ -6,31 +6,40 @@ namespace PASS2
 
     public class Point
     {
-        public double x { get => y; set => x = SetX(value); }
-        public double y { get => y; set => y = SetY(value); }
+        private double x;
+        private double y;
+
+        public double X { get => x; set => SetX(value); }
+        public double Y { get => y; set => SetY(value); }
 
         public Point(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
         }
 
 
-        private double SetX(double x)
+        private void SetX(double x)
         {
             if (x <= Canvas.SCREEN_WIDTH && x >= 0)
-                return x;
+                this.x = x;
             else
+            {
                 throw new ArgumentOutOfRangeException("Point x-coordinate", "The given x-coordinate for the point is outside the screen!");
+            }
         }
 
-        private double SetY(double y)
+        private void SetY(double y)
         {
             if (y <= Canvas.SCREEN_HEIGHT && y >= 0)
-                return y;
+                this.y = y;
             else
                 throw new ArgumentOutOfRangeException("Point y-coordinate", "The given y-coordinate for the point is outside the screen!");
         }
 
+        public double GetDistance(Point point)
+        {
+            return Math.Sqrt((x - point.X) * (x - point.X) + (y - point.Y) * (y - point.Y));
+        }
     }
 }

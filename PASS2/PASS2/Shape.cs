@@ -24,7 +24,7 @@ namespace PASS2
             Console.Write("Vertices: ");
             foreach(Point point in points)
             {
-                Console.Write($"({Math.Round(point.x, 2)}, {Math.Round(point.y, 2)})\t"); 
+                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)})\t"); 
             }
 
             Console.WriteLine($"\nColour: {colour}");
@@ -44,8 +44,8 @@ namespace PASS2
                 try
                 {
                     //These expressions scale each point's coordinates by first treating the anchor point point[0] as the origin (by subtracting it). 
-                    points[i].x = points[0].x + scaleFactor * (points[i].x - points[0].x);
-                    points[i].y = points[0].y + scaleFactor * (points[i].y - points[0].y);
+                    points[i].X = points[0].X + scaleFactor * (points[i].X - points[0].X);
+                    points[i].Y = points[0].Y + scaleFactor * (points[i].Y - points[0].Y);
                 }
                 catch(ArgumentOutOfRangeException)
                 {
@@ -63,8 +63,8 @@ namespace PASS2
             {
                 foreach(Point point in points)
                 {
-                    point.x = point.x + translateX;
-                    point.y = point.y + translateY;
+                    point.X = point.X + translateX;
+                    point.Y = point.Y + translateY;
                 }
             }
             catch(ArgumentOutOfRangeException)
