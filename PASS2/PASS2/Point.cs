@@ -25,7 +25,7 @@ namespace PASS2
                 this.x = x;
             else
             {
-                throw new ArgumentOutOfRangeException("Point x-coordinate", "The given x-coordinate for the point is outside the screen!");
+                throw new ArgumentOutOfRangeException("point x-coord", "The given x-coordinate for the point is outside the screen!");
             }
         }
 
@@ -34,7 +34,7 @@ namespace PASS2
             if (y <= Canvas.SCREEN_HEIGHT && y >= 0)
                 this.y = y;
             else
-                throw new ArgumentOutOfRangeException("Point y-coordinate", "The given y-coordinate for the point is outside the screen!");
+                throw new ArgumentOutOfRangeException("point y-coord", "The given y-coordinate for the point is outside the screen!");
         }
 
         public double GetDistance(Point point)

@@ -5,7 +5,7 @@ namespace PASS2
     {
         private double slope;
 
-        public Line(string colour, Point point1, Point point2) : base(colour, point1, point2)
+        public Line(string colour, Point point1, Point point2) : base(colour, "Line", point1, point2)
         {
             if (points[1].X < points[0].X)
             {

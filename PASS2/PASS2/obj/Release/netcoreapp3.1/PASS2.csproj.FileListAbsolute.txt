@@ -1,0 +1,11 @@
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/bin/Release/netcoreapp3.1/PASS2.deps.json
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/bin/Release/netcoreapp3.1/PASS2.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/bin/Release/netcoreapp3.1/PASS2.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/bin/Release/netcoreapp3.1/PASS2.dll
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/bin/Release/netcoreapp3.1/PASS2.pdb
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.dll
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.pdb
+/Users/adarkahiri/ICS Assignments/PASS2/PASS2/obj/Release/netcoreapp3.1/PASS2.genruntimeconfig.cache

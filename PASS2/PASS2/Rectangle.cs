@@ -10,7 +10,7 @@ namespace PASS2
         private double diagLen;
 
 
-        public Rectangle(double length, double height, string colour, Point anchorPoint) : base(colour, anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
+        public Rectangle(double length, double height, string colour, Point anchorPoint) : base(colour, "Rectangle", anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
         {
             this.length = length;
             this.height = height;
@@ -68,5 +68,7 @@ namespace PASS2
 
             return false;
         }
+
+
     }
 }

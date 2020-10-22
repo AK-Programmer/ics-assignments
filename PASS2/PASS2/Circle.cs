@@ -9,12 +9,12 @@ namespace PASS2
         private double radius;
         private double surfaceArea;
 
-        public Circle(double radius, string colour, Point center): base(colour, center)
+        public Circle(double radius, string colour, Point center): base(colour, "Circle", center)
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException("Radius", "The radius must be a positive number");
-            else if (points[0].X + radius > Canvas.SCREEN_WIDTH || points[0].X - radius < 0 || points[0].Y + radius > Canvas.SCREEN_HEIGHT || points[0].Y - radius < 0)
-                throw new ArgumentOutOfRangeException("Circle", "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
+
+            CheckCircleInBounds(points[0], radius, "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
 
             this.radius = radius;
 
@@ -35,9 +35,7 @@ namespace PASS2
             if (scaleFactor <= 0)
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be a positive number!");
 
-            else if (y + potentialRad > Canvas.SCREEN_WIDTH || x - potentialRad < 0 || y + potentialRad > Canvas.SCREEN_HEIGHT || y - potentialRad < 0)
-                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount of reposition it first");
-
+            CheckCircleInBounds(points[0], potentialRad, "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount of reposition it first");
 
             radius = potentialRad;
             surfaceArea *= scaleFactor * scaleFactor;
@@ -79,6 +77,12 @@ namespace PASS2
                 return true;
 
             return false;
+        }
+
+        private void CheckCircleInBounds(Point center, double radius, string message)
+        {
+            if (center.X + radius > Canvas.SCREEN_WIDTH || center.X - radius < 0 || center.Y + radius > Canvas.SCREEN_HEIGHT || center.Y - radius < 0)
+                throw new ArgumentOutOfRangeException("Circle", message);
         }
 
     }

@@ -8,22 +8,24 @@ namespace PASS2
         private double height;
         private double[] sideLens = new double[3];
 
-        public Triangle(string colour, Point point1, Point point2, Point point3) : base(colour, point1, point2, point3)
+        public Triangle(string colour, Point point1, Point point2, Point point3) : base(colour, "Triangle", point1, point2, point3)
         {
 
 
             //Checking if the triangle is aligned horizontally  
             if (points[0].Y != points[1].Y && points[0].Y != points[2].Y && points[2].Y != points[1].Y)
                 throw new ArgumentException("Triangle Vertices", "The given triangle is on an angle. Two of your points must form a horizontal side length.");
+
             //Checking if any two of the three points are equivalent
             else if (points[0] == points[1] || points[0] == points[2] || points[1] == points[2])
                 throw new ArgumentException("Triangle Vertices", "Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.");
+
             //Checking if the three points are on the same line
             else if ((points[0].Y == points[1].Y && points[0].Y == points[2].Y && points[2].Y == points[1].Y) || (points[0].X == points[1].X && points[0].X == points[2].X && points[2].X == points[1].X))
                 throw new ArgumentException("Triangle Vertices", "The points entered are all on the same line, and do not form a valid triangle. Please try again.");
 
 
-            //bubble sort and tie breaker to ensure the first point in points array is the leftmost one
+            //Bubble sort and tie breaker to ensure the first point in points array is the leftmost one
             Point temp;
             for (int i = points.Length - 1; i > 0; i--)
             {
@@ -82,7 +84,7 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"Side lengths: {Math.Round(sideLens[0], 2)},{Math.Round(sideLens[1], 2)}, {Math.Round(sideLens[2], 2)}");
+            Console.WriteLine($"Side lengths: {Math.Round(sideLens[0], 2)}, {Math.Round(sideLens[1], 2)}, {Math.Round(sideLens[2], 2)}");
             Console.WriteLine($"Height:  {Math.Round(height, 2)}");
             Console.WriteLine($"Surface Area: {Math.Round(surfaceArea, 2)}");
         }

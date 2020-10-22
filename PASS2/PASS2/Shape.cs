@@ -4,13 +4,15 @@ namespace PASS2
 {
     public abstract class Shape
     {
+        private string shapeName; 
         protected string colour;
         protected Point[] points;
         protected double perimeterEquiv;
 
 
-        public Shape(string colour, params Point[] points)
+        public Shape(string colour, string shapeName, params Point[] points)
         {
+            this.shapeName = shapeName;
             this.colour = colour;
             this.points = points;
 
@@ -24,7 +26,7 @@ namespace PASS2
             Console.Write("Vertices: ");
             foreach(Point point in points)
             {
-                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)})\t"); 
+                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}) "); 
             }
 
             Console.WriteLine($"\nColour: {colour}");
@@ -71,6 +73,12 @@ namespace PASS2
             {
                 throw new ArgumentOutOfRangeException("Translate", "Translating the shape by this much in these directions would cause all or parts of it to go off screen. Try translating it by a smaller amount.");
             }
+        }
+
+
+        public string GetBasicInfo()
+        {
+            return $"{colour} {shapeName} - Anchor point: {points[0]}";
         }
 
 
