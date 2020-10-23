@@ -4,28 +4,30 @@ namespace PASS2
 {
     class Program
     {
+        static Canvas canvas = new Canvas();
         static bool exit = false;
 
 
         static void Main(string[] args)
         {
 
-            Canvas canvas = new Canvas();
+            
 
-            canvas.AddShape();
+            while(!exit)
+            {
+                Menu();
+            }
 
         }
 
 
-        public void Menu()
+        public static void Menu()
         {
             //Variables & Objects
             char option; //Will be used to navigate menu
             Console.Clear();
 
             Console.WriteLine("SHAPE DRAWER \n-----------------------\n1. Draw! \n2. Exit");
-
-            Console.WriteLine("\n\nHOW TO PLAY\n----------------\nYou will be assigned either an X or an O. \nYour goal is to get three of your letter in a row.");
 
             //Reads single key input and converts from ConsoleKeyInfo object to char data type
             option = Console.ReadKey().KeyChar;
@@ -43,14 +45,68 @@ namespace PASS2
                 default:
                     Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
                     Console.ReadKey();
-                    Menu();
                     break;
             }
         }
 
-        public void ManipulateCanvas()
+        public static void ManipulateCanvas()
         {
+            char userOption;
+            while (true)
+            {
 
+                Console.Clear();
+                Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. View all shapes \n2. Add a shape \n3. Delete a shape \n4. Modify a shape \n5. View one shape \n6. Clear the canvas \n7. Go back.");
+                userOption = Console.ReadKey().KeyChar;
+
+               
+                if(userOption == '1')
+                {
+                    canvas.ViewShapeList();
+                    ManipulateCanvas();
+                    break;
+                }
+                else if (userOption == '2')
+                {
+                    canvas.AddShape();
+                    ManipulateCanvas();
+                    break;
+                }
+                else if (userOption == '3')
+                {
+                    canvas.DeleteShape();
+                    ManipulateCanvas();
+                    break;
+
+                }
+                else if (userOption == '4')
+                {
+                    canvas.ModifyShape();
+                    ManipulateCanvas();
+                    break;
+                }
+                else if (userOption == '5')
+                {
+                    canvas.ViewShape();
+                    ManipulateCanvas();
+                    break;
+                }
+                else if (userOption == '6')
+                {
+                    canvas.ClearCanvas();
+                    ManipulateCanvas();
+                    break;
+                }
+                else if (userOption == '7')
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
+                    Console.ReadKey();
+                }
+            }
         }
     }
 }

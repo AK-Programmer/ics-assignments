@@ -20,11 +20,24 @@ namespace PASS2
 
         public void ViewShapeList()
         {
-            Console.WriteLine("ALL SHAPES \n-------------");
+            Console.Clear();
+            Console.WriteLine("VIEW SHAPES \n-------------");
 
-            for (int i = 0; i < MAX_NUM_SHAPES; i++)
+            if (shapes.Count > 0)
             {
-                Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
+
+
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
+                }
+
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("There are no shapes on the canvas. (Press any key to continue).");
+                Console.ReadKey();
             }
         }
 
@@ -277,6 +290,7 @@ namespace PASS2
                     {
                         try
                         {
+                            Console.Clear();
                             Console.WriteLine("ADD A TRIANGLE \n-------------\n");
 
                             if (p1X < 0)
@@ -330,6 +344,7 @@ namespace PASS2
                             point3 = new Point(p3X, p3Y);
 
                             triangle = new Triangle(colour, point1, point2, point3);
+                            shapes.Add(triangle);
 
                             Console.WriteLine("Your triangle has been added!");
                             Console.ReadKey();
@@ -344,21 +359,35 @@ namespace PASS2
                         }
                         catch (ArgumentOutOfRangeException e)
                         {
-                            Console.WriteLine($"{e.Message} (Press any key to continue).");
-                            Console.ReadKey();
-
-
                             if (p1Init)
                             {
                                 p1X = -1;
                                 p1Y = -1;
                             }
-                            else if(!p2Init)
+                            else if (!p2Init)
                             {
                                 p2X = -1;
                                 p2Y = -1;
                             }
+
+                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            Console.ReadKey();
+
+
+                            
                        
+                        }
+                        catch(ArgumentException e)
+                        {
+                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            Console.ReadKey();
+
+                            p1X = -1;
+                            p1Y = -1;
+                            p2X = -1;
+                            p2Y = -1;
+                            p3X = -1;
+                            p3Y = -1;
                         }
 
                     }
@@ -408,6 +437,8 @@ namespace PASS2
                             }
 
                             rectangle = new Rectangle(colour, length, height, anchorPoint);
+                            shapes.Add(rectangle);
+
 
                             Console.WriteLine("Your rectangle has been added!");
                             Console.ReadKey();
@@ -458,7 +489,7 @@ namespace PASS2
                     Console.WriteLine("Which of the following shapes would you like to view?\n");
                     ViewShapeList();
 
-                    modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+                    modShapeIndex = Convert.ToInt32(Console.ReadLine());
 
                     if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
                         throw new FormatException();
@@ -466,7 +497,7 @@ namespace PASS2
                     //Add spacing
                     Console.WriteLine("\nShape Attributes: ");
 
-                    shapes[modShapeIndex].PrintAttributes();
+                    shapes[modShapeIndex - 1].PrintAttributes();
 
                     Console.WriteLine("\nPress any key to continue.");
                     Console.ReadKey();
@@ -484,37 +515,45 @@ namespace PASS2
 
         public void DeleteShape()
         {
-            int modShapeIndex;
-
-            while (true)
+            if (shapes.Count > 0)
             {
-                try
+                int modShapeIndex;
+
+                while (true)
                 {
-                    Console.Clear();
-                    Console.WriteLine("DELETE A SHAPE \n---------------");
+                    try
+                    {
+                        Console.Clear();
+                        Console.WriteLine("DELETE A SHAPE \n---------------");
 
-                    Console.WriteLine("Which of the following shapes would you like to delete?\n");
-                    ViewShapeList();
+                        Console.WriteLine("Which of the following shapes would you like to delete?\n");
+                        ViewShapeList();
 
-                    modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+                        modShapeIndex = Convert.ToInt32(Console.ReadLine());
 
-                    if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
-                        throw new FormatException();
+                        if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                            throw new FormatException();
 
 
-                    shapes.RemoveAt(modShapeIndex);
+                        shapes.RemoveAt(modShapeIndex - 1);
 
-                    Console.WriteLine("Shape removed! (Press any key to continue).");
-                    Console.ReadKey();
+                        Console.WriteLine("Shape removed! (Press any key to continue).");
+                        Console.ReadKey();
 
-                    break;
+                        break;
 
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
+                        Console.ReadKey();
+                    }
                 }
-                catch (FormatException)
-                {
-                    Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
-                    Console.ReadKey();
-                }
+            }
+            else
+            {
+                Console.WriteLine("There are no shapes to delete. Add a shape first! (Press any key to continue).");
+                Console.ReadKey();
             }
         }
 

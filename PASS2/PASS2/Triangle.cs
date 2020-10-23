@@ -14,15 +14,15 @@ namespace PASS2
 
             //Checking if the triangle is aligned horizontally  
             if (points[0].Y != points[1].Y && points[0].Y != points[2].Y && points[2].Y != points[1].Y)
-                throw new ArgumentException("Triangle Vertices", "The given triangle is on an angle. Two of your points must form a horizontal side length.");
+                throw new ArgumentException("The given triangle is on an angle. Two of your points must form a horizontal side length.", "Triangle Vertices");
 
             //Checking if any two of the three points are equivalent
             else if (points[0] == points[1] || points[0] == points[2] || points[1] == points[2])
-                throw new ArgumentException("Triangle Vertices", "Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.");
+                throw new ArgumentException("Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.", "Triangle Vertices");
 
             //Checking if the three points are on the same line
             else if ((points[0].Y == points[1].Y && points[0].Y == points[2].Y && points[2].Y == points[1].Y) || (points[0].X == points[1].X && points[0].X == points[2].X && points[2].X == points[1].X))
-                throw new ArgumentException("Triangle Vertices", "The points entered are all on the same line, and do not form a valid triangle. Please try again.");
+                throw new ArgumentException("The points entered are all on the same line, and do not form a valid triangle. Please try again.", "Triangle Vertices");
 
 
             //Bubble sort and tie breaker to ensure the first point in points array is the leftmost one
