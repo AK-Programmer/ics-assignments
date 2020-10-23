@@ -46,19 +46,20 @@ namespace PASS2
 
 
 
-            int shift = 0; 
+            int shift = 0;
+
             for (int i = points.Length - 1; i >= 0; i--)
             {
                 //If points[i] and points[(i+1)%3] form the base, set the first element in sideLens as the base length, and calculate the height
-                if (points[i].Y == points[(i+1)%3].Y)
+                if (points[i].Y == points[(i + 1) % points.Length].Y)
                 {
-                    sideLens[0] = points[i].GetDistance(points[(i + 1) % 3]);
+                    sideLens[0] = points[i].GetDistance(points[(i + 1) % points.Length]);
 
                     //This ensures that the rest of the sidelengths are assigned to the correct indices and that the values of no indices are overwritten.
                     shift = 1;
 
                     //The chunky expression involving modulo operators gets the index of the point that is NOT i or (i+1)%3
-                    height = Math.Abs(points[i].Y - points[(2* (i + (i+1)%3 ))%3].Y);
+                    height = Math.Abs(points[i].Y - points[((points.Length - 1) * (i + (i+1) % points.Length)) % points.Length].Y);
                 }
                 else
                 {
@@ -84,9 +85,9 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"Side lengths: {Math.Round(sideLens[0], 2)}, {Math.Round(sideLens[1], 2)}, {Math.Round(sideLens[2], 2)}");
-            Console.WriteLine($"Height:  {Math.Round(height, 2)}");
-            Console.WriteLine($"Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Side lengths: {Math.Round(sideLens[0], 2)}, {Math.Round(sideLens[1], 2)}, {Math.Round(sideLens[2], 2)}");
+            Console.WriteLine($"- Height:  {Math.Round(height, 2)}");
+            Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
         }
 
 
@@ -103,9 +104,6 @@ namespace PASS2
             {
                 sideLens[i] *= scaleFactor;
             }
-
-            
-
         }
 
         public override bool CheckIntersectionWithPoint(Point point)

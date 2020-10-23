@@ -4,7 +4,7 @@ namespace PASS2
 {
     public abstract class Shape
     {
-        private string shapeName; 
+        private string shapeName;
         protected string colour;
         protected Point[] points;
         protected double perimeterEquiv;
@@ -23,13 +23,13 @@ namespace PASS2
 
         public virtual void PrintAttributes()
         {
-            Console.Write("Vertices: ");
-            foreach(Point point in points)
+            Console.Write("- Vertices: ");
+            foreach (Point point in points)
             {
-                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}) "); 
+                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}) ");
             }
 
-            Console.WriteLine($"\nColour: {colour}");
+            Console.WriteLine($"\n- Colour: {colour}");
         }
 
 
@@ -39,22 +39,22 @@ namespace PASS2
             if (scaleFactor <= 0)
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be positive!");
 
-
-            for (int i = 1; i < points.Length; i++)
+            try
             {
-                //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
-                try
+                for (int i = 1; i < points.Length; i++)
                 {
+                    //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
+
                     //These expressions scale each point's coordinates by first treating the anchor point point[0] as the origin (by subtracting it). 
                     points[i].X = points[0].X + scaleFactor * (points[i].X - points[0].X);
                     points[i].Y = points[0].Y + scaleFactor * (points[i].Y - points[0].Y);
                 }
-                catch(ArgumentOutOfRangeException)
-                {
-                    throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this shape by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
-                }
-                
             }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this shape by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
+            }
+
         }
 
 

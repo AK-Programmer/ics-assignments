@@ -46,8 +46,8 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"Radius: {Math.Round(radius, 2)}");
-            Console.Write($"Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Radius: {Math.Round(radius, 2)}");
+            Console.Write($"- Surface Area: {Math.Round(surfaceArea, 2)}");
         }
 
         public override void TranslateShape(double translateX, double translateY)

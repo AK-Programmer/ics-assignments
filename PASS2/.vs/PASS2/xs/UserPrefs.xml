@@ -1,11 +1,11 @@
 ﻿<Properties StartupConfiguration="{6E6E4B61-FE10-44C8-94DB-AB9F6418718F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Canvas.cs">
     <Files>
-      <File FileName="PASS2/Program.cs" Line="10" Column="27" />
+      <File FileName="PASS2/Program.cs" Line="15" Column="31" />
       <File FileName="PASS2/Shape.cs" />
+      <File FileName="PASS2/Canvas.cs" Line="349" Column="53" />
       <File FileName="PASS2/Circle.cs" />
       <File FileName="PASS2/Line.cs" />
-      <File FileName="PASS2/Canvas.cs" />
       <File FileName="PASS2/Rectangle.cs" />
       <File FileName="PASS2/Triangle.cs" />
       <File FileName="PASS2/Point.cs" />
@@ -15,7 +15,7 @@
         <State name="__root__">
           <Node name="PASS2" expanded="True">
             <Node name="PASS2" expanded="True">
-              <Node name="Program.cs" selected="True" />
+              <Node name="Canvas.cs" selected="True" />
             </Node>
           </Node>
         </State>

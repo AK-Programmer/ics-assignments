@@ -4,28 +4,52 @@ namespace PASS2
 {
     class Program
     {
+        static bool exit = false;
+
+
         static void Main(string[] args)
         {
-            Point point1 = new Point(1, 0);
-            Point point2 = new Point(0, 0);
-            Point point3 = new Point(0, 1);
 
-            Triangle tri = new Triangle("Blue", point1, point2, point3);
+            Canvas canvas = new Canvas();
 
-            Console.WriteLine(tri.CheckIntersectionWithPoint(new Point(0.5, 0.5)));
+            canvas.AddShape();
 
-            tri.TranslateShape(10, 5);
+        }
 
-            tri.TranslateShape(-10, -5);
-            tri.ScaleShape(3);
-            tri.PrintAttributes();
 
-            for (int i = 0; i < 40; i++)
+        public void Menu()
+        {
+            //Variables & Objects
+            char option; //Will be used to navigate menu
+            Console.Clear();
+
+            Console.WriteLine("SHAPE DRAWER \n-----------------------\n1. Draw! \n2. Exit");
+
+            Console.WriteLine("\n\nHOW TO PLAY\n----------------\nYou will be assigned either an X or an O. \nYour goal is to get three of your letter in a row.");
+
+            //Reads single key input and converts from ConsoleKeyInfo object to char data type
+            option = Console.ReadKey().KeyChar;
+
+            //This switch statement either sends the user(s) to the actual game, quits, or handles their faulty input and sends them to the main menu again. 
+            switch (option)
             {
-                Console.Write("hello");
+                case '1':
+                    ManipulateCanvas();
+                    break;
+                case '2':
+                    exit = true;
+                    Console.WriteLine("\nThanks for playing. Bye!");
+                    break;
+                default:
+                    Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
+                    Console.ReadKey();
+                    Menu();
+                    break;
             }
+        }
 
-            Console.ReadKey();
+        public void ManipulateCanvas()
+        {
 
         }
     }

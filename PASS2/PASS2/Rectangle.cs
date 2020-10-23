@@ -10,10 +10,17 @@ namespace PASS2
         private double diagLen;
 
 
-        public Rectangle(double length, double height, string colour, Point anchorPoint) : base(colour, "Rectangle", anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
+        public Rectangle(string colour, double length, double height, Point anchorPoint) : base(colour, "Rectangle", anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
         {
             this.length = length;
             this.height = height;
+
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException("length", "Rectangle length must be a positive number!");
+
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException("height", "Rectangle height must be a positive number!");
+
 
             surfaceArea = length * height;
             perimeterEquiv = 2 * length + 2 * height;
@@ -49,17 +56,15 @@ namespace PASS2
             }
         }
 
-
         public override void PrintAttributes()
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"Length: {length}");
-            Console.WriteLine($"Height: {height}");
-            Console.WriteLine($"Surface Area: {surfaceArea}");
-            Console.WriteLine($"Diagonal Length: {diagLen}");
+            Console.WriteLine($"- Length: {length}");
+            Console.WriteLine($"- Height: {height}");
+            Console.WriteLine($"- Surface Area: {surfaceArea}");
+            Console.WriteLine($"- Diagonal Length: {diagLen}");
         }
-
        
         public override bool CheckIntersectionWithPoint(Point point)
         {
@@ -68,7 +73,5 @@ namespace PASS2
 
             return false;
         }
-
-
     }
 }

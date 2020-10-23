@@ -32,8 +32,8 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"Length: {perimeterEquiv}");
-            Console.WriteLine($"Slope: {slope}");
+            Console.WriteLine($"- Length: {perimeterEquiv}");
+            Console.WriteLine($"- Slope: {slope}");
         }
 
 
@@ -62,7 +62,5 @@ namespace PASS2
             //If both of the checks above failed, the point is not on the line, so return false. 
             return false;
         }
-
-
     }
 }
