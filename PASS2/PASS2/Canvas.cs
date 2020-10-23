@@ -445,12 +445,77 @@ namespace PASS2
 
         public void ViewShape()
         {
+            int modShapeIndex;
+            char userChoice;
 
+            while (true)
+            {
+                try
+                {
+                    Console.Clear();
+                    Console.WriteLine("VIEW A SHAPE \n---------------");
+
+                    Console.WriteLine("Which of the following shapes would you like to view?\n");
+                    ViewShapeList();
+
+                    modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                        throw new FormatException();
+
+                    //Add spacing
+                    Console.WriteLine("\nShape Attributes: ");
+
+                    shapes[modShapeIndex].PrintAttributes();
+
+                    Console.WriteLine("\nPress any key to continue.");
+                    Console.ReadKey();
+                    break;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
+                    Console.ReadKey();
+                }
+            }
         }
+
+
 
         public void DeleteShape()
         {
+            int modShapeIndex;
 
+            while (true)
+            {
+                try
+                {
+                    Console.Clear();
+                    Console.WriteLine("DELETE A SHAPE \n---------------");
+
+                    Console.WriteLine("Which of the following shapes would you like to delete?\n");
+                    ViewShapeList();
+
+                    modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                        throw new FormatException();
+
+
+                    shapes.RemoveAt(modShapeIndex);
+
+                    Console.WriteLine("Shape removed! (Press any key to continue).");
+                    Console.ReadKey();
+
+                    break;
+
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
+                    Console.ReadKey();
+                }
+            }
         }
 
 
@@ -648,7 +713,6 @@ namespace PASS2
 
             Console.WriteLine("The canvas has been cleared. (Press any key to continue).");
             Console.ReadKey();
-
         }
     }
 }
