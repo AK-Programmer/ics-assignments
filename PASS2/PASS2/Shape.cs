@@ -76,9 +76,9 @@ namespace PASS2
         }
 
 
-        public string GetBasicInfo()
-        {
-            return $"{colour} {shapeName} - Anchor point: ({points[0].X}, {points[0].Y})";
+        public virtual string GetBasicInfo()
+        {   
+            return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y})";
         }
 
 

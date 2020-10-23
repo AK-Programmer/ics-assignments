@@ -20,8 +20,6 @@ namespace PASS2
 
         public void ViewShapeList()
         {
-            Console.Clear();
-            Console.WriteLine("VIEW SHAPES \n-------------");
 
             if (shapes.Count > 0)
             {
@@ -30,17 +28,14 @@ namespace PASS2
                 for (int i = 0; i < shapes.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
+                    Console.WriteLine();
                 }
-
-                Console.ReadKey();
             }
             else
             {
-                Console.WriteLine("There are no shapes on the canvas. (Press any key to continue).");
-                Console.ReadKey();
+                Console.WriteLine("There are no shapes on the canvas.");
             }
         }
-
 
         public void AddShape()
         {
@@ -130,6 +125,7 @@ namespace PASS2
                     {
                         try
                         {
+                            Console.Clear();
                             Console.WriteLine("ADD A CIRCLE \n-------------\n");
 
                             if (xCoord < 0)
@@ -211,6 +207,7 @@ namespace PASS2
                     {
                         try
                         {
+                            Console.Clear();
                             Console.WriteLine("ADD A LINE \n-------------\n");
 
                             if (point1X < 0)
@@ -272,6 +269,18 @@ namespace PASS2
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
                         }
+                        catch(ArgumentException e)
+                        {
+
+                            point1X = -1;
+                            point1Y = -1;
+                            point2X = -1;
+                            point2Y = -1;
+
+                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            Console.ReadKey();
+
+                        }
                     }
 
                 }
@@ -309,7 +318,7 @@ namespace PASS2
                             p1Init = true;
 
 
-                            Console.WriteLine("Successfully set the first point!");
+                            Console.WriteLine($"Successfully set the first point! ({point1.X}, {point1.Y})");
 
 
                             if (p2X < 0)
@@ -327,7 +336,7 @@ namespace PASS2
                             point2 = new Point(p2X, p2Y);
                             p2Init = true;
 
-                            Console.WriteLine("Successfully set the second point!");
+                            Console.WriteLine($"Successfully set the second point! ({point2.X}, {point2.Y})");
 
                             if (p3X < 0)
                             {
@@ -359,7 +368,7 @@ namespace PASS2
                         }
                         catch (ArgumentOutOfRangeException e)
                         {
-                            if (p1Init)
+                            if (!p1Init)
                             {
                                 p1X = -1;
                                 p1Y = -1;
@@ -406,6 +415,7 @@ namespace PASS2
                     {
                         try
                         {
+                            Console.Clear();
                             Console.WriteLine("ADD A RECTANGLE \n-------------\n");
 
                             if (pointX < 0)
@@ -420,9 +430,26 @@ namespace PASS2
                                 pointY = Convert.ToDouble(Console.ReadLine());
                             }
 
-                            anchorPoint = new Point(pointX, pointY);
 
-                            Console.WriteLine("Successfully set the first point!");
+
+                            try
+                            {
+                                anchorPoint = new Point(pointX, pointY);
+                            }
+                            catch(ArgumentOutOfRangeException e)
+                            {
+                                if (e.ParamName == "point x-coord")
+                                    pointX = -1;
+                                else if (e.ParamName == "point y-coord")
+                                    pointY = -1;
+
+                                Console.WriteLine($"{e.Message} (Press any key to continue).");
+                                Console.ReadKey();
+                                continue;
+                            }
+                            
+
+                            Console.WriteLine($"Successfully set the anchor point! ({anchorPoint.X}, {anchorPoint.Y})");
 
                             if (length < 0)
                             {
@@ -452,16 +479,31 @@ namespace PASS2
                         catch (ArgumentOutOfRangeException e)
                         {
                             if (e.ParamName == "length")
+                            {
                                 length = -1;
-                            else if (e.ParamName == "height")
-                                height = -1;
-                            else if (e.ParamName == "point x-coord")
-                                pointX = -1;
-                            else if (e.ParamName == "point y-coord")
-                                pointY = -1;
+                                Console.WriteLine($"{e.Message} (Press any key to continue).");
 
-                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            }
+                            else if (e.ParamName == "height")
+                            {
+                                height = -1;
+                                Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            }
+                            else if (pointX + length > SCREEN_WIDTH)
+                            {
+                                length = -1;
+                                Console.WriteLine("A rectangle with that length would go off screen. Try decreasing the length or repositioning the rectangle. (Press any key to continue).");
+                            }
+                            else if (pointY - height < 0)
+                            {
+                                height = -1;
+                                Console.WriteLine("A rectangle with that height would go off screen. Try decreasing the height or repositioning the rectangle. (Press any key to continue).");
+                            }
+
                             Console.ReadKey();
+
+
+         
                         }
                     }
                 }
@@ -476,8 +518,7 @@ namespace PASS2
 
         public void ViewShape()
         {
-            int modShapeIndex;
-            char userChoice;
+            int viewShapeIndex;
 
             while (true)
             {
@@ -486,18 +527,20 @@ namespace PASS2
                     Console.Clear();
                     Console.WriteLine("VIEW A SHAPE \n---------------");
 
-                    Console.WriteLine("Which of the following shapes would you like to view?\n");
+                    Console.WriteLine("Which of the following shapes would you like to view?");
                     ViewShapeList();
 
-                    modShapeIndex = Convert.ToInt32(Console.ReadLine());
+                    viewShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
-                    if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                    Console.WriteLine(viewShapeIndex);
+
+                    if (viewShapeIndex < 0 || viewShapeIndex > shapes.Count - 1)
                         throw new FormatException();
 
                     //Add spacing
                     Console.WriteLine("\nShape Attributes: ");
 
-                    shapes[modShapeIndex - 1].PrintAttributes();
+                    shapes[viewShapeIndex].PrintAttributes();
 
                     Console.WriteLine("\nPress any key to continue.");
                     Console.ReadKey();
@@ -517,7 +560,7 @@ namespace PASS2
         {
             if (shapes.Count > 0)
             {
-                int modShapeIndex;
+                int delShapeIndex;
 
                 while (true)
                 {
@@ -529,13 +572,13 @@ namespace PASS2
                         Console.WriteLine("Which of the following shapes would you like to delete?\n");
                         ViewShapeList();
 
-                        modShapeIndex = Convert.ToInt32(Console.ReadLine());
+                        delShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
-                        if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                        if (delShapeIndex < 0 || delShapeIndex > shapes.Count - 1)
                             throw new FormatException();
 
 
-                        shapes.RemoveAt(modShapeIndex - 1);
+                        shapes.RemoveAt(delShapeIndex - 1);
 
                         Console.WriteLine("Shape removed! (Press any key to continue).");
                         Console.ReadKey();
@@ -552,6 +595,7 @@ namespace PASS2
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("There are no shapes to delete. Add a shape first! (Press any key to continue).");
                 Console.ReadKey();
             }
@@ -578,7 +622,7 @@ namespace PASS2
 
                         modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
-                        if (modShapeIndex < 1 || modShapeIndex > shapes.Count)
+                        if (modShapeIndex < 0 || modShapeIndex > shapes.Count - 1)
                             throw new FormatException();
 
                         break;
@@ -599,7 +643,7 @@ namespace PASS2
                     Console.WriteLine("Shape Attributes: ");
                     shapes[modShapeIndex].PrintAttributes();
 
-                    Console.WriteLine("How would you like to modify this shape?\n1. Translate it \n2. Scale it 3.Check for intersection with point");
+                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it 3.Check for intersection with point");
 
                     userChoice = Console.ReadKey().KeyChar;
 
@@ -615,6 +659,9 @@ namespace PASS2
                             {
                                 Console.Clear();
                                 Console.WriteLine("TRANSLATE SHAPE \n---------------");
+
+                                Console.WriteLine("Shape Attributes: ");
+                                shapes[modShapeIndex].PrintAttributes();
 
                                 if (translateX < 0)
                                 {
@@ -658,6 +705,8 @@ namespace PASS2
                                 Console.Clear();
                                 Console.WriteLine("SCALE SHAPE \n---------------");
 
+                                Console.WriteLine("Shape Attributes: ");
+                                shapes[modShapeIndex].PrintAttributes();
 
                                 Console.WriteLine("By how much would you like to scale your shape?");
                                 scaleFactor = Convert.ToDouble(Console.ReadLine());
@@ -730,6 +779,7 @@ namespace PASS2
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("That's not a valid choice. Try again. (Press any key to continue).");
                         Console.ReadKey();
                     }

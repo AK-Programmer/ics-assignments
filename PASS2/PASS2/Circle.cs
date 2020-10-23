@@ -62,9 +62,12 @@ namespace PASS2
             else if (potentialX - radius < 0)
                 throw new ArgumentOutOfRangeException("TranslateX", "You are trying to translate the shape beyond the screen. Try translating the shape a little less to the left.");
             else if (potentialY + radius > Canvas.SCREEN_HEIGHT)
-                throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less down.");
-            else if (potentialY - radius < 0)
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less up.");
+            else if (potentialY - radius < 0)
+                throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less down.");
+
+            points[0].X = potentialX;
+            points[0].Y = potentialY;
         }
 
         public override bool CheckIntersectionWithPoint(Point point)
@@ -83,6 +86,16 @@ namespace PASS2
         {
             if (center.X + radius > Canvas.SCREEN_WIDTH || center.X - radius < 0 || center.Y + radius > Canvas.SCREEN_HEIGHT || center.Y - radius < 0)
                 throw new ArgumentOutOfRangeException("Circle", message);
+        }
+
+        public override string GetBasicInfo()
+        {
+            string basicInfo =  base.GetBasicInfo();
+
+
+            basicInfo += $"\n- Radius: {Math.Round(radius, 2)}";
+            return basicInfo;
+
         }
 
     }

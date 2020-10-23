@@ -56,48 +56,45 @@ namespace PASS2
             {
 
                 Console.Clear();
-                Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. View all shapes \n2. Add a shape \n3. Delete a shape \n4. Modify a shape \n5. View one shape \n6. Clear the canvas \n7. Go back.");
+                Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. Add a shape \n2. Delete a shape \n3. Modify a shape \n4. View one shape \n5. Clear the canvas \n6. Go back.\n");
+                Console.WriteLine("CANVAS \n-------------");
+                canvas.ViewShapeList();
+
                 userOption = Console.ReadKey().KeyChar;
 
                
-                if(userOption == '1')
-                {
-                    canvas.ViewShapeList();
-                    ManipulateCanvas();
-                    break;
-                }
-                else if (userOption == '2')
+                if (userOption == '1')
                 {
                     canvas.AddShape();
                     ManipulateCanvas();
                     break;
                 }
-                else if (userOption == '3')
+                else if (userOption == '2')
                 {
                     canvas.DeleteShape();
                     ManipulateCanvas();
                     break;
 
                 }
-                else if (userOption == '4')
+                else if (userOption == '3')
                 {
                     canvas.ModifyShape();
                     ManipulateCanvas();
                     break;
                 }
-                else if (userOption == '5')
+                else if (userOption == '4')
                 {
                     canvas.ViewShape();
                     ManipulateCanvas();
                     break;
                 }
-                else if (userOption == '6')
+                else if (userOption == '5')
                 {
                     canvas.ClearCanvas();
                     ManipulateCanvas();
                     break;
                 }
-                else if (userOption == '7')
+                else if (userOption == '6')
                 {
                     break;
                 }

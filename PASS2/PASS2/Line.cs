@@ -7,6 +7,9 @@ namespace PASS2
 
         public Line(string colour, Point point1, Point point2) : base(colour, "Line", point1, point2)
         {
+            if (point1.X == point2.X && point1.Y == point2.Y)
+                throw new ArgumentException("Both of your points cannot be the same. Please try again!", "same points");
+
             if (points[1].X < points[0].X)
             {
                 Point tempPoint = points[0];
@@ -61,6 +64,15 @@ namespace PASS2
 
             //If both of the checks above failed, the point is not on the line, so return false. 
             return false;
+        }
+
+        public override string GetBasicInfo()
+        {
+            string basicinfo = base.GetBasicInfo();
+
+
+            basicinfo += $"\n- Other endpoint: ({points[1].X}, {points[1].Y})";
+            return basicinfo;
         }
     }
 }

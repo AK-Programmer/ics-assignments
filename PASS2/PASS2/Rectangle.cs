@@ -60,10 +60,10 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"- Length: {length}");
-            Console.WriteLine($"- Height: {height}");
-            Console.WriteLine($"- Surface Area: {surfaceArea}");
-            Console.WriteLine($"- Diagonal Length: {diagLen}");
+            Console.WriteLine($"- Length: {Math.Round(length, 2)}");
+            Console.WriteLine($"- Height: {Math.Round(height, 2)}");
+            Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Diagonal Length: {Math.Round(diagLen, 2)}");
         }
        
         public override bool CheckIntersectionWithPoint(Point point)
@@ -72,6 +72,14 @@ namespace PASS2
                 return true;
 
             return false;
+        }
+
+        public override string GetBasicInfo()
+        {
+            string basicInfo = base.GetBasicInfo();
+
+            basicInfo += $"\n- Length: {Math.Round(length, 2)} \n- Height: {Math.Round(height, 2)}";
+            return basicInfo;
         }
     }
 }

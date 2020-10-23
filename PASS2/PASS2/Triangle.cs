@@ -11,6 +11,7 @@ namespace PASS2
         public Triangle(string colour, Point point1, Point point2, Point point3) : base(colour, "Triangle", point1, point2, point3)
         {
 
+            perimeterEquiv = 0;
 
             //Checking if the triangle is aligned horizontally  
             if (points[0].Y != points[1].Y && points[0].Y != points[2].Y && points[2].Y != points[1].Y)
@@ -54,6 +55,7 @@ namespace PASS2
                 if (points[i].Y == points[(i + 1) % points.Length].Y)
                 {
                     sideLens[0] = points[i].GetDistance(points[(i + 1) % points.Length]);
+                    perimeterEquiv += sideLens[0];
 
                     //This ensures that the rest of the sidelengths are assigned to the correct indices and that the values of no indices are overwritten.
                     shift = 1;
@@ -64,11 +66,12 @@ namespace PASS2
                 else
                 {
                     sideLens[i+shift] = points[i].GetDistance(points[(i + 1) % 3]);
+                    perimeterEquiv += sideLens[i + shift];
                 }
             }
 
 
-            perimeterEquiv = 0;
+            
 
             for (int i = 0; i < sideLens.Length; i ++)
             {
@@ -126,6 +129,14 @@ namespace PASS2
                 return true;
 
             return false;
+        }
+
+        public override string GetBasicInfo()
+        {
+            string basicInfo = base.GetBasicInfo();
+
+            basicInfo += $"\n- Other points: ({points[1].X}, {points[1].Y}), ({points[2].X}, {points[2].Y})";
+            return basicInfo;
         }
     }
 }
