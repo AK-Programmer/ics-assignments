@@ -1,4 +1,15 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Circle.cs
+//Project Name: PASS2
+//Creation Date: October 21, 2020
+//Modified Date: October 30, 2020
+/* Description: This class inherits from the shape class, defines additional attributes of a circle (such as its radius), and overrides the methods defined
+ * in the shape class in order to carry out calculations specific to circles. Often times, when this class overrides methods from its base class, it will still
+ * the base method its overriding and then add additional logic specific to the circle. This is possible since the base methods have been designed to 
+ * be as useful as possible for as many classes as possible.
+ */
+
+using System;
 
 
 namespace PASS2
@@ -35,7 +46,7 @@ namespace PASS2
             if (scaleFactor <= 0)
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be a positive number!");
 
-            CheckCircleInBounds(points[0], potentialRad, "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount of reposition it first");
+            CheckCircleInBounds(points[0], potentialRad, "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount or reposition it first");
 
             radius = potentialRad;
             surfaceArea *= scaleFactor * scaleFactor;
@@ -50,7 +61,7 @@ namespace PASS2
             Console.Write($"- Surface Area: {Math.Round(surfaceArea, 2)}");
         }
 
-        public override void TranslateShape(double translateX, double translateY)
+        public override void TranslateShape(double translateX, double translateY, double translateZ = 0)
         {
             //Will store the prospective values of x and y, and will be used to check if the shape can be translated to the desired location without going out of bounds
             double potentialX = points[0].X + translateX;

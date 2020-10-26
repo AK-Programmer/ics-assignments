@@ -1,4 +1,12 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Canvas.cs
+//Project Name: PASS2
+//Creation Date: October 21, 2020
+//Modified Date: October 30, 2020
+/* Description: this class contains the code for the canvas object. It keeps track of all the shapes, and contains all the methods needed to add, delete, modify, and view the shapes. 
+ */
+
+using System;
 using System.Collections.Generic;
 
 
@@ -9,6 +17,7 @@ namespace PASS2
         private const int MAX_NUM_SHAPES = 6;
         public const int SCREEN_WIDTH = 90;
         public const int SCREEN_HEIGHT = 30;
+        public const int SCREEN_DEPTH = 50;
 
         List<Shape> shapes;
 
@@ -17,14 +26,10 @@ namespace PASS2
             shapes = new List<Shape>();
         }
 
-
         public void ViewShapeList()
         {
-
             if (shapes.Count > 0)
             {
-
-
                 for (int i = 0; i < shapes.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
@@ -46,21 +51,17 @@ namespace PASS2
 
                 string colour;
 
-
                 //Let user select desired shape
                 while (true)
                 {
                     Console.Clear();
                     Console.WriteLine("ADD A SHAPE \n-------------\n");
-
                     Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle");
                     userShapeChoice = Console.ReadKey().KeyChar;
-
 
                     if (userShapeChoice == '1' || userShapeChoice == '2' || userShapeChoice == '3' || userShapeChoice == '4')
                     {
                         break;
-                        
                     }
                     else
                     {
@@ -271,7 +272,6 @@ namespace PASS2
                         }
                         catch(ArgumentException e)
                         {
-
                             point1X = -1;
                             point1Y = -1;
                             point2X = -1;
@@ -279,19 +279,15 @@ namespace PASS2
 
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
-
                         }
                     }
-
                 }
                 //Triangle
                 else if (userShapeChoice == '3')
                 {
-
                     double p1X = -1, p1Y = -1, p2X = -1, p2Y = -1, p3X = -1, p3Y = -1;
                     Point point1, point2, point3;
                     Triangle triangle;
-
                     bool p1Init = false;
                     bool p2Init = false;
 
@@ -316,10 +312,7 @@ namespace PASS2
 
                             point1 = new Point(p1X, p1Y);
                             p1Init = true;
-
-
                             Console.WriteLine($"Successfully set the first point! ({point1.X}, {point1.Y})");
-
 
                             if (p2X < 0)
                             {
@@ -351,15 +344,12 @@ namespace PASS2
                             }
 
                             point3 = new Point(p3X, p3Y);
-
                             triangle = new Triangle(colour, point1, point2, point3);
                             shapes.Add(triangle);
 
                             Console.WriteLine("Your triangle has been added!");
                             Console.ReadKey();
                             break;
-
-
                         }
                         catch (FormatException)
                         {
@@ -381,16 +371,11 @@ namespace PASS2
 
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
-
-
-                            
-                       
                         }
                         catch(ArgumentException e)
                         {
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
-
                             p1X = -1;
                             p1Y = -1;
                             p2X = -1;
@@ -398,17 +383,13 @@ namespace PASS2
                             p3X = -1;
                             p3Y = -1;
                         }
-
                     }
-
                 }
                 //Rectangle
                 else
                 {
                     double pointX = -1, pointY = -1, length = -1, height = -1;
-
                     Point anchorPoint;
-
                     Rectangle rectangle;
 
                     while(true)
@@ -429,7 +410,6 @@ namespace PASS2
                                 Console.Write("Enter the y-coordinate of the first point: ");
                                 pointY = Convert.ToDouble(Console.ReadLine());
                             }
-
 
 
                             try
@@ -478,16 +458,17 @@ namespace PASS2
                         }
                         catch (ArgumentOutOfRangeException e)
                         {
-                            if (e.ParamName == "length")
+                  
+                             if (e.ParamName == "length")
                             {
-                                length = -1;
+                               length = -1;
                                 Console.WriteLine($"{e.Message} (Press any key to continue).");
 
                             }
                             else if (e.ParamName == "height")
                             {
                                 height = -1;
-                                Console.WriteLine($"{e.Message} (Press any key to continue).");
+                                 Console.WriteLine($"{e.Message} (Press any key to continue).");
                             }
                             else if (pointX + length > SCREEN_WIDTH)
                             {
@@ -511,7 +492,7 @@ namespace PASS2
             }
             else
             {
-                Console.WriteLine("Sorry, there are too many shapes on the screen. You must delete a shape before adding another one. (Press any key to continue.)");
+                Console.WriteLine("\nSorry, there are too many shapes on the screen. You must delete a shape before adding another one. (Press any key to continue.)");
                 Console.ReadKey();
             }
         }
@@ -531,8 +512,6 @@ namespace PASS2
                     ViewShapeList();
 
                     viewShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
-
-                    Console.WriteLine(viewShapeIndex);
 
                     if (viewShapeIndex < 0 || viewShapeIndex > shapes.Count - 1)
                         throw new FormatException();
@@ -578,7 +557,7 @@ namespace PASS2
                             throw new FormatException();
 
 
-                        shapes.RemoveAt(delShapeIndex - 1);
+                        shapes.RemoveAt(delShapeIndex);
 
                         Console.WriteLine("Shape removed! (Press any key to continue).");
                         Console.ReadKey();
@@ -643,7 +622,7 @@ namespace PASS2
                     Console.WriteLine("Shape Attributes: ");
                     shapes[modShapeIndex].PrintAttributes();
 
-                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it 3.Check for intersection with point");
+                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it \n3.Check for intersection with point");
 
                     userChoice = Console.ReadKey().KeyChar;
 
@@ -651,7 +630,7 @@ namespace PASS2
                     if (userChoice == '1')
                     {
                         double translateX = -1;
-                        double translateY = -1;
+                        double translateY;
 
                         while(true)
                         {
@@ -665,11 +644,11 @@ namespace PASS2
 
                                 if (translateX < 0)
                                 {
-                                    Console.WriteLine("How much would you like to translate your shape along the x-axis? (negative =  left, positive = right)");
+                                    Console.WriteLine("\nHow much would you like to translate your shape along the x-axis? (negative =  left, positive = right)");
                                     translateX = Convert.ToDouble(Console.ReadLine());
                                 }
 
-                                Console.WriteLine("How much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
+                                Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
                                 translateY = Convert.ToDouble(Console.ReadLine());
 
                                 shapes[modShapeIndex].TranslateShape(translateX, translateY);
@@ -708,14 +687,14 @@ namespace PASS2
                                 Console.WriteLine("Shape Attributes: ");
                                 shapes[modShapeIndex].PrintAttributes();
 
-                                Console.WriteLine("By how much would you like to scale your shape?");
+                                Console.WriteLine("\nBy how much would you like to scale your shape?");
                                 scaleFactor = Convert.ToDouble(Console.ReadLine());
 
                                 shapes[modShapeIndex].ScaleShape(scaleFactor);
 
                                 Console.WriteLine("Your shape has been scaled. New shape attributes: ");
                                 shapes[modShapeIndex].PrintAttributes();
-                                Console.WriteLine("Press any key to continue.");
+                                Console.WriteLine("\nPress any key to continue.");
                                 Console.ReadKey();
 
                                 break;
@@ -735,8 +714,10 @@ namespace PASS2
                     }
                     else if (userChoice == '3')
                     {
+                        double pointY;
                         double pointX = -1;
                         Point pointToCheck;
+                        bool doesIntersect;
 
                         while (true)
                         {
@@ -744,18 +725,33 @@ namespace PASS2
                             {
                                 Console.Clear();
                                 Console.WriteLine("CHECK FOR INTERSECTION \n---------------------");
+                                Console.WriteLine("Shape Attributes: ");
+                                shapes[modShapeIndex].PrintAttributes();
+
+
                                 if (pointX < 0)
                                 {
-                                    Console.WriteLine("Enter the x-coordinate of the point you'd like to check: ");
+                                    Console.WriteLine("\nEnter the x-coordinate of the point you'd like to check: ");
                                     pointX = Convert.ToDouble(Console.ReadLine());
                                 }
 
                                 Console.WriteLine("Enter the y-coordinate of the point you'd like to check: ");
-                                double pointY = Convert.ToDouble(Console.ReadLine());
+                                pointY = Convert.ToDouble(Console.ReadLine());
 
 
                                 pointToCheck = new Point(pointX, pointY);
-                                shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
+                                doesIntersect = shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
+
+                                if (doesIntersect)
+                                {
+                                    Console.WriteLine($"The point ({pointX}, {pointY}) does intersect this shape. (Press any key to continue).");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"The point ({pointX}, {pointY}) does not intersect this shape. (Press any key to continue).");
+                                }
+
+                                Console.ReadKey();
 
                                 break;
                             }
@@ -790,8 +786,6 @@ namespace PASS2
                 Console.WriteLine("There are no shapes to modify. Add a shape first! (Press any key to continue).");
                 Console.ReadKey();
             }
-             
-
         }
 
 

@@ -1,4 +1,13 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Program.cs
+//Project Name: PASS2
+//Creation Date: October 20, 2020
+//Modified Date: October 30, 2020
+/* Description: this is the driver class for the program. It contains an instance of the canvas class, and has methods that allow the user to interact with the methods/subprograms of
+ * the canvas class via the ManipulateCanvas() method. 
+ */
+
+using System;
 
 namespace PASS2
 {
