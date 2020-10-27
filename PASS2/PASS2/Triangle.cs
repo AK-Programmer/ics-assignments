@@ -20,6 +20,7 @@ namespace PASS2
         private double surfaceArea;
         private double height;
         private double[] sideLens = new double[3];
+        private double perimeter;
 
 
         //Pre: The points must be within the bounds of the canvas. Technically, the colour can be set to anything, but since the colour is only being set by the canvas class,
@@ -40,7 +41,7 @@ namespace PASS2
             Point temp;
 
             //Sets perimeter to zero so that it can be incremented later on
-            perimeterEquiv = 0;
+            perimeter = 0;
 
             //Checking if the triangle is aligned horizontally  
             if (points[0].Y != points[1].Y && points[0].Y != points[2].Y && points[2].Y != points[1].Y)
@@ -86,7 +87,7 @@ namespace PASS2
                     //This formula does not generalize to more than three points, but it can be easily verified that it does in fact work for three points. (try setting i to different values).
                     otherPointIndex = ((points.Length - 1) * (i + (i + 1) % points.Length)) % points.Length;
                     sideLens[0] = points[i].GetDistance(points[(i + 1) % points.Length]);
-                    perimeterEquiv += sideLens[0];
+                    perimeter += sideLens[0];
 
                     //This ensures that the rest of the sidelengths are assigned to the correct indices and that the values of no indices are overwritten.
                     shift = 1;
@@ -104,7 +105,7 @@ namespace PASS2
                 {
                     //If the base length hasn't yet been found, then shift equals 0, and if it has been found, then shift equals 1. This is necessary 
                     sideLens[i+shift] = points[i].GetDistance(points[(i+1) % 3]);
-                    perimeterEquiv += sideLens[i + shift];
+                    perimeter += sideLens[i + shift];
                 }
             }
 
@@ -113,7 +114,7 @@ namespace PASS2
             //This loop adds up all the sidelengths to calculate the perimeter.
             for (int i = 0; i < sideLens.Length; i ++)
             {
-                perimeterEquiv += sideLens[i];
+                perimeter += sideLens[i];
             }
 
             //Formula for area of a triangle. It's ensured that sideLens[0] is the base of the triangle.
@@ -144,7 +145,7 @@ namespace PASS2
             //Scaling the rest of the variables
             height *= scaleFactor;
             surfaceArea *= scaleFactor * scaleFactor;
-            perimeterEquiv *= scaleFactor;
+            perimeter *= scaleFactor;
 
             for (int i = 0; i < sideLens.Length; i ++)
             {
@@ -157,7 +158,6 @@ namespace PASS2
         //Description: This method checks if the given point intersects triangle.
         public override bool CheckIntersectionWithPoint(Point point)
         {
-
             //Defining all the necessary values as variables for ease of reading.
             double px = point.X;
             double py = point.Y;
@@ -174,11 +174,9 @@ namespace PASS2
             double area3 = Math.Abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
 
             //If the area of the triangle equals the sum of the areas of the 3 triangles the point forms with combinations of vertices of the triangle, return true.
-            if (surfaceArea == (area1 + area2 + area3)/2)
-                return true;
+            return surfaceArea == (area1 + area2 + area3) / 2;
+            
 
-            //Otherwise, return false.
-            return false;
         }
 
         //Pre: none.

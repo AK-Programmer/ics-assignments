@@ -19,6 +19,7 @@ namespace PASS2
         private double height;
         private double surfaceArea;
         private double diagLen;
+        private double perimeter;
 
         //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
         //Post: None.
@@ -36,7 +37,7 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("height", "Rectangle height must be a positive number!");
 
             surfaceArea = length * height;
-            perimeterEquiv = 2 * length + 2 * height;
+            perimeter = 2 * length + 2 * height;
             diagLen = Math.Sqrt(length * length + height * height);
         }
 
@@ -61,7 +62,7 @@ namespace PASS2
                 length = potentialHeight;
                 height = potentialHeight;
                 surfaceArea *= scaleFactor * scaleFactor;
-                perimeterEquiv *= scaleFactor;
+                perimeter *= scaleFactor;
                 diagLen *= scaleFactor;
             }
             catch(ArgumentOutOfRangeException)
@@ -79,7 +80,7 @@ namespace PASS2
 
             Console.WriteLine($"- Length: {Math.Round(length, 2)}");
             Console.WriteLine($"- Height: {Math.Round(height, 2)}");
-            Console.WriteLine($"- Perimeter: {Math.Round(perimeterEquiv, 2)}");
+            Console.WriteLine($"- Perimeter: {Math.Round(perimeter, 2)}");
             Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
             Console.WriteLine($"- Diagonal Length: {Math.Round(diagLen, 2)}");
         }

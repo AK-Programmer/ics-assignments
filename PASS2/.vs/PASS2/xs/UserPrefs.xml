@@ -1,21 +1,21 @@
 ﻿<Properties StartupConfiguration="{6E6E4B61-FE10-44C8-94DB-AB9F6418718F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Canvas.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Sphere.cs">
     <Files>
-      <File FileName="PASS2/Program.cs" Line="103" Column="18" />
-      <File FileName="PASS2/Shape.cs" Line="34" Column="30" />
-      <File FileName="PASS2/Canvas.cs" Line="13" Column="1" />
-      <File FileName="PASS2/Circle.cs" Line="27" Column="98" />
-      <File FileName="PASS2/Line.cs" Line="22" Column="92" />
-      <File FileName="PASS2/Rectangle.cs" Line="26" Column="125" />
-      <File FileName="PASS2/Triangle.cs" Line="78" Column="1" />
-      <File FileName="PASS2/Point.cs" Line="84" Column="47" />
+      <File FileName="PASS2/Program.cs" Line="24" Column="13" />
+      <File FileName="PASS2/Shape.cs" Line="21" Column="34" />
+      <File FileName="PASS2/Canvas.cs" Line="414" Column="108" />
+      <File FileName="PASS2/Circle.cs" Line="16" Column="2" />
+      <File FileName="PASS2/Line.cs" Line="13" Column="16" />
+      <File FileName="PASS2/Rectangle.cs" Line="21" Column="32" />
+      <File FileName="PASS2/Triangle.cs" Line="23" Column="34" />
+      <File FileName="PASS2/Sphere.cs" Line="6" Column="131" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PASS2" expanded="True">
             <Node name="PASS2" expanded="True">
-              <Node name="Canvas.cs" selected="True" />
+              <Node name="Sphere.cs" selected="True" />
             </Node>
           </Node>
         </State>

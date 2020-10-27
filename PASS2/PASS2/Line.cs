@@ -15,6 +15,7 @@ namespace PASS2
     public class Line : Shape
     {
         private double slope;
+        private double length;
 
         //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
         //Post: None.
@@ -48,7 +49,7 @@ namespace PASS2
             }
 
             //Length is calculated using the euclidean distance formula
-            perimeterEquiv = points[0].GetDistance(points[1]);
+            length = points[0].GetDistance(points[1]);
 
             slope = (points[1].Y - points[0].Y) / (points[1].X - points[0].X);
         }
@@ -60,7 +61,7 @@ namespace PASS2
         {
             base.PrintAttributes();
 
-            Console.WriteLine($"- Length: {perimeterEquiv}");
+            Console.WriteLine($"- Length: {length}");
             Console.WriteLine($"- Slope: {slope}");
         }
 
@@ -72,7 +73,7 @@ namespace PASS2
         {
             base.ScaleShape(scaleFactor);
 
-            perimeterEquiv *= scaleFactor;  
+            length *= scaleFactor;  
         }
 
         //Pre: the point must be within the bounds of the canvas.
@@ -80,7 +81,7 @@ namespace PASS2
         //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            return (points[0].GetDistance(point) + points[1].GetDistance(point) == perimeterEquiv);
+            return (points[0].GetDistance(point) + points[1].GetDistance(point) == length);
         }
 
 
