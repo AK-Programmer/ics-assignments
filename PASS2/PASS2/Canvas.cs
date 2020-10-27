@@ -13,42 +13,52 @@ using System.Collections.Generic;
 namespace PASS2
 {
     public class Canvas
-    {
+    { 
         private const int MAX_NUM_SHAPES = 6;
+        //These public constants are used throughout the rest of the program to ensure shapes stay inside the canvas.
         public const int SCREEN_WIDTH = 90;
         public const int SCREEN_HEIGHT = 30;
         public const int SCREEN_DEPTH = 50;
 
-        List<Shape> shapes;
+        private List<Shape> shapes;
 
+        //Pre: None
+        //Post: None
+        //Description: all the constructor does is instantiate the shape list. 
         public Canvas()
         {
             shapes = new List<Shape>();
         }
 
+        //Pre: None
+        //Post: None
+        //Description: This method prints all of the shapes' basic properties.
         public void ViewShapeList()
         {
             if (shapes.Count > 0)
             {
+                //For each of the shapes in the list, call its GetBasicInfo method and format it nicely with its place (i+1) in the list.
                 for (int i = 0; i < shapes.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
                     Console.WriteLine();
                 }
             }
+            //If there are no shapes in the list, display the following.
             else
-            {
                 Console.WriteLine("There are no shapes on the canvas.");
-            }
         }
 
+        //Pre: None
+        //Post: None
+        //Description: This method takes the user through the process of adding a shape. All input is error-trapped. All while loops are used to repeat the prompts until the user enters correct input.
         public void AddShape()
         {
+            //If there is room for another shape, allow the user to add a shape. Otherwise, tell them they must first delete a shape.
             if (shapes.Count < MAX_NUM_SHAPES)
             {
                 char userColourChoice;
                 char userShapeChoice;
-
                 string colour;
 
                 //Let user select desired shape
@@ -56,7 +66,8 @@ namespace PASS2
                 {
                     Console.Clear();
                     Console.WriteLine("ADD A SHAPE \n-------------\n");
-                    Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle");
+                    Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle \n5. Sphere " +
+                        "");
                     userShapeChoice = Console.ReadKey().KeyChar;
 
                     if (userShapeChoice == '1' || userShapeChoice == '2' || userShapeChoice == '3' || userShapeChoice == '4')
@@ -114,12 +125,11 @@ namespace PASS2
                 //Circle
                 if (userShapeChoice == '1')
                 {
+                    //one of the doubles having a value of -1 indicates to the program that that variable hasn't yet been set properly
                     double xCoord = -1;
                     double yCoord = -1;
                     double rad = -1;
-
                     Point circleCenter;
-
                     Circle circle;
 
                     while(true)
@@ -129,9 +139,12 @@ namespace PASS2
                             Console.Clear();
                             Console.WriteLine("ADD A CIRCLE \n-------------\n");
 
+
+                            //These if statements ensure that a user is only prompted to enter an input if that variable has not been validly set yet.
+
                             if (xCoord < 0)
                             {
-                                Console.Write("Enter the x-coordinate of the circle's center: ");
+                                Console.Write("Enter the coordinates of the center point in the x,y format: ");
                                 xCoord = Convert.ToDouble(Console.ReadLine());
                             }
 
@@ -141,6 +154,7 @@ namespace PASS2
                                 yCoord = Convert.ToDouble(Console.ReadLine());
                             }
 
+                            //Instantiates  the center point of the circle.
                             circleCenter = new Point(xCoord, yCoord);
 
                             if (rad < 0)
@@ -239,8 +253,6 @@ namespace PASS2
                             {
                                 Console.Write("Enter the y-coordinate of the second point: ");
                                 point2Y = Convert.ToDouble(Console.ReadLine());
-
-                                
                             }
 
                             point2 = new Point(point2X, point2Y);
@@ -386,7 +398,7 @@ namespace PASS2
                     }
                 }
                 //Rectangle
-                else
+                else if (userShapeChoice == '4')
                 {
                     double pointX = -1, pointY = -1, length = -1, height = -1;
                     Point anchorPoint;
@@ -445,8 +457,6 @@ namespace PASS2
 
                             rectangle = new Rectangle(colour, length, height, anchorPoint);
                             shapes.Add(rectangle);
-
-
                             Console.WriteLine("Your rectangle has been added!");
                             Console.ReadKey();
                             break;
@@ -487,6 +497,16 @@ namespace PASS2
          
                         }
                     }
+                }
+                //Sphere
+                else if (userShapeChoice == '5')
+                {
+
+                }
+                //Rectangular Prism
+                else if (userShapeChoice == '6')
+                {
+
                 }
 
             }
@@ -630,7 +650,8 @@ namespace PASS2
                     if (userChoice == '1')
                     {
                         double translateX = -1;
-                        double translateY;
+                        double translateY = -1;
+                        double translateZ;
 
                         while(true)
                         {
@@ -648,10 +669,21 @@ namespace PASS2
                                     translateX = Convert.ToDouble(Console.ReadLine());
                                 }
 
-                                Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
-                                translateY = Convert.ToDouble(Console.ReadLine());
+                                if (translateY < 0)
+                                {
+                                    Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
+                                    translateY = Convert.ToDouble(Console.ReadLine());
+                                }
+                                
+                                if (shapes[modShapeIndex].GetIs3D())
+                                {
+                                    Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
+                                    translateZ = Convert.ToDouble(Console.ReadLine());
+                                }
+                                else
+                                    translateZ = 0;
 
-                                shapes[modShapeIndex].TranslateShape(translateX, translateY);
+                                shapes[modShapeIndex].TranslateShape(translateX, translateY, translateZ);
 
                                 break;
                             }
@@ -670,7 +702,6 @@ namespace PASS2
                                 continue;
                             }
                         }
-
                         break;
                     }
                     else if (userChoice == '2')

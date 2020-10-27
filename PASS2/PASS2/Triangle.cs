@@ -26,14 +26,20 @@ namespace PASS2
         //the user does not have a chance to set any colours that aren't allowed.
         //Post: None.
         /*Description: This constructor
-         *  1. Ensures the triangle is horizontally aligned and that the points given form an actual triangle (e.g., no two points are the same, the three points don't all lie on one line).
+         *  1. Ensures the triangle is horizontally aligned and that the points given form an actual triangle (e.g., the three points don't all lie on one line).
          *  2. Sorts the points so that the first point in the points array is the leftmost one (or bottom-left if there's a tie).
          *  3. Calculates the sidelengths of the triangle and ensures the first sidelength in the array is the base of the triangle (the horizontal side length)
          *  4. Calculates the perimeter, height, and area of the triangle. 
          */
-        public Triangle(string colour, Point point1, Point point2, Point point3) : base(colour, "Triangle", point1, point2, point3)
+        public Triangle(string colour, Point point1, Point point2, Point point3) : base(colour, "Triangle", false, point1, point2, point3)
         {
+            //This variable is used as part of an algorithm that ensures the base length appears first in the sidelength array.
+            int shift = 0;
+            int otherPointIndex;
+            //This variable is used to temporarily store the value of points when sorting the array. 
+            Point temp;
 
+            //Sets perimeter to zero so that it can be incremented later on
             perimeterEquiv = 0;
 
             //Checking if the triangle is aligned horizontally  
@@ -50,10 +56,10 @@ namespace PASS2
 
 
 
-            //Bubble sort to ensure the first point in points array is the leftmost one
-            Point temp;
+            //Sorting to ensure the first point in points array is the leftmost one.
             for (int i = points.Length - 1; i > 0; i--)
             {
+                //If points[i] is more to the left than points[i-1], swap the two.
                 if (points[i].X < points[i-1].X)
                 {
                     temp = points[i];
@@ -70,27 +76,33 @@ namespace PASS2
                 points[0] = temp;
             }
 
-
-            int shift = 0;
+            //This loop calculates the 3 sidelengths in a way that ensures that the base of the triangle is the first one in the array.
             for (int i = points.Length - 1; i >= 0; i--)
             {
                 //If points[i] and points[(i+1)%3] form the base, set the first element in sideLens as the base length, and calculate the height
                 if (points[i].Y == points[(i + 1) % points.Length].Y)
                 {
+                    //The chunky expression involving modulo operators simplifies to (2*(i + (i+1)%3)) % 3. It gets the index of the point that is NOT i or (i+1)%3.
+                    //This formula does not generalize to more than three points, but it can be easily verified that it does in fact work for three points. (try setting i to different values).
+                    otherPointIndex = ((points.Length - 1) * (i + (i + 1) % points.Length)) % points.Length;
                     sideLens[0] = points[i].GetDistance(points[(i + 1) % points.Length]);
                     perimeterEquiv += sideLens[0];
 
                     //This ensures that the rest of the sidelengths are assigned to the correct indices and that the values of no indices are overwritten.
                     shift = 1;
 
-                    //The chunky expression involving modulo operators simplifies to (2*(i + (i+1)%3)) % 3. It gets the index of the point that is NOT i or (i+1)%3.
-                    //This formula does not generalize to more than three points, but it can be easily verified that it does in fact work for three points. (try setting i to different values).
-                    //The height is calculated by taking the absolute value of the difference between the y-coordinates of one of the points of the base and the point that does not form the base.
-                    height = Math.Abs(points[i].Y - points[((points.Length - 1) * (i + (i+1)%points.Length)) % points.Length].Y);
+                    //If the height is negative it means the triangle is rotated and an exception is thrown.
+                    if (points[i].Y - points[otherPointIndex].Y < 0)
+                        throw new ArgumentException("This triangle is rotated. Please ensure the base of the triangle is below the ", "Triangle Vertices");
+                    else
+                    {
+                        //The height is calculated by taking the difference between the y-coordinates of one of the points of the base and the point that does not form the base.
+                        height = points[otherPointIndex].Y - points[i].Y;
+                    }
                 }
                 else
                 {
-                    //If the base length hasn't yet been found, then shift equals 0, and if it has been foundd, then shift equals 1. 
+                    //If the base length hasn't yet been found, then shift equals 0, and if it has been found, then shift equals 1. This is necessary 
                     sideLens[i+shift] = points[i].GetDistance(points[(i+1) % 3]);
                     perimeterEquiv += sideLens[i + shift];
                 }
@@ -98,7 +110,7 @@ namespace PASS2
 
 
             
-
+            //This loop adds up all the sidelengths to calculate the perimeter.
             for (int i = 0; i < sideLens.Length; i ++)
             {
                 perimeterEquiv += sideLens[i];
@@ -109,7 +121,9 @@ namespace PASS2
         }
 
 
-
+        //Pre: none.
+        //Post: none.
+        //Description: This method prints the triangle's attributes. It calls the base PrintAttributes() method and prints the unique properties of a triangle. 
         public override void PrintAttributes()
         {
             base.PrintAttributes();
@@ -120,6 +134,9 @@ namespace PASS2
         }
 
 
+        //Pre: scale factor must not be negative.
+        //Post: none
+        //Description: This method scales the 2 non-anchor points of the triangle, and scales all the calculated properties proportionally (linearly for all but the area). Of course, all of this is error-trapped.
         public override void ScaleShape(double scaleFactor)
         {
             base.ScaleShape(scaleFactor);
@@ -135,11 +152,15 @@ namespace PASS2
             }
         }
 
+        //Pre: the point must be within the bounds of the canvas.
+        //Post: returns true if the point does intersect with the triangle, and false otherwise. 
+        //Description: This method checks if the given point intersects triangle.
         public override bool CheckIntersectionWithPoint(Point point)
         {
+
+            //Defining all the necessary values as variables for ease of reading.
             double px = point.X;
             double py = point.Y;
-
             double x1 = points[0].X;
             double y1 = points[0].Y;
             double x2 = points[1].X;
@@ -147,16 +168,22 @@ namespace PASS2
             double x3 = points[2].X;
             double y3 = points[2].Y;
 
+            //Areas are calculated using Heron's formula
             double area1 = Math.Abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
             double area2 = Math.Abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
             double area3 = Math.Abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
 
+            //If the area of the triangle equals the sum of the areas of the 3 triangles the point forms with combinations of vertices of the triangle, return true.
             if (surfaceArea == (area1 + area2 + area3)/2)
                 return true;
 
+            //Otherwise, return false.
             return false;
         }
 
+        //Pre: none.
+        //Post: none.
+        //Description: this method displays the triangle's basic information and is used when displaying all of the shapes on the canvas at once. It calls the base GetBasicInfo method to display the general shape information.
         public override string GetBasicInfo()
         {
             string basicInfo = base.GetBasicInfo();

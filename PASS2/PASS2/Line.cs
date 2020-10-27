@@ -16,18 +16,31 @@ namespace PASS2
     {
         private double slope;
 
-        public Line(string colour, Point point1, Point point2) : base(colour, "Line", point1, point2)
+        //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
+        //Post: None.
+        //Desc: This constructor ensures the two points aren't actually the same point, sorts the points so that the leftmost one is first in the array, and calculates the slope and length of the line.
+        public Line(string colour, Point point1, Point point2) : base(colour, "Line", true, point1, point2)
         {
-            if (point1.X == point2.X && point1.Y == point2.Y)
+            //If the two points are the same point, throw an exception
+            if (point1.X == point2.X && point1.Y == point2.Y && point1.Z == point2.Z)
                 throw new ArgumentException("Both of your points cannot be the same. Please try again!", "same points");
 
+            //Sort the points so that the leftmost one is first in the points array. 
             if (points[1].X < points[0].X)
             {
                 Point tempPoint = points[0];
                 points[0] = points[1];
                 points[1] = tempPoint; 
             }
+            //If their x - coordinates are the same, make the bottom point first.
             else if (points[1].X == points[0].X && points[1].Y < points[0].Y)
+            {
+                Point tempPoint = points[0];
+                points[0] = points[1];
+                points[1] = tempPoint;
+            }
+            //If their x and y coordinates are the same, select the least deep point as the anchor point.
+            else if (points[1].X == points[0].X && points[1].Y == points[0].Y && points[1].Z < points[0].Z)
             {
                 Point tempPoint = points[0];
                 points[0] = points[1];
@@ -40,8 +53,9 @@ namespace PASS2
             slope = (points[1].Y - points[0].Y) / (points[1].X - points[0].X);
         }
 
-
-
+        //Pre: none.
+        //Post: none.
+        //Description: This method prints the line's attributes. It calls the base PrintAttributes() method and prints the unique properties of a line. 
         public override void PrintAttributes()
         {
             base.PrintAttributes();
@@ -51,7 +65,9 @@ namespace PASS2
         }
 
 
-
+        //Pre: scale factor must not be negative.
+        //Post: none
+        //Description: This method calls the base ScaleShape method and multiplies the line's length by the scale factor.
         public override void ScaleShape(double scaleFactor)
         {
             base.ScaleShape(scaleFactor);
@@ -59,28 +75,24 @@ namespace PASS2
             perimeterEquiv *= scaleFactor;  
         }
 
-
+        //Pre: the point must be within the bounds of the canvas.
+        //Post: returns true if the point does intersect with the line, and false otherwise. 
+        //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            //If the line is vertical and the x-coordinate of the point is the same as the x-coordinate of one of the endpoints, return true
-            if (Math.Abs(slope) == Double.PositiveInfinity && point.X == points[0].X)
+            if (points[0].GetDistance(point) + points[1].GetDistance(point) == perimeterEquiv)
                 return true;
 
-            else
-            {
-                //If the point (x, y) satisfies the equation defining the line and is within the interval the line segment spans on the x-axis, return true. The equation of the line is y = y_1 + m(x - x_1)
-                if (point.Y == points[0].Y + slope * (point.X - points[0].X) && point.X >= points[0].X && point.X <= points[1].X)
-                    return true;
-            }
-
-            //If both of the checks above failed, the point is not on the line, so return false. 
             return false;
         }
 
+
+        //Pre: none.
+        //Post: none.
+        //Description: this method displays the line's basic information and is used when displaying all of the shapes on the canvas at once. 
         public override string GetBasicInfo()
         {
             string basicinfo = base.GetBasicInfo();
-
 
             basicinfo += $"\n- Other endpoint: ({points[1].X}, {points[1].Y})";
             return basicinfo;

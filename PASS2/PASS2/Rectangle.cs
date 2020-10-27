@@ -20,25 +20,29 @@ namespace PASS2
         private double surfaceArea;
         private double diagLen;
 
-
-        public Rectangle(string colour, double length, double height, Point anchorPoint) : base(colour, "Rectangle", anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
+        //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
+        //Post: None.
+        //Desc: This constructor ensures the two points aren't actually the same point, sorts the points so that the leftmost one is first in the array, and calculates the slope and length of the line.
+        public Rectangle(string colour, double length, double height, Point anchorPoint) : base(colour, "Rectangle", false, anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
         {
             this.length = length;
             this.height = height;
 
+            //If height or length are less than zero, throw an exception with an appropriate message.
             if (length <= 0)
                 throw new ArgumentOutOfRangeException("length", "Rectangle length must be a positive number!");
 
             if (height <= 0)
                 throw new ArgumentOutOfRangeException("height", "Rectangle height must be a positive number!");
 
-
             surfaceArea = length * height;
             perimeterEquiv = 2 * length + 2 * height;
             diagLen = Math.Sqrt(length * length + height * height);
         }
 
-
+        //Pre: scale factor must not be negative.
+        //Post: none
+        //Description: This method scales the 3 non-anchor points of the rectangle, and scales the length, width, and calculated properties proportionally. Of course, all of this is error-trapped.
         public override void ScaleShape(double scaleFactor)
         {
             double potentialLength = length * scaleFactor; 
@@ -47,16 +51,15 @@ namespace PASS2
             //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
             try
             {
+                //Try to update all the points. The point class's set method will throw an exception if any of the updated points go out of bounds.
                 points[1].X = points[0].X + potentialLength;
-
                 points[2].Y = points[0].Y - potentialHeight;
-
                 points[3].X = points[0].X + potentialLength;
                 points[3].Y = points[0].Y - potentialHeight;
 
+                //Perimeter and diagonal length scale linearly, surface area scales quadratically.
                 length = potentialHeight;
                 height = potentialHeight;
-
                 surfaceArea *= scaleFactor * scaleFactor;
                 perimeterEquiv *= scaleFactor;
                 diagLen *= scaleFactor;
@@ -67,16 +70,23 @@ namespace PASS2
             }
         }
 
+        //Pre: none.
+        //Post: none.
+        //Description: This method prints the rectangle's attributes. It calls the base PrintAttributes() method and prints the unique properties of a rectangle. 
         public override void PrintAttributes()
         {
             base.PrintAttributes();
 
             Console.WriteLine($"- Length: {Math.Round(length, 2)}");
             Console.WriteLine($"- Height: {Math.Round(height, 2)}");
+            Console.WriteLine($"- Perimeter: {Math.Round(perimeterEquiv, 2)}");
             Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
             Console.WriteLine($"- Diagonal Length: {Math.Round(diagLen, 2)}");
         }
-       
+
+        //Pre: the point must be within the bounds of the canvas.
+        //Post: returns true if the point does intersect with the rectangle, and false otherwise. 
+        //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
         public override bool CheckIntersectionWithPoint(Point point)
         {
             if (point.X >= points[0].X && point.X <= points[1].X && point.Y <= points[0].Y && point.Y >= points[2].Y)
@@ -85,10 +95,12 @@ namespace PASS2
             return false;
         }
 
+        //Pre: none.
+        //Post: none.
+        //Description: this method displays the rectangle's basic information and is used when displaying all of the shapes on the canvas at once. It calls the base GetBasicInfo method to display the general shape information.
         public override string GetBasicInfo()
         {
             string basicInfo = base.GetBasicInfo();
-
             basicInfo += $"\n- Length: {Math.Round(length, 2)} \n- Height: {Math.Round(height, 2)}";
             return basicInfo;
         }

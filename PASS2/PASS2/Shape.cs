@@ -13,7 +13,10 @@ namespace PASS2
 {
     public abstract class Shape
     {
+        //shapeName is used to make it easy to display the shape's name (e.g., "Line", "Circle") in the canvas class while iterating through the shape list.
         private string shapeName;
+        //Used to indicate whether a shape is 3 dimensional or not to the rest of the program.
+        private bool is3D;
         protected string colour;
         protected Point[] points;
         //This variable refers to the 'perimeter equivalent' of each shape. For lines it would be their length, for circles their circumference, for triangles their perimeter, for spheres their boundary (surface area) and so on. 
@@ -23,10 +26,12 @@ namespace PASS2
         //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
         //Post: None.
         //Desc: There isn't any special logic here. The class attributes are set to their respective parameters.
-        public Shape(string colour, string shapeName, params Point[] points)
+        public Shape(string colour, string shapeName, bool is3D, params Point[] points)
         {
-            this.shapeName = shapeName;
+            
             this.colour = colour;
+            this.shapeName = shapeName;
+            this.is3D = is3D;
             this.points = points;
         }
 
@@ -116,6 +121,14 @@ namespace PASS2
             return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y})";
         }
 
+
+        //Pre: none
+        //Post: returns the value of the is3D attribute of the shape
+        //Description: this is a get method for the is3D variable.
+        public bool GetIs3D()
+        {
+            return is3D;
+        }
 
         
     }
