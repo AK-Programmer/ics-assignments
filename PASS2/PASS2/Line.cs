@@ -80,10 +80,7 @@ namespace PASS2
         //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            if (points[0].GetDistance(point) + points[1].GetDistance(point) == perimeterEquiv)
-                return true;
-
-            return false;
+            return (points[0].GetDistance(point) + points[1].GetDistance(point) == perimeterEquiv);
         }
 
 
@@ -92,10 +89,10 @@ namespace PASS2
         //Description: this method displays the line's basic information and is used when displaying all of the shapes on the canvas at once. 
         public override string GetBasicInfo()
         {
-            string basicinfo = base.GetBasicInfo();
+            string basicInfo = base.GetBasicInfo();
 
-            basicinfo += $"\n- Other endpoint: ({points[1].X}, {points[1].Y})";
-            return basicinfo;
+            basicInfo += $"\n- Other endpoint: ({points[1].X}, {points[1].Y})";
+            return basicInfo;
         }
     }
 }

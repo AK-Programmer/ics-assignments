@@ -85,5 +85,10 @@ namespace PASS2
         {
             return Math.Sqrt((x - point.X) * (x - point.X) + (y - point.Y) * (y - point.Y) + (z - point.Z)*(z - point.Z));
         }
+
+        public double[] GetAllCoords()
+        {
+            return new double[] {x, y, z};
+        }
     }
 }

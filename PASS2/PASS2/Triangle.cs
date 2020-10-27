@@ -47,7 +47,7 @@ namespace PASS2
                 throw new ArgumentException("The given triangle is on an angle. Two of your points must form a horizontal side length.", "Triangle Vertices");
 
             //Checking if any two of the three points are equivalent
-            else if (points[0] == points[1] || points[0] == points[2] || points[1] == points[2])
+            else if (points[0].GetAllCoords() == points[1].GetAllCoords() || points[0].GetAllCoords() == points[2].GetAllCoords() || points[1].GetAllCoords() == points[2].GetAllCoords())
                 throw new ArgumentException("Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.", "Triangle Vertices");
 
             //Checking if the three points are on the same line
@@ -92,7 +92,7 @@ namespace PASS2
                     shift = 1;
 
                     //If the height is negative it means the triangle is rotated and an exception is thrown.
-                    if (points[i].Y - points[otherPointIndex].Y < 0)
+                    if (points[otherPointIndex].Y - points[i].Y < 0)
                         throw new ArgumentException("This triangle is rotated. Please ensure the base of the triangle is below the ", "Triangle Vertices");
                     else
                     {

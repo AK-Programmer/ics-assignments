@@ -66,7 +66,8 @@ namespace PASS2
             base.PrintAttributes();
 
             Console.WriteLine($"- Radius: {Math.Round(radius, 2)}");
-            Console.Write($"- Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Circumference: {Math.Round(perimeterEquiv, 2)}");
         }
 
         //Pre: translateX, translateY, translateZ, must not cause any of the shape's points to go out of bound.

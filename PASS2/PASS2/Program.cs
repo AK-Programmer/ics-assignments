@@ -17,18 +17,16 @@ namespace PASS2
         static bool exit = false;
 
 
+        //Pre: technically none.
+        //Post: none.
+        //Description: the main method. It calls the menu method which either sends the user to the canvas or exits the program, can continues to loop back to it until the user decides to exit.
         static void Main(string[] args)
-        {
-
-            
-
+        {   
             while(!exit)
             {
                 Menu();
             }
-
         }
-
 
         public static void Menu()
         {
@@ -58,12 +56,15 @@ namespace PASS2
             }
         }
 
+
+        //Pre: None
+        //Pro: None
+        //Description: This method lets the user navigate the canvas
         public static void ManipulateCanvas()
         {
             char userOption;
             while (true)
             {
-
                 Console.Clear();
                 Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. Add a shape \n2. Delete a shape \n3. Modify a shape \n4. View one shape \n5. Clear the canvas \n6. Go back.\n");
                 Console.WriteLine("CANVAS \n-------------");
@@ -71,7 +72,7 @@ namespace PASS2
 
                 userOption = Console.ReadKey().KeyChar;
 
-               
+                //Each of these if statements directs the user to a different canvas method, and always calls the ManipulateCanvas() method again (except the last one) to let the user manipulate the canvas in another way.
                 if (userOption == '1')
                 {
                     canvas.AddShape();
@@ -83,7 +84,6 @@ namespace PASS2
                     canvas.DeleteShape();
                     ManipulateCanvas();
                     break;
-
                 }
                 else if (userOption == '3')
                 {
