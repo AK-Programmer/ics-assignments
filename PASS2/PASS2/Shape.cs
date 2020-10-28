@@ -19,8 +19,6 @@ namespace PASS2
         private bool is3D;
         protected string colour;
         protected Point[] points;
-        //This variable refers to the 'perimeter equivalent' of each shape. For lines it would be their length, for circles their circumference, for triangles their perimeter, for spheres their boundary (surface area) and so on. 
-        protected double perimeterEquiv;
 
 
         //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
@@ -51,7 +49,7 @@ namespace PASS2
             //For each vertex, print it in a nicely formatted way (rounding decimals, inside parentheses, etc.)
             foreach (Point point in points)
             {
-                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}) ");
+                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}, {Math.Round(point.Z, 2)}) ");
             }
 
             Console.WriteLine($"\n- Colour: {colour}");

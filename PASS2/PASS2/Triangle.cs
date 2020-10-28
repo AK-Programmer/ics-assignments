@@ -5,7 +5,7 @@
 //Modified Date: October 30, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a triangle (such as its height), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to triangles. Often times, when this class overrides methods from its base class, it will still
- * the base method its overriding and then add additional logic specific to triangles. This is possible since the base methods have been designed to 
+ * call the base method its overriding and then add additional logic specific to triangles. This is possible since the base methods have been designed to 
  * be as useful as possible for as many classes as possible.
  */
 
@@ -48,7 +48,7 @@ namespace PASS2
                 throw new ArgumentException("The given triangle is on an angle. Two of your points must form a horizontal side length.", "Triangle Vertices");
 
             //Checking if any two of the three points are equivalent
-            else if (points[0].GetAllCoords() == points[1].GetAllCoords() || points[0].GetAllCoords() == points[2].GetAllCoords() || points[1].GetAllCoords() == points[2].GetAllCoords())
+            else if (points[0].CheckEqual(points[1]) || points[0].CheckEqual(points[2]) || points[1].CheckEqual(points[2]))
                 throw new ArgumentException("Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.", "Triangle Vertices");
 
             //Checking if the three points are on the same line

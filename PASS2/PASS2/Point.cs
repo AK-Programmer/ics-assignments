@@ -46,6 +46,11 @@ namespace PASS2
             Z = z;
         }
 
+        public Point()
+        {
+
+        }
+
         //Pre: The double inputted  must be greater than zero andd smaller than the width of the canvas
         //Post: None.
         //Description: If the x coordinate is within the bounds of the canvas, this method updates the value of the private double 'x'. Otherwise, it throws an exception.
@@ -86,9 +91,9 @@ namespace PASS2
             return Math.Sqrt((x - point.X) * (x - point.X) + (y - point.Y) * (y - point.Y) + (z - point.Z)*(z - point.Z));
         }
 
-        public double[] GetAllCoords()
+        public bool CheckEqual(Point point)
         {
-            return new double[] {x, y, z};
+            return x == point.X && y == point.Y && z == point.Z;
         }
     }
 }

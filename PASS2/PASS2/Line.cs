@@ -5,7 +5,7 @@
 //Modified Date: October 30, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a line (such as its slope), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to lines. Often times, when this class overrides methods from its base class, it will still
- * the base method its overriding and then add additional logic specific to the line. This is possible since the base methods have been designed to 
+ * call the base method its overriding and then add additional logic specific to the line. This is possible since the base methods have been designed to 
  * be as useful as possible for as many classes as possible.
  */
 
@@ -50,8 +50,7 @@ namespace PASS2
 
             //Length is calculated using the euclidean distance formula
             length = points[0].GetDistance(points[1]);
-
-            slope = (points[1].Y - points[0].Y) / (points[1].X - points[0].X);
+            slope = (points[1].Y - points[0].Y) / Math.Sqrt((points[1].X - points[0].X)*(points[1].X - points[0].X) + (points[1].Z - points[0].Z)* (points[1].Z - points[0].Z));
         }
 
         //Pre: none.
@@ -60,9 +59,8 @@ namespace PASS2
         public override void PrintAttributes()
         {
             base.PrintAttributes();
-
-            Console.WriteLine($"- Length: {length}");
-            Console.WriteLine($"- Slope: {slope}");
+            Console.WriteLine($"- Length: {Math.Round(length,2)}");
+            Console.WriteLine($"- Slope: {Math.Round(slope,2)}");
         }
 
 
@@ -92,7 +90,7 @@ namespace PASS2
         {
             string basicInfo = base.GetBasicInfo();
 
-            basicInfo += $"\n- Other endpoint: ({points[1].X}, {points[1].Y})";
+            basicInfo += $"\n- Other endpoint: ({Math.Round(points[1].X,2)}, {Math.Round(points[1].Y, 2)}, {Math.Round(points[1].Z,2)})";
             return basicInfo;
         }
     }

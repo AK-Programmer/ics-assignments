@@ -67,7 +67,7 @@ namespace PASS2
                 {
                     Console.Clear();
                     Console.WriteLine("ADD A SHAPE \n-------------\n");
-                    Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle \n5. Sphere");
+                    Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle \n5. Sphere \n6. Rectangular Prism");
                     userShapeChoice = Console.ReadKey().KeyChar;
 
                     if (userShapeChoice == '1' || userShapeChoice == '2' || userShapeChoice == '3' || userShapeChoice == '4')
@@ -125,11 +125,9 @@ namespace PASS2
                 //Add circle
                 if (userShapeChoice == '1')
                 {
-                    //one of the doubles having a value of -1 indicates to the program that that variable hasn't yet been set properly
-                    double xCoord = -1;
-                    double yCoord = -1;
-                    double rad = -1;
-                    Point circleCenter;
+                    double rad;
+                    Point circleCenter = new Point();
+                    bool centerInit = false;
                     Circle circle;
 
                     while(true)
@@ -141,31 +139,29 @@ namespace PASS2
                             Console.WriteLine("ADD A CIRCLE \n-------------\n");
 
                             //These if statements ensure that a user is only prompted to enter an input if that variable has not been validly set yet.
-                            if (xCoord < 0)
+                            if (!centerInit)
                             {
                                 Console.Write("Enter the coordinates of the center point in the x,y format: ");
                                 userInput = Console.ReadLine().Split(',');
-                                
+
                                 if (userInput.Length != 2)
                                     throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-                                xCoord = Convert.ToDouble(userInput[0]);
-                                yCoord = Convert.ToDouble(userInput[1]);
+                                circleCenter.X = Convert.ToDouble(userInput[0]);
+                                circleCenter.Y = Convert.ToDouble(userInput[1]);
+                                centerInit = true;
                             }
+                            Console.WriteLine($"First point set at ({circleCenter.X}, {circleCenter.Y})!");
 
-                            //Instantiates  the center point of the circle.
-                            circleCenter = new Point(xCoord, yCoord);
-                            Console.WriteLine($"First point set at ({xCoord}, {yCoord})!");
-
-                            Console.Write("\nEnter the radius of the circle: ");
+                            Console.Write("Enter the radius of the circle: ");
                             rad = Convert.ToDouble(Console.ReadLine());
 
-                            Console.WriteLine("Successfully set the first point!");
                             circle = new Circle(rad, colour, circleCenter);
                             shapes.Add(circle);
 
                             Console.WriteLine("Your circle has been added! (Press any key to continue).");
                             Console.ReadKey();
+
                             break;
                         }
                         //This catches the exception that might be thrown by the Convert.ToDouble() Method
@@ -181,22 +177,6 @@ namespace PASS2
                         //This catches any exception that may be thrown by either the point or circle class
                         catch(ArgumentOutOfRangeException e)
                         {
-                            if (e.ParamName == "point x-coord")
-                                xCoord = -1;
-
-                            else if (e.ParamName == "point y-coord")
-                                yCoord = -1;
-
-                            else if (e.ParamName == "Radius")
-                                rad = -1;
-
-                            else
-                            {
-                                xCoord = -1;
-                                yCoord = -1;
-                                rad = -1;
-                            }
-
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                         }
 
@@ -209,14 +189,8 @@ namespace PASS2
                 else if (userShapeChoice == '2')
                 {
 
-                   
-                    double point1X = -1;
-                    double point1Y = -1;
-                    double point2X = -1;
-                    double point2Y = -1;
-
-                    Point point1;
-                    Point point2;
+                    Point point1 = new Point();
+                    Point point2 = new Point();
                     Line line;
 
                     bool point1Init = false;
@@ -228,47 +202,29 @@ namespace PASS2
                             Console.Clear();
                             Console.WriteLine("ADD A LINE \n-------------\n");
 
-
-
-                            
-                            if (point1X < 0)
+                            if (!point1Init)
                             {
-                                Console.Write("Enter the coordinates of the first point in the x,y format: ");
+                                Console.Write("Enter the coordinates of the first point in the x,y,z format: ");
                                 userInput = Console.ReadLine().Split(',');
-                                if (userInput.Length != 2)
+                                if (userInput.Length != 3)
                                     throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-                                point1X = Convert.ToDouble(userInput[0]);
-                                point1Y = Convert.ToDouble(userInput[1]);
+                                point1.X = Convert.ToDouble(userInput[0]);
+                                point1.Y = Convert.ToDouble(userInput[1]);
+                                point1.Z = Convert.ToDouble(userInput[2]);
+                                point1Init = true;
                             }
+                            Console.WriteLine($"Successfully set the first point at ({point1.X}, {point1.Y}, {point1.Z})");
 
-                            point1 = new Point(point1X, point1Y);
-                            point1Init = true;
+                            Console.Write("Enter the coordinates of the second point in the x,y,z format: ");
+                            userInput = Console.ReadLine().Split(',');
 
-                            Console.WriteLine($"Successfully set the first point at ({point1X}, {point1Y})");
+                            if (userInput.Length != 3)
+                                throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-
-
-                            if (point2X < 0)
-                            {
-                                Console.Write("Enter the coordinates of the second point in the x,y format: ");
-                                userInput = Console.ReadLine().Split(',');
-                                if (userInput.Length != 2)
-                                    throw new IndexOutOfRangeException("Your input was not entered in the right format.");
-
-                                point2X = Convert.ToDouble(userInput[0]);
-                                point2Y = Convert.ToDouble(userInput[1]);
-                            }
-
-                            point2 = new Point(point2X, point2Y);
-
-                            if (point2X < 0)
-                            {
-                                Console.Write("Enter the x-coordinate of the second point: ");
-                                point2X = Convert.ToDouble(Console.ReadLine());
-                            }
-
-                            point2 = new Point(point2X, point2Y);
+                            point2.X = Convert.ToDouble(userInput[0]);
+                            point2.Y = Convert.ToDouble(userInput[1]);
+                            point2.Z = Convert.ToDouble(userInput[2]);
 
                             line = new Line(colour, point1, point2);
                             shapes.Add(line);
@@ -282,33 +238,19 @@ namespace PASS2
                             Console.WriteLine("That's not a valid number. Try again. (Press any key to continue).");
                             Console.ReadKey();
                         }
-                        catch (IndexOutOfRangeException e)
+                        catch (IndexOutOfRangeException)
                         {
                             Console.WriteLine("The numbers weren't entered in the right format. Please try again.");
                             Console.ReadKey();
                         }
                         catch (ArgumentOutOfRangeException e)
-                        {
-                            if (!point1Init)
-                            {
-                                point1X = -1;
-                                point1Y = -1;
-                            }
-                            else
-                            {
-                                point2X = -1;
-                                point2Y = -1;
-                            }
-
+                        { 
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
                         }
                         catch(ArgumentException e)
                         {
-                            point1X = -1;
-                            point1Y = -1;
-                            point2X = -1;
-                            point2Y = -1;
+                            point1Init = false;
 
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
                             Console.ReadKey();
@@ -318,9 +260,7 @@ namespace PASS2
                 //Add Triangle
                 else if (userShapeChoice == '3')
                 {
-                    //
-                    double p1X = -1, p1Y = -1, p2X = -1, p2Y = -1, p3X, p3Y;
-                    Point point1, point2, point3;
+                    Point point1 = new Point(), point2 = new Point(), point3 = new Point();
                     Triangle triangle;
                     bool p1Init = false;
                     bool p2Init = false;
@@ -333,47 +273,48 @@ namespace PASS2
                             Console.WriteLine("ADD A TRIANGLE \n-------------\n");
 
                             //First point
-                            if (p1X < 0)
+                            if (!p1Init)
                             {
                                 Console.Write("Enter the coordinates of the first point in the x,y format: ");
                                 userInput = Console.ReadLine().Split(',');
                                 if (userInput.Length != 2)
                                     throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-                                p1X = Convert.ToDouble(userInput[0]);
-                                p1Y = Convert.ToDouble(userInput[1]);
+                                point1.X = Convert.ToDouble(userInput[0]);
+                                point1.Y = Convert.ToDouble(userInput[1]);
+                                point1.Z = 0;
                             }
 
-                            point1 = new Point(p1X, p1Y);
                             p1Init = true;
                             Console.WriteLine($"Successfully set the first point! ({point1.X}, {point1.Y})");
 
                             //Second point
-                            if (p2X < 0)
+                            if (!p2Init)
                             {
                                 Console.Write("Enter the coordinates of the second point in the x,y format: ");
                                 userInput = Console.ReadLine().Split(',');
                                 if (userInput.Length != 2)
                                     throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-                                p2X = Convert.ToDouble(userInput[0]);
-                                p2Y = Convert.ToDouble(userInput[1]);
+                                point2.X = Convert.ToDouble(userInput[0]);
+                                point2.Y = Convert.ToDouble(userInput[1]);
+                                point2.Z = 0;
+                                p2Init = true;
                             }
-
-                            point2 = new Point(p2X, p2Y);
-                            p2Init = true;
-                            Console.WriteLine($"Successfully set the second point! ({p2X}, {p2Y})");
+                            
+                            Console.WriteLine($"Successfully set the second point! ({point2.X}, {point2.Y})");
 
 
                             //Last point
                             Console.Write("Enter the coordinates of the third point in the x,y format: ");
                             userInput = Console.ReadLine().Split(',');
+
                             if (userInput.Length != 2)
                                 throw new IndexOutOfRangeException("Your input was not entered in the right format.");
 
-                            p3X = Convert.ToDouble(userInput[0]);
-                            p3Y = Convert.ToDouble(userInput[1]);
-                            point3 = new Point(p3X, p3Y);
+                            point3.X = Convert.ToDouble(userInput[0]);
+                            point3.Y = Convert.ToDouble(userInput[1]);
+                            point3.Z = 0;
 
                             triangle = new Triangle(colour, point1, point2, point3);
                             shapes.Add(triangle);
@@ -384,71 +325,34 @@ namespace PASS2
                         }
                         catch (FormatException)
                         {
-                            if (!p1Init)
-                            {
-                                p1X = -1;
-                                p1Y = -1;
-                            }
-                            else if (!p2Init)
-                            {
-                                p2X = -1;
-                                p2Y = -1;
-                            }
-
                             Console.WriteLine("That's not a valid number. Try again. (Press any key to continue).");
-                            Console.ReadKey();
                         }
                         catch (IndexOutOfRangeException e)
                         {
-                            if (!p1Init)
-                            {
-                                p1X = -1;
-                                p1Y = -1;
-                            }
-                            else if (!p2Init)
-                            {
-                                p2X = -1;
-                                p2Y = -1;
-                            }
 
                             Console.WriteLine("The numbers weren't entered in the right format. Try again. (Press any key to continue).");
-
-                            Console.ReadKey();
                         }
                         catch (ArgumentOutOfRangeException e)
-                        {
-                            if (!p1Init)
-                            {
-                                p1X = -1;
-                                p1Y = -1;
-                            }
-                            else if (!p2Init)
-                            {
-                                p2X = -1;
-                                p2Y = -1;
-                            }
-
+                        { 
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
-                            Console.ReadKey();
                         }
                         catch(ArgumentException e)
                         {
                             Console.WriteLine($"{e.Message} (Press any key to continue).");
-                            Console.ReadKey();
-                            p1X = -1;
-                            p1Y = -1;
-                            p2X = -1;
-                            p2Y = -1;
-                            p3X = -1;
-                            p3Y = -1;
+                            p1Init = false;
+                            p2Init = false;
+                            
                         }
+
+                        Console.ReadKey();
                     }
                 }
                 //Add Rectangle
                 else if (userShapeChoice == '4')
                 {
-                    double pointX = -1, pointY = -1, length = -1, height = -1;
-                    Point anchorPoint;
+                    double length = 0, height = 0;
+                    Point anchorPoint = new Point();
+                    bool isAnchorPointInit = false;
                     Rectangle rectangle;
 
                     while(true)
@@ -459,7 +363,7 @@ namespace PASS2
                             Console.WriteLine("ADD A RECTANGLE \n-------------\n");
 
 
-                            if (pointX < 0)
+                            if (!isAnchorPointInit)
                             {
                                 Console.Write("Enter the coordinates of the anchor point in the x,y format: ");
                                 userInput = Console.ReadLine().Split(',');
@@ -467,42 +371,29 @@ namespace PASS2
                                 if (userInput.Length != 2)
                                     throw new IndexOutOfRangeException();
 
-                                pointX = Convert.ToDouble(userInput[0]);
-                                pointY = Convert.ToDouble(userInput[1]);
+                                anchorPoint.X = Convert.ToDouble(userInput[0]);
+                                anchorPoint.Y = Convert.ToDouble(userInput[1]);
+                                anchorPoint.Z = 0;
+
+                                isAnchorPointInit = true;
                             }
                             
-                            try
-                            {
-                                anchorPoint = new Point(pointX, pointY);
-                            }
-                            catch(ArgumentOutOfRangeException e)
-                            {
-                                if (e.ParamName == "point x-coord")
-                                    pointX = -1;
-                                else if (e.ParamName == "point y-coord")
-                                    pointY = -1;
-
-                                Console.WriteLine($"{e.Message} (Press any key to continue).");
-                                Console.ReadKey();
-                                continue;
-                            }
+                            
                             Console.WriteLine($"Successfully set the anchor point! ({anchorPoint.X}, {anchorPoint.Y})");
 
-                            if (length < 0)
-                            {
-                                Console.Write("Enter the length and height in the x,y format: ");
-                                userInput = Console.ReadLine().Split(',');
+                            Console.Write("Enter the length and height in the x,y format: ");
+                            userInput = Console.ReadLine().Split(',');
 
-                                if (userInput.Length != 2)
-                                    throw new IndexOutOfRangeException();
+                            if (userInput.Length != 2)
+                                throw new IndexOutOfRangeException();
 
-                                length = Convert.ToDouble(userInput[0]);
-                                height = Convert.ToDouble(userInput[1]);
-                            }
+                            length = Convert.ToDouble(userInput[0]);
+                            height = Convert.ToDouble(userInput[1]);
 
                             rectangle = new Rectangle(colour, length, height, anchorPoint);
                             shapes.Add(rectangle);
                             Console.WriteLine("Your rectangle has been added!");
+
                             Console.ReadKey();
                             break;
                         }
@@ -514,19 +405,15 @@ namespace PASS2
                         {
                             Console.WriteLine("Your input was not entered in the right format. Try again. (Press any key to continue).");
                         }
-                        catch (ArgumentOutOfRangeException)
+                        catch (ArgumentOutOfRangeException e)
                         {
-                            if (pointX + length > SCREEN_WIDTH)
-                            {
-                                length = -1;
+                            if (anchorPoint.X + length > SCREEN_WIDTH)
                                 Console.WriteLine("A rectangle with that length would go off screen. Try decreasing the length or repositioning the rectangle. (Press any key to continue).");
-                            }
-
-                            if (pointY - height < 0)
-                            {
-                                height = -1;
+                            else if (anchorPoint.Y - height < 0)
                                 Console.WriteLine("A rectangle with that height would go off screen. Try decreasing the height or repositioning the rectangle. (Press any key to continue).");
-                            }
+                            else
+                                Console.WriteLine($"{e.Message} (Press any key to continue).");
+
                         }
 
                         Console.ReadKey();
@@ -535,12 +422,138 @@ namespace PASS2
                 //Add Sphere
                 else if (userShapeChoice == '5')
                 {
+                    double rad;
+                    Point sphereCenter = new Point();
+                    bool centerInit = false;
+                    Sphere sphere;
 
+                    while (true)
+                    {
+                        //Try catch block is used to catch any exceptions thrown by either the point class, shape class, or standard library methods and handle them appropriately (getting user to try again)
+                        try
+                        {
+                            Console.Clear();
+                            Console.WriteLine("ADD A CIRCLE \n-------------\n");
+
+                            //These if statements ensure that a user is only prompted to enter an input if that variable has not been validly set yet.
+                            if (!centerInit)
+                            {
+                                Console.Write("Enter the coordinates of the center point in the x,y format: ");
+                                userInput = Console.ReadLine().Split(',');
+
+                                if (userInput.Length != 2)
+                                    throw new IndexOutOfRangeException("Your input was not entered in the right format.");
+
+                                sphereCenter.X = Convert.ToDouble(userInput[0]);
+                                sphereCenter.Y = Convert.ToDouble(userInput[1]);
+                                sphereCenter.Z = Convert.ToDouble(userInput[2]);
+                                centerInit = true;
+                            }
+                            Console.WriteLine($"First point set at ({sphereCenter.X}, {sphereCenter.Y}, {sphereCenter.Z})!");
+
+                            Console.Write("Enter the radius of the circle: ");
+                            rad = Convert.ToDouble(Console.ReadLine());
+
+                            sphere = new Sphere(rad, colour, sphereCenter);
+                            shapes.Add(sphere);
+
+                            Console.WriteLine("Your circle has been added! (Press any key to continue).");
+                            Console.ReadKey();
+
+                            break;
+                        }
+                        //This catches the exception that might be thrown by the Convert.ToDouble() Method
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("One or both of the numbers you entered is not valid.");
+                        }
+                        //This catches the exception that may be thrown if the userInput array's length does not equal 2
+                        catch (IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine("The numbers weren't entered in the right format. Please try again.");
+                        }
+                        //This catches any exception that may be thrown by either the point or sphere class
+                        catch (ArgumentOutOfRangeException e)
+                        {
+                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                        }
+
+                        Console.ReadKey();
+                    }
                 }
                 //Add Rectangular Prism
                 else if (userShapeChoice == '6')
                 {
+                    double length = 0, height = 0, depth=0;
+                    Point anchorPoint = new Point();
+                    bool isAnchorPointInit = false;
+                    RectangularPrism prism;
 
+                    while (true)
+                    {
+                        try
+                        {
+                            Console.Clear();
+                            Console.WriteLine("ADD A RECTANGLE \n-------------\n");
+
+
+                            if (!isAnchorPointInit)
+                            {
+                                Console.Write("Enter the coordinates of the anchor point in the x,y,z format: ");
+                                userInput = Console.ReadLine().Split(',');
+
+                                if (userInput.Length != 3)
+                                    throw new IndexOutOfRangeException();
+
+                                anchorPoint.X = Convert.ToDouble(userInput[0]);
+                                anchorPoint.Y = Convert.ToDouble(userInput[1]);
+                                anchorPoint.Z = Convert.ToDouble(userInput[2]);
+
+                                isAnchorPointInit = true;
+                            }
+
+
+                            Console.WriteLine($"Successfully set the anchor point! ({anchorPoint.X}, {anchorPoint.Y}, {anchorPoint.Z})");
+
+                            Console.Write("Enter the length, height, and depth in the x,y,z format: ");
+                            userInput = Console.ReadLine().Split(',');
+
+                            if (userInput.Length != 3)
+                                throw new IndexOutOfRangeException();
+
+                            length = Convert.ToDouble(userInput[0]);
+                            height = Convert.ToDouble(userInput[1]);
+                            depth = Convert.ToDouble(userInput[2]);
+
+                            prism = new RectangularPrism(colour, length, height, depth, anchorPoint);
+                            shapes.Add(prism);
+
+                            Console.WriteLine("Your rectangular prism has been added!");
+
+                            Console.ReadKey();
+                            break;
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("That's not a valid number. Try again. (Press any key to continue).");
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Console.WriteLine("Your input was not entered in the right format. Try again. (Press any key to continue).");
+                        }
+                        catch (ArgumentOutOfRangeException e)
+                        {
+                            if (anchorPoint.X + length > SCREEN_WIDTH)
+                                Console.WriteLine("A rectangle with that length would go off screen. Try decreasing the length or repositioning the rectangle. (Press any key to continue).");
+                            else if (anchorPoint.Y - height < 0)
+                                Console.WriteLine("A rectangle with that height would go off screen. Try decreasing the height or repositioning the rectangle. (Press any key to continue).");
+                            else
+                                Console.WriteLine($"{e.Message} (Press any key to continue).");
+
+                        }
+
+                        Console.ReadKey();
+                    }
                 }
 
             }
@@ -611,19 +624,17 @@ namespace PASS2
                             throw new FormatException();
 
 
-                        Console.WriteLine("Are you sure you would like to delete this shape? (Press 'y' if yes, and anything else if not");
-                        shapes[delShapeIndex].PrintAttributes();
-
+                        Console.WriteLine("Are you sure you would like to delete this shape? (Press 'y' if yes, and anything else if not)");
                         userResponse = Console.ReadKey().KeyChar;
 
                         if (userResponse == 'y')
                         {
-                            Console.WriteLine("Shape deleted! (Press any key to continue).");
+                            Console.WriteLine("\nShape deleted! (Press any key to continue).");
                             shapes.RemoveAt(delShapeIndex);
                         }
                         else
                         {
-                            Console.WriteLine("No shape deleted! (Press any key to continue).");
+                            Console.WriteLine("\nNo shape deleted! (Press any key to continue).");
                         }
                         Console.ReadKey();
 
@@ -653,6 +664,7 @@ namespace PASS2
             {
                 int modShapeIndex;
                 char userChoice;
+                string[] userInput;
 
                 while (true)
                 {
@@ -685,17 +697,13 @@ namespace PASS2
                     Console.WriteLine("Shape Attributes: ");
                     shapes[modShapeIndex].PrintAttributes();
 
-                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it \n3.Check for intersection with point");
+                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it \n3. Check for intersection with point");
 
                     userChoice = Console.ReadKey().KeyChar;
 
 
                     if (userChoice == '1')
                     {
-                        double translateX = -1;
-                        double translateY = -1;
-                        double translateZ;
-
                         while(true)
                         {
                             try
@@ -706,28 +714,29 @@ namespace PASS2
                                 Console.WriteLine("Shape Attributes: ");
                                 shapes[modShapeIndex].PrintAttributes();
 
-                                if (translateX < 0)
+                                if(shapes[modShapeIndex].GetIs3D())
                                 {
-                                    Console.WriteLine("\nHow much would you like to translate your shape along the x-axis? (negative =  left, positive = right)");
-                                    translateX = Convert.ToDouble(Console.ReadLine());
-                                }
+                                    Console.Write("\nHow much would you like to translate your shape along the x- and y-axes in the x,y format: ");
+                                    userInput = Console.ReadLine().Split(',');
 
-                                if (translateY < 0)
-                                {
-                                    Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
-                                    translateY = Convert.ToDouble(Console.ReadLine());
-                                }
-                                
-                                if (shapes[modShapeIndex].GetIs3D())
-                                {
-                                    Console.WriteLine("\nHow much would you like to translate your shape along the y-axis? (negative =  down, positive = up)");
-                                    translateZ = Convert.ToDouble(Console.ReadLine());
+                                    if (userInput.Length != 2)
+                                        throw new IndexOutOfRangeException();
+
+                                    shapes[modShapeIndex].TranslateShape(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]),0);
                                 }
                                 else
-                                    translateZ = 0;
+                                {
+                                    Console.Write("\nHow much would you like to translate your shape along the x- and y- and z-axes in the x,y,z format: ");
+                                    userInput = Console.ReadLine().Split(',');
 
-                                shapes[modShapeIndex].TranslateShape(translateX, translateY, translateZ);
+                                    if (userInput.Length != 3)
+                                        throw new IndexOutOfRangeException();
 
+                                    shapes[modShapeIndex].TranslateShape(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]), Convert.ToDouble(userInput[2]));
+                                }
+
+                                Console.WriteLine("Shape modified! New shape attributes:");
+                                shapes[modShapeIndex].PrintAttributes();
                                 break;
                             }
                             catch(FormatException)
@@ -738,13 +747,12 @@ namespace PASS2
                             }
                             catch(ArgumentOutOfRangeException e)
                             {
-                                translateX = -1;
-
                                 Console.WriteLine($"{e.Message} (Press any key to continue).");
                                 Console.ReadKey();
                                 continue;
                             }
                         }
+
                         break;
                     }
                     else if (userChoice == '2')
@@ -788,10 +796,9 @@ namespace PASS2
                     }
                     else if (userChoice == '3')
                     {
-                        double pointY;
-                        double pointX = -1;
                         Point pointToCheck;
                         bool doesIntersect;
+                        bool is3D = shapes[modShapeIndex].GetIs3D();
 
                         while (true)
                         {
@@ -802,46 +809,51 @@ namespace PASS2
                                 Console.WriteLine("Shape Attributes: ");
                                 shapes[modShapeIndex].PrintAttributes();
 
-
-                                if (pointX < 0)
+                                if (!is3D)
                                 {
-                                    Console.WriteLine("\nEnter the x-coordinate of the point you'd like to check: ");
-                                    pointX = Convert.ToDouble(Console.ReadLine());
-                                }
+                                    Console.Write("\nEnter the coordinates of the point you'd like to check in x,y format: ");
+                                    userInput = Console.ReadLine().Split(',');
 
-                                Console.WriteLine("Enter the y-coordinate of the point you'd like to check: ");
-                                pointY = Convert.ToDouble(Console.ReadLine());
+                                    if (userInput.Length != 2)
+                                        throw new IndexOutOfRangeException();
 
-
-                                pointToCheck = new Point(pointX, pointY);
-                                doesIntersect = shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
-
-                                if (doesIntersect)
-                                {
-                                    Console.WriteLine($"The point ({pointX}, {pointY}) does intersect this shape. (Press any key to continue).");
+                                    pointToCheck = new Point(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]));
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"The point ({pointX}, {pointY}) does not intersect this shape. (Press any key to continue).");
+                                    Console.Write("\nEnter the coordinates of the point you'd like to check in x,y,z format: ");
+                                    userInput = Console.ReadLine().Split(',');
+
+                                    if (userInput.Length != 2)
+                                        throw new IndexOutOfRangeException();
+
+                                    pointToCheck = new Point(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]));
+                                }
+
+                                doesIntersect = shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
+
+                                string pointZ = is3D ? pointToCheck.Z.ToString() : "";
+                                if (doesIntersect)
+                                {
+                                    Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}, {pointZ}) does intersect this shape. (Press any key to continue).");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}, {pointZ}) does not intersect this shape. (Press any key to continue).");
                                 }
 
                                 Console.ReadKey();
-
                                 break;
                             }
                             catch (FormatException)
                             {
                                 Console.WriteLine("Please enter a valid number. (Press any key to continue).");
                                 Console.ReadKey();
-                                continue;
                             }
                             catch (ArgumentOutOfRangeException e)
-                            {
-                                pointX = -1;
-
+                            { 
                                 Console.WriteLine($"{e.Message} (Press any key to continue).");
                                 Console.ReadKey();
-                                continue;
                             }
                         }
                         break;

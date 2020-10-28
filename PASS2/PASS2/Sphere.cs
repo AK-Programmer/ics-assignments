@@ -1,7 +1,7 @@
 ﻿//Author: Adar Kahiri
-//File Name: Circle.cs
+//File Name: Sphere.cs
 //Project Name: PASS2
-//Creation Date: October 21, 2020
+//Creation Date: October 26, 2020
 //Modified Date: October 30, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a sphere (such as its radius and volume), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to circles. Often times, when this class overrides methods from its base class, it will still
@@ -22,7 +22,7 @@ namespace PASS2
         //Pre: The center point must be inside the canvas. No point of the sphere (calculated using the center point and the radius) should be outside the canvas.
         //Post: None.
         //Description: This constructor ensures that the radius and center point are valid (e.g., that no point of the sphere goes out of bounds), and calculates the surface area and volume of the sphere.
-        public Sphere(double radius, string colour, Point center) : base(colour, "Sphere", false, center)
+        public Sphere(double radius, string colour, Point center) : base(colour, "Sphere", true, center)
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException("Radius", "The radius must be a positive number");
@@ -101,14 +101,8 @@ namespace PASS2
         //Description: This method checks if the given point is inside the circle. 
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            //This expression calculates the point's squared distance from the circle's center using the Euclidean distance formula
-            double DistanceFromCenter = point.GetDistance(points[0]);
-
-            //Comparing the squared distance to the radius squared is more efficient than comparing the actual distance since the square root function is costly
-            if (DistanceFromCenter <= radius)
-                return true;
-
-            return false;
+            //return true if the point's distance from the center is smaller than the radius (meaning it's inside the sphere) and false otherwise.
+            return point.GetDistance(points[0]) <= radius;
         }
 
         //Pre: the point must be within the bounds of the canvas, and the radius must be positive. Both of these conditions are ensured elsewhere.

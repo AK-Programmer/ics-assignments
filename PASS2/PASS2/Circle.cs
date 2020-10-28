@@ -5,7 +5,7 @@
 //Modified Date: October 30, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a circle (such as its radius), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to circles. Often times, when this class overrides methods from its base class, it will still
- * the base method its overriding and then add additional logic specific to the circle. This is possible since the base methods have been designed to 
+ * call the base method its overriding and then add additional logic specific to the circle. This is possible since the base methods have been designed to 
  * be as useful as possible for as many classes as possible.
  */
 
@@ -28,7 +28,7 @@ namespace PASS2
         public Circle(double radius, string colour, Point center): base(colour, "Circle", false, center)
         {
             if (radius <= 0)
-                throw new ArgumentOutOfRangeException("Radius", "The radius must be a positive number");
+                throw new ArgumentOutOfRangeException("radius", "The radius must be a positive number");
 
             CheckCircleInBounds(points[0], radius, "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
 
@@ -100,14 +100,8 @@ namespace PASS2
         //Description: This method checks if the given point is inside the circle. 
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            //This expression calculates the point's squared distance from the circle's center using the Euclidean distance formula
-            double DistanceFromCenter = point.GetDistance(points[0]);
-
-            //Comparing the squared distance to the radius squared is more efficient than comparing the actual distance since the square root function is costly
-            if (DistanceFromCenter <= radius)
-                return true;
-
-            return false;
+            //Return true if the points distance from the center is smaller than the radius (meaning its inside the circle), and false otherwise.
+            return point.GetDistance(points[0]) <= radius;
         }
 
         //Pre: the point must be within the bounds of the canvas, and the radius must be positive. Both of these conditions are ensured elsewhere.

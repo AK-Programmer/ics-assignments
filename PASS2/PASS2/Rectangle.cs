@@ -5,7 +5,7 @@
 //Modified Date: October 30, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a rectangle (such as its sidelengths), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to rectangles. Often times, when this class overrides methods from its base class, it will still
- * the base method its overriding and then add additional logic specific to the rectangle. This is possible since the base methods have been designed to 
+ * call the base method its overriding and then add additional logic specific to the rectangle. This is possible since the base methods have been designed to 
  * be as useful as possible for as many classes as possible.
  */
 
@@ -23,7 +23,7 @@ namespace PASS2
 
         //Pre: colour and shapeName are set internally by the program and don't cause any program-crashing bugs if they're not set correctly. Points must be within the bounds of the canvas, but this ensured elsewhere.
         //Post: None.
-        //Desc: This constructor ensures the two points aren't actually the same point, sorts the points so that the leftmost one is first in the array, and calculates the slope and length of the line.
+        //Desc: This constructor ensures that height and length aren't zero and calculates properties like area and diagonal length.
         public Rectangle(string colour, double length, double height, Point anchorPoint) : base(colour, "Rectangle", false, anchorPoint, new Point(anchorPoint.X + length, anchorPoint.Y), new Point(anchorPoint.X, anchorPoint.Y - height), new Point(anchorPoint.X + length, anchorPoint.Y - height))
         {
             this.length = length;
@@ -67,7 +67,7 @@ namespace PASS2
             }
             catch(ArgumentOutOfRangeException)
             {
-                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this rectangle by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
+                throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this rectangle by this much would cause parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
             }
         }
 
@@ -90,10 +90,7 @@ namespace PASS2
         //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
         public override bool CheckIntersectionWithPoint(Point point)
         {
-            if (point.X >= points[0].X && point.X <= points[1].X && point.Y <= points[0].Y && point.Y >= points[2].Y)
-                return true;
-
-            return false;
+            return point.X >= points[0].X && point.X <= points[1].X && point.Y <= points[0].Y && point.Y >= points[2].Y;
         }
 
         //Pre: none.

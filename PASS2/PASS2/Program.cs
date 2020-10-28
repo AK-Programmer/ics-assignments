@@ -21,11 +21,11 @@ namespace PASS2
         //Post: none.
         //Description: the main method. It calls the menu method which either sends the user to the canvas or exits the program, can continues to loop back to it until the user decides to exit.
         static void Main(string[] args)
-        {   
-            while(!exit)
-            {
-                Menu();
-            }
+        {
+             while(!exit)
+             {
+                 Menu();
+             }
         }
 
         public static void Menu()
