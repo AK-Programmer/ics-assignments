@@ -25,14 +25,17 @@ namespace PASS2
         public Sphere(double radius, string colour, Point center) : base(colour, "Sphere", true, center)
         {
             if (radius <= 0)
+            {
                 throw new ArgumentOutOfRangeException("Radius", "The radius must be a positive number");
+            }
+                
 
             CheckSphereInBounds(points[0], radius, "The desired sphere goes outside the screen! Either reposition it, or give it a smaller radius");
 
             //Setting the rest of the values appropriately. 
             this.radius = radius;
-            surfaceArea = Math.PI * radius * radius;
-            volume = (4/3) * Math.PI * radius * radius * radius;
+            surfaceArea = 4* Math.PI * radius * radius;
+            volume = (4 * Math.PI * radius * radius * radius)/3;
         }
 
         //Pre: scaleFactor must be a positive number.
@@ -43,7 +46,10 @@ namespace PASS2
             double potentialRad = radius * scaleFactor;
 
             if (scaleFactor <= 0)
+            {
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be a positive number!");
+            }
+                
 
             //Logic for checking if a sphere has gone out of bounds is different than other shapes, so this CheckSphereInBounds method is called to ensure that it's within bounds.
             CheckSphereInBounds(points[0], potentialRad, "Scaling the sphere by this factor would make it go beyond the screen. Try scaling it by a smaller amount or reposition it first");
@@ -78,18 +84,32 @@ namespace PASS2
             double potentialZ = points[0].Z + translateZ;
 
             //These if statements handle all possible ways the circle could go out of bounds and deliver the appropriate message.
+             
             if (potentialX + radius > Canvas.SCREEN_WIDTH)
+            {
                 throw new ArgumentOutOfRangeException("TranslateX", "You are trying to translate the shape beyond the screen. Try translating the shape a little less to the right.");
+            } 
             else if (potentialX - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("TranslateX", "You are trying to translate the shape beyond the screen. Try translating the shape a little less to the left.");
+            }
+               
             else if (potentialY + radius > Canvas.SCREEN_HEIGHT)
+            {
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less up.");
+            }
             else if (potentialY - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less down.");
+            }
             else if (potentialZ + radius > Canvas.SCREEN_DEPTH)
+            {
                 throw new ArgumentOutOfRangeException("TranslateZ", "You are trying to translate the shape beyond the screen. Try translating the shape a little less out.");
+            }
             else if (potentialZ - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("TranslateZ", "You are trying to translate the shape beyond the screen. Try translating the shape a little less in.");
+            }
 
             points[0].X = potentialX;
             points[0].Y = potentialY;

@@ -88,7 +88,7 @@ namespace PASS2
         //Description: This method calculates the Euclidean between the point 'this' and the point inputted using Pythagorean theorem.
         public double GetDistance(Point point)
         {
-            return Math.Sqrt((x - point.X) * (x - point.X) + (y - point.Y) * (y - point.Y) + (z - point.Z)*(z - point.Z));
+            return Math.Sqrt((x - point.X)*(x - point.X) + (y - point.Y)*(y - point.Y) + (z - point.Z)*(z - point.Z));
         }
 
         public bool CheckEqual(Point point)

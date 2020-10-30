@@ -9,6 +9,7 @@
 
 using System;
 
+
 namespace PASS2
 {
     class Program
@@ -21,8 +22,9 @@ namespace PASS2
         //Post: none.
         //Description: the main method. It calls the menu method which either sends the user to the canvas or exits the program, can continues to loop back to it until the user decides to exit.
         static void Main(string[] args)
-        {
-             while(!exit)
+        { 
+            
+            while (!exit)
              {
                  Menu();
              }
@@ -112,6 +114,81 @@ namespace PASS2
                     Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
                     Console.ReadKey();
                 }
+            }
+        }
+
+
+        public static double GetInput(double min, double max, string errorMessage)
+        {
+            double input;
+
+            while (true)
+            {
+                try
+                {
+                    input = Convert.ToDouble(Console.ReadLine());
+
+                    if (input > max || input < min)
+                    {
+                        if (errorMessage == "")
+                            throw new Exception();
+
+                        throw new Exception(errorMessage);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message + " (Press ENTER to continue). ");
+                    Console.ReadLine();
+                    ClearLines(3);
+                    continue;
+                }
+
+
+                ClearLines(2);
+                return input;
+            }
+        }
+
+        public static int GetInput(int min, double max, string errorMessage)
+        {
+            int input;
+
+            while (true)
+            {
+                try
+                {
+                    input = Convert.ToInt32(Console.ReadLine());
+
+                    if (input > max || input < min)
+                    {
+                        if (errorMessage == "")
+                        {
+                            throw new Exception();
+                        }
+                        throw new Exception(errorMessage);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message + " (Press ENTER to continue). ");
+                    Console.ReadLine();
+                    ClearLines(3);
+                    continue;
+                }
+
+                ClearLines(2);
+                return input;
+            }
+        }
+
+        public static void ClearLines(int numLines)
+        {
+            for (int i = 0; i < numLines; i++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.BufferWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
         }
     }

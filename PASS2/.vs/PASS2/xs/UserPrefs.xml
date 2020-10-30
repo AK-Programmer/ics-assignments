@@ -1,28 +1,17 @@
 ﻿<Properties StartupConfiguration="{6E6E4B61-FE10-44C8-94DB-AB9F6418718F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Point.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PASS2/Program.cs">
     <Files>
-      <File FileName="PASS2/Program.cs" Line="24" Column="13" />
-      <File FileName="PASS2/Shape.cs" Line="21" Column="34" />
-      <File FileName="PASS2/Canvas.cs" Line="215" Column="1" />
-      <File FileName="PASS2/Circle.cs" Line="103" Column="146" />
-      <File FileName="PASS2/Line.cs" Line="8" Column="9" />
-      <File FileName="PASS2/Rectangle.cs" Line="26" Column="77" />
-      <File FileName="PASS2/Triangle.cs" Line="8" Column="9" />
-      <File FileName="PASS2/Sphere.cs" Line="94" Column="38" />
-      <File FileName="PASS2/RectangularPrism.cs" Line="43" Column="34" />
-      <File FileName="PASS2/Point.cs" Line="49" Column="11" />
+      <File FileName="PASS2/Program.cs" Line="143" Column="37" />
+      <File FileName="PASS2/Canvas.cs" />
+      <File FileName="PASS2/Shape.cs" />
+      <File FileName="PASS2/Line.cs" />
+      <File FileName="PASS2/Triangle.cs" />
+      <File FileName="PASS2/Circle.cs" />
+      <File FileName="PASS2/Sphere.cs" />
+      <File FileName="PASS2/Rectangle.cs" />
+      <File FileName="PASS2/RectangularPrism.cs" />
+      <File FileName="PASS2/Point.cs" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="PASS2" expanded="True">
-            <Node name="PASS2" expanded="True">
-              <Node name="Point.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

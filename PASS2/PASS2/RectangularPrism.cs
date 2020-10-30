@@ -10,11 +10,11 @@
  */
 
 using System;
+using System.Linq;
 namespace PASS2
 {
     public class RectangularPrism : Shape
     {
-
         private double length;
         private double height;
         private double depth;
@@ -27,7 +27,7 @@ namespace PASS2
         //Desc: This constructor calculates the positions of the other  7 vertices of the rectangular prism and calculates properties like volume and diagonal length.
         public RectangularPrism(string colour, double length, double height, double depth, Point anchorPoint) : base(colour, "Rectangular Prism", true, new Point[8])
         {
-            string bin;
+            int[] bin;
 
             //setting vertices of the rectangular prism
             points[0] = anchorPoint;
@@ -36,15 +36,18 @@ namespace PASS2
             for (int i = 1; i < points.Length; i++)
             {
                 //Converts i to binary. Each binary number from 1 to 7 represents a different way to increment a combination of dimensions of the anchor point.
-                bin = Convert.ToString(i, 2);
-                points[i] = new Point(points[0].X + bin[0] == 1 ? length : 0, points[0].Y + bin[1] == 1 ? height : 0, points[0].Z + bin[2] == 1 ? depth : 0);
+                //PadLeft(3, '0') ensures the binary number always has at least 3 digits (e.g., 001, 010, 011, etc.)
+                bin = Convert.ToString(i, 2).PadLeft(3, '0').Select(b =>  b - '0').ToArray(); 
+
+                //Each coordinate is assigned a digit of bin. If that digit is 1, return the value of anchorPoint for that coordinate plus the user-inputted sidelength for that dimension. Otherwise, simply return the value of the anchorPoint.
+                points[i] = new Point(anchorPoint.X + bin[0] * length, anchorPoint.Y - bin[1] * height, anchorPoint.Z + bin[2] * depth);
             }
 
             this.length = length;
             this.height = height;
             this.depth = depth;
 
-            //If height or length are less than zero, throw an exception with an appropriate message.
+            //If height, length, or depth are less than zero, throw an exception with an appropriate message.
             if (length <= 0)
                 throw new ArgumentOutOfRangeException("length", "Rectangle length must be a positive number!");
 
@@ -57,12 +60,13 @@ namespace PASS2
 
             surfaceArea = 2*length * height + 2*length*depth + 2*height*depth;
             volume = length*height*depth;
+            //Diagonal length calculated using pythagorean theorem
             diagLen = Math.Sqrt(length * length + height * height + depth*depth);
         }
 
         //Pre: scale factor must not be negative.
         //Post: none
-        //Description: This method scales the 3 non-anchor points of the rectangle, and scales the length, width, and calculated properties proportionally. Of course, all of this is error-trapped.
+        //Description: This method scales the 7 non-anchor points of the prism, and scales the length, width, depth and calculated properties proportionally. Of course, all of this is error-trapped.
         public override void ScaleShape(double scaleFactor)
         {
             double potentialLength = length * scaleFactor;
@@ -77,7 +81,7 @@ namespace PASS2
                 for (int i = 1; i < points.Length; i++)
                 {
                     //Converts i to binary. Each binary number from 1 to 7 represents a different way to increment a combination of dimensions of the anchor point.
-                    bin = Convert.ToString(i, 2);
+                    bin = Convert.ToString(i, 2).PadLeft(3, '0');
 
                     points[i].X = points[0].X + bin[0] == 1 ? potentialLength : 0;
                     points[i].Y = points[0].Y + bin[1] == 1 ? potentialHeight : 0;
@@ -100,7 +104,7 @@ namespace PASS2
 
         //Pre: none.
         //Post: none.
-        //Description: This method prints the rectangle's attributes. It calls the base PrintAttributes() method and prints the unique properties of a rectangle. 
+        //Description: This method prints the prism's attributes. It calls the base PrintAttributes() method and prints the unique properties of a prism. 
         public override void PrintAttributes()
         {
             base.PrintAttributes();
@@ -113,10 +117,11 @@ namespace PASS2
         }
 
         //Pre: the point must be within the bounds of the canvas.
-        //Post: returns true if the point does intersect with the rectangle, and false otherwise. 
-        //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
+        //Post: returns true if the point does intersect with the prism, and false otherwise. 
+        //Description: This method checks if the given point intersects with the prism.
         public override bool CheckIntersectionWithPoint(Point point)
         {
+            //This is essentially the same logic that is used to ensure that a point stays inside the canvas. It ensures that each of the point's coordinates is between the anchor point's coordinate and the coordinate of the point opposite of the anchor point in that dimension.
             return point.X >= points[0].X && point.X <= points[0].X + length && point.Y <= points[0].Y && point.Y >= points[0].Y - height && point.Z >= points[0].Z && point.Z <= points[0].X + depth;
         }
 

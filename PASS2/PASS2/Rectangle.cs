@@ -31,10 +31,16 @@ namespace PASS2
 
             //If height or length are less than zero, throw an exception with an appropriate message.
             if (length <= 0)
+            {
                 throw new ArgumentOutOfRangeException("length", "Rectangle length must be a positive number!");
+            }
+                
 
             if (height <= 0)
+            {
                 throw new ArgumentOutOfRangeException("height", "Rectangle height must be a positive number!");
+            }
+                
 
             surfaceArea = length * height;
             perimeter = 2 * length + 2 * height;
@@ -87,9 +93,10 @@ namespace PASS2
 
         //Pre: the point must be within the bounds of the canvas.
         //Post: returns true if the point does intersect with the rectangle, and false otherwise. 
-        //Description: This method checks if the given point intersects with the line by checking if the sum of its distances from both end points is equal to the length of the line and returning true if so (returning false otherwise).
+        //Description: This method checks if the given point intersects with the prism.
         public override bool CheckIntersectionWithPoint(Point point)
         {
+            //This is essentially the same logic that is used to ensure that a point stays inside the canvas. It ensures that each of the point's coordinates is between the anchor point's coordinate and the coordinate of the point opposite of the anchor point in that dimension.
             return point.X >= points[0].X && point.X <= points[1].X && point.Y <= points[0].Y && point.Y >= points[2].Y;
         }
 

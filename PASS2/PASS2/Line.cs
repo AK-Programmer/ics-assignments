@@ -50,7 +50,11 @@ namespace PASS2
 
             //Length is calculated using the euclidean distance formula
             length = points[0].GetDistance(points[1]);
-            slope = (points[1].Y - points[0].Y) / Math.Sqrt((points[1].X - points[0].X)*(points[1].X - points[0].X) + (points[1].Z - points[0].Z)* (points[1].Z - points[0].Z));
+            if (points[0].Z == 0 && points[1].Z == 0)
+                slope = 0;
+            else
+                slope = (points[1].Y - points[0].Y) / Math.Sqrt((points[1].X - points[0].X)*(points[1].X - points[0].X) + (points[1].Z - points[0].Z)* (points[1].Z - points[0].Z));
+            
         }
 
         //Pre: none.

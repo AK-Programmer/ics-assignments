@@ -34,9 +34,6 @@ namespace PASS2
         }
 
 
-        //Pre: the point must be within the bounds of the canvas.
-        //Post: returns true if the point does intersect with the shape, and false otherwise. 
-        //Description: This method will be defined in each of the class
         public abstract bool CheckIntersectionWithPoint(Point point);
 
 
@@ -115,8 +112,9 @@ namespace PASS2
         //Post: none.
         //Description: this method displays the shape's basic information and is used when displaying all of the shapes on the canvas at once. 
         public virtual string GetBasicInfo()
-        {   
-            return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y})";
+        {
+            string pointZ = is3D ? $", {points[0].Z}" : "";
+            return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y}{pointZ})";
         }
 
 
