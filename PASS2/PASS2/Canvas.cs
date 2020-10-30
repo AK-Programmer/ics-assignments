@@ -45,7 +45,10 @@ namespace PASS2
             }
             //If there are no shapes in the list, display the following.
             else
+            {
                 Console.WriteLine("There are no shapes on the canvas.\n\n");
+            }
+                
 
         }
 
@@ -59,7 +62,6 @@ namespace PASS2
             {
                 int userColourChoice;
                 int userShapeChoice;
-                string colour;
 
                 //Let user select desired shape
                 Console.Clear();
@@ -81,25 +83,14 @@ namespace PASS2
                 userColourChoice = Program.GetInput(1, 4, "That's not a valid colour option.");
                 Program.ClearLines(1);
 
-                //Setting the colour variable to what the user selected.
-                switch (userColourChoice)
+                string colour = userColourChoice switch
                 {
-                    case 1:
-                        colour = "Red";
-                        break;
-                    case 2:
-                        colour = "Green";
-                        break;
-                    case 3:
-                        colour = "Blue";
-                        break;
-                    case 4:
-                        colour = "Orange";
-                        break;
-                    default:
-                        colour = "";
-                        break;
-                }
+                    1 => "Red",
+                    2 => "Green",
+                    3 => "Blue",
+                    4 => "Orange",
+                    _ => "",
+                };
 
                 //Add circle
                 if (userShapeChoice == 1)
@@ -274,13 +265,14 @@ namespace PASS2
                     Console.WriteLine("ADD A SPHERE \n-------------");
 
                     Console.WriteLine("Enter the coordinates of the center point. ");
+                    //hasMargin is set to true because if any of the center point's coordinates are zero, than a radius cannot be defined.
                     sphereCenter = GetPoint3D(true);
 
                     minDistanceFromEdge = Math.Min(sphereCenter.X, Math.Min(sphereCenter.Y, Math.Min(SCREEN_WIDTH - sphereCenter.X,
                         Math.Min(SCREEN_HEIGHT - sphereCenter.Y, Math.Min(sphereCenter.Z, SCREEN_DEPTH - sphereCenter.Z)))));
 
-                    Console.WriteLine($"Enter the radius (maximum radius is {minDistanceFromEdge}): ");
-                    rad = Program.GetInput(1 / Double.MaxValue, minDistanceFromEdge, "The radius is too large!");
+                    Console.WriteLine($"Enter the radius (maximum radius is {Math.Round(minDistanceFromEdge,2)}): ");
+                    rad = Program.GetInput(1 / Double.MaxValue, minDistanceFromEdge, "That radius isn't valid. Radii must be larger than zero and less than or equal the maximum!");
                     sphere = new Sphere(rad, colour, sphereCenter);
                     shapes.Add(sphere);
 
@@ -309,17 +301,17 @@ namespace PASS2
                             Program.ClearLines(1);
 
                             Console.WriteLine($"Enter the length (maximum of {SCREEN_WIDTH - anchorPoint.X})");
-                            length = Program.GetInput(1 / Double.MaxValue, SCREEN_WIDTH - anchorPoint.X, "The length is too large!");
+                            length = Program.GetInput(1 / Double.MaxValue, SCREEN_WIDTH - anchorPoint.X, "That length isn't valid. Lengths must be larger than zero and less than or equal the maximum!");
 
                             Program.ClearLines(1);
 
                             Console.WriteLine($"Enter the height  (maximum of {anchorPoint.Y})");
-                            height = Program.GetInput(1 / Double.MaxValue, anchorPoint.Y, "The height is too large!");
+                            height = Program.GetInput(1 / Double.MaxValue, anchorPoint.Y, "That height isn't valid. Heights must be larger than zero and less than or equal the maximum!");
 
                             Program.ClearLines(1);
 
                             Console.WriteLine($"Enter the depth  (maximum of {SCREEN_DEPTH - anchorPoint.Z})");
-                            depth = Program.GetInput(1 / Double.MaxValue, SCREEN_DEPTH - anchorPoint.Z, "The depth is too large!");
+                            depth = Program.GetInput(1 / Double.MaxValue, SCREEN_DEPTH - anchorPoint.Z, "That depth isn't valid. Depths must be larger than zero and less than or equal the maximum!");
 
                             Program.ClearLines(1);
 
@@ -347,91 +339,68 @@ namespace PASS2
             
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method lets the user view all the properties (including calculated properties) of one shape
         public void ViewShape()
         {
             int viewShapeIndex;
 
-            while (true)
-            {
-                try
-                {
-                    Console.Clear();
-                    Console.WriteLine("CANVAS \n-------------");
-                    ViewShapeList();
-                    Console.WriteLine("VIEW A SHAPE \n---------------");
+            Console.Clear();
+            Console.WriteLine("CANVAS \n-------------");
+            ViewShapeList();
+            Console.WriteLine("VIEW A SHAPE \n---------------");
 
-                    Console.WriteLine("Which of the following shapes would you like to view?");
-                    ViewShapeList();
+            Console.WriteLine("Which of the following shapes would you like to view?");
+            ViewShapeList();
 
-                    viewShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+            viewShapeIndex = Program.GetInput(1,6, "That's not a valid option.")  - 1;
 
-                    if (viewShapeIndex < 0 || viewShapeIndex > shapes.Count - 1)
-                        throw new FormatException();
+            Console.WriteLine("\nShape Attributes: ");
 
-                    //Add spacing
-                    Console.WriteLine("\nShape Attributes: ");
+            shapes[viewShapeIndex].PrintAttributes();
 
-                    shapes[viewShapeIndex].PrintAttributes();
-
-                    Console.WriteLine("\nPress any key to continue.");
-                    Console.ReadKey();
-                    break;
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
-                    Console.ReadKey();
-                }
-            }
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
         }
 
+        //Pre: none.
+        //Post: none.
+        //Description: This method lets the user select a shape to delete. 
         public void DeleteShape()
         {
             char userResponse;
 
+            //If there are shapes to delete, take the user through the process. Otherwise, inform them that there are no shapes to delete.
             if (shapes.Count > 0)
             {
                 int delShapeIndex;
 
-                while (true)
+                Console.Clear();
+                Console.WriteLine("DELETE A SHAPE \n---------------");
+                Console.WriteLine("Which of the following shapes would you like to delete?\n");
+                ViewShapeList();
+
+                //User selects the index of the shape they'd like to delete
+                delShapeIndex = Program.GetInput(1,6, "That's not a valid option.") - 1;
+
+                Console.WriteLine("Shape: ");
+                shapes[delShapeIndex].PrintAttributes();
+
+                //Double  checking that the user really wants to delete this shape.
+                Console.WriteLine("Are you sure you would like to delete this shape? (Press 'y' if yes, and anything else if not)");
+                userResponse = Console.ReadKey().KeyChar;
+
+                if (userResponse == 'y')
                 {
-                    try
-                    {
-                        Console.Clear();
-                        Console.WriteLine("DELETE A SHAPE \n---------------");
-
-                        Console.WriteLine("Which of the following shapes would you like to delete?\n");
-                        ViewShapeList();
-
-                        delShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
-
-                        if (delShapeIndex < 0 || delShapeIndex > shapes.Count - 1)
-                            throw new FormatException();
-
-
-                        Console.WriteLine("Are you sure you would like to delete this shape? (Press 'y' if yes, and anything else if not)");
-                        userResponse = Console.ReadKey().KeyChar;
-
-                        if (userResponse == 'y')
-                        {
-                            Console.WriteLine("\nShape deleted! (Press any key to continue).");
-                            shapes.RemoveAt(delShapeIndex);
-                        }
-                        else
-                        {
-                            Console.WriteLine("\nNo shape deleted! (Press any key to continue).");
-                        }
-                        Console.ReadKey();
-
-                        break;
-
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
-                        Console.ReadKey();
-                    }
+                    shapes.RemoveAt(delShapeIndex);
+                    Console.WriteLine("\nShape deleted! (Press any key to continue).");
                 }
+                else
+                {
+                    Console.WriteLine("\nNo shape deleted! (Press any key to continue).");
+                }
+                Console.ReadKey();
             }
             else
             {
@@ -441,240 +410,180 @@ namespace PASS2
             }
         }
 
-
+        //Pre: None
+        //Post: None
+        //Description: This method lets the user interact with a shape in one of three ways: translating, scaling, or checking for intersection with a point.
         public void ModifyShape()
         {
 
             if (shapes.Count > 0)
             {
                 int modShapeIndex;
-                char userChoice;
-                string[] userInput;
+                int userChoice;
 
-                while (true)
+                Console.Clear();
+                Console.WriteLine("MODIFY A SHAPE \n---------------");
+
+                Console.WriteLine("Which of the following shapes would you like to modify?\n");
+                ViewShapeList();
+
+                modShapeIndex = Program.GetInput(1, 6, "No such shape exists.") - 1;
+
+
+                Console.Clear();
+                Console.WriteLine("CANVAS \n-------------");
+                ViewShapeList();
+                Console.WriteLine("MODIFY A SHAPE \n---------------");
+                Console.WriteLine("Shape Attributes: ");
+                shapes[modShapeIndex].PrintAttributes();
+
+                Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it \n3. Check for intersection with point");
+
+                userChoice = Program.GetInput(1,3, "That's not a valid option");
+
+                //Translating
+                if (userChoice == 1)
                 {
-                    try
+                    double transX, transY, transZ;
+                    //This is used to determine whether the user should be asked for translation along the z-axis.
+                    bool is3D = shapes[modShapeIndex].GetIs3D();
+
+                    while(true)
                     {
-                        Console.Clear();
-                        Console.WriteLine("MODIFY A SHAPE \n---------------");
+                        try
+                        {
+                            Console.Clear();
+                            Console.WriteLine("CANVAS \n-------------");
+                            ViewShapeList();
+                            Console.WriteLine("TRANSLATE SHAPE \n---------------");
 
-                        Console.WriteLine("Which of the following shapes would you like to modify?\n");
-                        ViewShapeList();
+                            Console.WriteLine("Shape Attributes: ");
+                            shapes[modShapeIndex].PrintAttributes();
 
-                        modShapeIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+                            Console.WriteLine("How much would you like to translate your shape along the x-axis?");
+                            transX = Program.GetInput(-SCREEN_WIDTH, SCREEN_WIDTH, "Translating by this much would cause the shape to go out of bounds.");
+                            Program.ClearLines(1);
 
-                        if (modShapeIndex < 0 || modShapeIndex > shapes.Count - 1)
-                            throw new FormatException();
+                            Console.WriteLine("How much would you like to translate your shape along the y-axis?");
+                            transY = Program.GetInput(-SCREEN_HEIGHT, SCREEN_HEIGHT, "Translating by this much would cause the shape to go out of bounds.");
+                            Program.ClearLines(1);
 
-                        break;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine($"Please enter a number between 1 and {shapes.Count}. (Press any key to continue).");
-                        Console.ReadKey();
+                            if (is3D)
+                            {
+                                Console.WriteLine("How much would you like to translate your shape along the z-axis?");
+                                transZ = Program.GetInput(-SCREEN_WIDTH, SCREEN_WIDTH, "Translating by this much would cause the shape to go out of bounds.");
+                                Program.ClearLines(1);
+                            }
+                            else
+                            {
+                                transZ = 0;
+                            }
+
+                            //Translating the shape with by the given amounts
+                            shapes[modShapeIndex].TranslateShape(transX, transY, transZ);
+                            Console.WriteLine("\nShape translated! New shape attributes");
+                            shapes[modShapeIndex].PrintAttributes();
+                            Console.Write("(Press ENTER to continue).");
+                            Console.ReadLine();
+                            break;
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine(e.Message + " (Press ENTER to continue).");
+                            Console.ReadLine();
+                        } 
                     }
                 }
-               
-                while (true)
+                //Scaling
+                else if (userChoice == 2)
                 {
+                    double scaleFactor;
+
+                    while (true)
+                    {
+                        try
+                        {
+                            Console.Clear();
+                            Console.WriteLine("CANVAS \n-------------");
+                            ViewShapeList();
+                            Console.WriteLine("SCALE SHAPE \n---------------");
+
+                            Console.WriteLine("Shape Attributes: ");
+                            shapes[modShapeIndex].PrintAttributes();
+
+                            Console.WriteLine("\nBy how much would you like to scale your shape?");
+                            scaleFactor = Program.GetInput(1 / Double.MaxValue, Double.MaxValue, "You cannot scale the shape by that number.");
+                            Program.ClearLines(1);
+
+                            //Error handling (for things like negative input) is done inside the ScaleShape method
+                            shapes[modShapeIndex].ScaleShape(scaleFactor);
+
+                            Console.WriteLine("Your shape has been scaled. New shape attributes: ");
+                            shapes[modShapeIndex].PrintAttributes();
+                            Console.WriteLine("\nPress any key to continue.");
+                            Console.ReadKey();
+
+                            break;
+                        }
+                        catch (ArgumentOutOfRangeException e)
+                        {
+                            Console.WriteLine($"{e.Message} (Press any key to continue).");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+                else if (userChoice == 3)
+                {
+                    Point pointToCheck;
+                    bool doesIntersect;
+                    //Used to prompt the user for and display the correct number of coordinates
+                    bool is3D = shapes[modShapeIndex].GetIs3D();
+                    //If the shape is 3D, this will contain the value of the z-coordinate. Otherwise it will be empty.
+                    string pointZ;
+
                     Console.Clear();
                     Console.WriteLine("CANVAS \n-------------");
                     ViewShapeList();
-                    Console.WriteLine("MODIFY A SHAPE \n---------------");
+                    Console.WriteLine("CHECK FOR INTERSECTION \n---------------------");
                     Console.WriteLine("Shape Attributes: ");
                     shapes[modShapeIndex].PrintAttributes();
 
-                    Console.WriteLine("\n\nHow would you like to modify this shape?\n1. Translate it \n2. Scale it \n3. Check for intersection with point");
-
-                    userChoice = Console.ReadKey().KeyChar;
-
-
-                    if (userChoice == '1')
+                    Console.Write("\nEnter the coordinates of the point you'd like to check. ");
+                    if (is3D)
                     {
-                        while(true)
-                        {
-                            try
-                            {
-                                Console.Clear();
-                                Console.WriteLine("CANVAS \n-------------");
-                                ViewShapeList();
-                                Console.WriteLine("TRANSLATE SHAPE \n---------------");
-
-                                Console.WriteLine("Shape Attributes: ");
-                                shapes[modShapeIndex].PrintAttributes();
-
-                                if(!shapes[modShapeIndex].GetIs3D())
-                                {
-                                    Console.Write("\nHow much would you like to translate your shape along the x- and y-axes in the x,y format: ");
-                                    userInput = Console.ReadLine().Split(',');
-
-                                    if (userInput.Length != 2)
-                                        throw new IndexOutOfRangeException();
-
-                                    shapes[modShapeIndex].TranslateShape(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]),0);
-                                }
-                                else
-                                {
-                                    Console.Write("\nHow much would you like to translate your shape along the x- and y- and z-axes in the x,y,z format: ");
-                                    userInput = Console.ReadLine().Split(',');
-
-                                    if (userInput.Length != 3)
-                                        throw new IndexOutOfRangeException();
-
-                                    shapes[modShapeIndex].TranslateShape(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]), Convert.ToDouble(userInput[2]));
-                                }
-
-                                Console.WriteLine("Shape translated! New shape attributes (Press any key to continue):");
-                                shapes[modShapeIndex].PrintAttributes();
-                                Console.ReadKey();
-                                break;
-                            }
-                            catch(FormatException)
-                            {
-                                Console.WriteLine("Please enter a valid number. (Press any key to continue).");
-                                Console.ReadKey();
-                                continue;
-                            }
-                            catch(ArgumentOutOfRangeException e)
-                            {
-                                Console.WriteLine($"{e.Message} (Press any key to continue).");
-                                Console.ReadKey();
-                                continue;
-                            }
-                        }
-
-                        break;
-                    }
-                    else if (userChoice == '2')
-                    {
-                        double scaleFactor;
-
-                        while(true)
-                        {
-                            try
-                            {
-                                Console.Clear();
-                                Console.WriteLine("CANVAS \n-------------");
-                                ViewShapeList();
-                                Console.WriteLine("SCALE SHAPE \n---------------");
-
-                                Console.WriteLine("Shape Attributes: ");
-                                shapes[modShapeIndex].PrintAttributes();
-
-                                Console.WriteLine("\nBy how much would you like to scale your shape?");
-                                scaleFactor = Convert.ToDouble(Console.ReadLine());
-
-                                //Error handling (for things like negative input) is done inside the ScaleShape method
-                                shapes[modShapeIndex].ScaleShape(scaleFactor);
-
-                                Console.WriteLine("Your shape has been scaled. New shape attributes: ");
-                                shapes[modShapeIndex].PrintAttributes();
-                                Console.WriteLine("\nPress any key to continue.");
-                                Console.ReadKey();
-
-                                break;
-                            }
-                            catch(FormatException)
-                            {
-                                Console.WriteLine("Please enter a valid number. (Press any key to continue).");
-                                Console.ReadKey();
-                            }
-                            catch(ArgumentOutOfRangeException e)
-                            {
-                                Console.WriteLine($"{e.Message} (Press any key to continue).");
-                                Console.ReadKey();
-                            }
-                        }
-                        break;
-                    }
-                    else if (userChoice == '3')
-                    {
-                        Point pointToCheck;
-                        bool doesIntersect;
-                        //Used to prompt the user for and display the correct number of coordinates
-                        bool is3D = shapes[modShapeIndex].GetIs3D();
-                        //If the shape is 3D, this will contain the value of the z-coordinate. Otherwise it will be empty.
-                        string pointZ;
-
-                        while (true)
-                        {
-                            try
-                            {
-                                Console.Clear();
-                                Console.WriteLine("CANVAS \n-------------");
-                                ViewShapeList();
-                                Console.WriteLine("CHECK FOR INTERSECTION \n---------------------");
-                                Console.WriteLine("Shape Attributes: ");
-                                shapes[modShapeIndex].PrintAttributes();
-
-                                //If the shape isn't 3D, only ask the user for 2 coordinates
-                                if (!is3D)
-                                {
-                                    Console.Write("\nEnter the coordinates of the point you'd like to check in x,y format: ");
-                                    userInput = Console.ReadLine().Split(',');
-
-                                    //Throw an exception if they didn't enter 2 coordinates
-                                    if (userInput.Length != 2)
-                                        throw new IndexOutOfRangeException();
-
-                                    pointToCheck = new Point(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]));
-                                }
-                                //If the shape is 3D, ask the user for 3 coordinates
-                                else
-                                {
-                                    Console.Write("\nEnter the coordinates of the point you'd like to check in x,y,z format: ");
-                                    userInput = Console.ReadLine().Split(',');
-
-                                    //Throw an exception if they didn't enter 3 coordinates
-                                    if (userInput.Length != 3)
-                                        throw new IndexOutOfRangeException();
-
-                                    pointToCheck = new Point(Convert.ToDouble(userInput[0]), Convert.ToDouble(userInput[1]), Convert.ToDouble(userInput[2]));
-                                }
-
-                                //Checking if the point intersects with the shape
-                                doesIntersect = shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
-
-                                //If the shape is 3D, this will contain the z-value of the point. Otherwise, it will be empty.
-                                pointZ = is3D ? $", {pointToCheck.Z}" : "";
-
-                                if (doesIntersect)
-                                {
-                                    Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}{pointZ}) does intersect this shape. (Press any key to continue).");
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}{pointZ}) does not intersect this shape. (Press any key to continue).");
-                                }
-
-                                Console.ReadKey();
-                                break;
-                            }
-                            catch (FormatException)
-                            {
-                                Console.WriteLine("Please enter a valid number. (Press any key to continue).");
-                                Console.ReadKey();
-                            }
-                            catch (ArgumentOutOfRangeException e)
-                            { 
-                                Console.WriteLine($"{e.Message} (Press any key to continue).");
-                                Console.ReadKey();
-                            }
-                        }
-                        break;
+                        pointToCheck = GetPoint3D(false);
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("That's not a valid choice. Try again. (Press any key to continue).");
-                        Console.ReadKey();
+                        pointToCheck = GetPoint2D(false);
                     }
+
+
+                    doesIntersect = shapes[modShapeIndex].CheckIntersectionWithPoint(pointToCheck);
+
+                    //If the shape is 3D, this will contain the z-value of the point. Otherwise, it will be empty.
+                    pointZ = is3D ? $", {pointToCheck.Z}" : "";
+
+                    //Indicate to the user whether the point intersects the shape or not.
+                    if (doesIntersect)
+                    {
+                        Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}{pointZ}) does intersect this shape. (Press any key to continue).");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The point ({pointToCheck.X}, {pointToCheck.Y}{pointZ}) does not intersect this shape. (Press any key to continue).");
+                    }
+
+                    Console.ReadKey();
+
                 }
+                
             }
             else
             {
-                Console.WriteLine("There are no shapes to modify. Add a shape first! (Press any key to continue).");
+                Console.WriteLine("There are no shapes to modify. Addd some first! (Press ENTER to continue).");
                 Console.ReadKey();
+                    
             }
         }
 
@@ -690,6 +599,9 @@ namespace PASS2
             Console.ReadKey();
         }
 
+        //Pre: haveMargin is used to determine whether to let a point lie exactly on the zero of any axis (e.g., (0, 1, 1)).
+        //Post: returns a point that lies inside the canvas.
+        //Description: this method uses the Program.GetInput method to get the coordinates of a point from a user.
         public static Point GetPoint2D(bool haveMargin)
         {
             Point point = new Point();
@@ -704,6 +616,9 @@ namespace PASS2
             return point;
         }
 
+        //Pre: haveMargin is used to determine whether to let a point lie exactly on the zero of any axis (e.g., (0, 1, 1)).
+        //Post: returns a point that lies inside the canvas.
+        //Description: this method uses the Program.GetInput method to get the coordinates of a point from a user.
         public static Point GetPoint3D(bool haveMargin)
         {
             Point point = new Point();

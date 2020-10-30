@@ -2,7 +2,7 @@
 //File Name: Sphere.cs
 //Project Name: PASS2
 //Creation Date: October 26, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a sphere (such as its radius and volume), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to circles. Often times, when this class overrides methods from its base class, it will still
  * the base method its overriding and then add additional logic specific to the sphere. This is possible since the base methods have been designed to 
@@ -131,8 +131,11 @@ namespace PASS2
         private void CheckSphereInBounds(Point center, double radius, string message)
         {
             //If any part of the circle goes out of bounds, throw an exception
-            if (center.X + radius > Canvas.SCREEN_WIDTH || center.X - radius < 0 || center.Y + radius > Canvas.SCREEN_HEIGHT || center.Y - radius < 0 || center.Z + radius > Canvas.SCREEN_DEPTH || center.Z - radius < 0)
+            if (center.X + radius > Canvas.SCREEN_WIDTH || center.X - radius < 0 || center.Y + radius > Canvas.SCREEN_HEIGHT ||
+                center.Y - radius < 0 || center.Z + radius > Canvas.SCREEN_DEPTH || center.Z - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("Sphere", message);
+            }
         }
 
 

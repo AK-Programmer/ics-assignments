@@ -2,7 +2,7 @@
 //File Name: Circle.cs
 //Project Name: PASS2
 //Creation Date: October 21, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a circle (such as its radius), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to circles. Often times, when this class overrides methods from its base class, it will still
  * call the base method its overriding and then add additional logic specific to the circle. This is possible since the base methods have been designed to 
@@ -28,7 +28,9 @@ namespace PASS2
         public Circle(double radius, string colour, Point center): base(colour, "Circle", false, center)
         {
             if (radius <= 0)
+            {
                 throw new ArgumentOutOfRangeException("radius", "The radius must be a positive number");
+            }
 
             CheckCircleInBounds(points[0], radius, "The desired circle goes outside the screen! Either reposition it, or give it a smaller radius");
 
@@ -46,9 +48,10 @@ namespace PASS2
             double potentialRad = radius * scaleFactor;
 
             if (scaleFactor <= 0)
+            {
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be a positive number!");
+            }
 
-            
 
             //Logic for checking if a circle has gone out of bounds is different than other shapes, so this CheckCircleInBounds method is called to ensure that it's within bounds.
             CheckCircleInBounds(points[0], potentialRad, "Scaling the circle by this factor would make it go beyond the screen. Try scaling it by a smaller amount or reposition it first");
@@ -82,13 +85,21 @@ namespace PASS2
 
             //These if statements handle all possible ways the circle could go out of bounds and deliver the appropriate message.
             if(potentialX + radius > Canvas.SCREEN_WIDTH)
+            {
                 throw new ArgumentOutOfRangeException("TranslateX", "You are trying to translate the shape beyond the screen. Try translating the shape a little less to the right.");
+            }
             else if (potentialX - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("TranslateX", "You are trying to translate the shape beyond the screen. Try translating the shape a little less to the left.");
+            }
             else if (potentialY + radius > Canvas.SCREEN_HEIGHT)
+            {
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less up.");
+            }
             else if (potentialY - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("TranslateY", "You are trying to translate the shape beyond the screen. Try translating the shape a little less down.");
+            }
 
             points[0].X = potentialX;
             points[0].Y = potentialY;
@@ -111,7 +122,9 @@ namespace PASS2
         {
             //If any part of the circle goes out of bounds, throw an exception
             if (center.X + radius > Canvas.SCREEN_WIDTH || center.X - radius < 0 || center.Y + radius > Canvas.SCREEN_HEIGHT || center.Y - radius < 0)
+            {
                 throw new ArgumentOutOfRangeException("Circle", message);
+            }
         }
 
 

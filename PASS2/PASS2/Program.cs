@@ -2,7 +2,7 @@
 //File Name: Program.cs
 //Project Name: PASS2
 //Creation Date: October 20, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: this is the driver class for the program. It contains an instance of the canvas class, and has methods that allow the user to interact with the methods/subprograms of
  * the canvas class via the ManipulateCanvas() method. 
  */
@@ -118,6 +118,9 @@ namespace PASS2
         }
 
 
+        //Pre: min  must be smaller than max.
+        //Post: returns the user's input as a double.
+        //Description: This method ensures the user enters valid input by continuing to prompt them until they do so.
         public static double GetInput(double min, double max, string errorMessage)
         {
             double input;
@@ -128,6 +131,7 @@ namespace PASS2
                 {
                     input = Convert.ToDouble(Console.ReadLine());
 
+                    //If user input is not within the specified range, throw an exception with the given error message.
                     if (input > max || input < min)
                     {
                         if (errorMessage == "")
@@ -150,6 +154,9 @@ namespace PASS2
             }
         }
 
+        //Pre: min  must be smaller than max.
+        //Post: returns the user's input as a double.
+        //Description: This method ensures the user enters valid input by continuing to prompt them until they do so.
         public static int GetInput(int min, double max, string errorMessage)
         {
             int input;
@@ -159,7 +166,7 @@ namespace PASS2
                 try
                 {
                     input = Convert.ToInt32(Console.ReadLine());
-
+                    //If user input is not within the specified range, throw an exception with the given error message.
                     if (input > max || input < min)
                     {
                         if (errorMessage == "")
@@ -182,12 +189,19 @@ namespace PASS2
             }
         }
 
+
+        //Pre: numLines must be an integer greater than zero. 
+        //Post: None.
+        //Description: This method clears the last numLines lines of the console.
         public static void ClearLines(int numLines)
         {
             for (int i = 0; i < numLines; i++)
             {
+                //Move the cursor up
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
+                //Replace whatever was on that line with spaces
                 Console.Write(new string(' ', Console.BufferWidth));
+                //Move the cursor up
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
         }

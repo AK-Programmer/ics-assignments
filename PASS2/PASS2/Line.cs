@@ -2,7 +2,7 @@
 //File Name: Line.cs
 //Project Name: PASS2
 //Creation Date: October 21, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a line (such as its slope), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to lines. Often times, when this class overrides methods from its base class, it will still
  * call the base method its overriding and then add additional logic specific to the line. This is possible since the base methods have been designed to 

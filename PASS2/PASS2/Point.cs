@@ -2,7 +2,7 @@
 //File Name: Point.cs
 //Project Name: PASS2
 //Creation Date: October 21, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class contains the attributes of a 2D point (just x and y coordinates). It exists to prevent repetition and make the rest of the program much cleaner. 
  * In particular, the set methods for the x and y coordinates ensure that those coordinates remain within the bounds of the canvas. If it weren't done this way, 
  * logic for throwing exceptions would have to be manually written every single time a point is created or modified, which is not DRY and very tedious. 
@@ -57,7 +57,9 @@ namespace PASS2
         private void SetX(double x)
         {
             if (x <= Canvas.SCREEN_WIDTH && x >= 0)
+            {
                 this.x = x;
+            }
             else
             {
                 throw new ArgumentOutOfRangeException("point x-coord", "The given x-coordinate for the point is outside the screen!");
@@ -70,22 +72,31 @@ namespace PASS2
         private void SetY(double y)
         {
             if (y <= Canvas.SCREEN_HEIGHT && y >= 0)
+            {
                 this.y = y;
+            }
             else
                 throw new ArgumentOutOfRangeException("point y-coord", "The given y-coordinate for the point is outside the screen!");
         }
 
+        //Pre: The double inputted must be greater than zero andd smaller than the depth of the canvas
+        //Post: None.
+        //Description: If the z coordinate is within the bounds of the canvas, this method updates the value of the private double 'z'. Otherwise, it throws an exception.
         private void SetZ(double z)
         {
             if (z <= Canvas.SCREEN_HEIGHT && z >= 0)
+            {
                 this.z = z;
+            }
             else
+            {
                 throw new ArgumentOutOfRangeException("point z-coord", "The given z-coordinate for the point is outside the screen!");
+            }
         }
 
         //Pre: The point inputted must be within the bounds of the canvas; the logic for ensuring that this is the case is computed outside this method.
         //Post: None.
-        //Description: This method calculates the Euclidean between the point 'this' and the point inputted using Pythagorean theorem.
+        //Description: This method calculates the Euclidean distance between the point 'this' and the given point using Pythagorean theorem.
         public double GetDistance(Point point)
         {
             return Math.Sqrt((x - point.X)*(x - point.X) + (y - point.Y)*(y - point.Y) + (z - point.Z)*(z - point.Z));

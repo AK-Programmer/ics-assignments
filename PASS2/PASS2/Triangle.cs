@@ -2,7 +2,7 @@
 //File Name: Triangle.cs
 //Project Name: PASS2
 //Creation Date: October 21, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a triangle (such as its height), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to triangles. Often times, when this class overrides methods from its base class, it will still
  * call the base method its overriding and then add additional logic specific to triangles. This is possible since the base methods have been designed to 
@@ -45,16 +45,19 @@ namespace PASS2
 
             //Checking if the triangle is aligned horizontally  
             if (points[0].Y != points[1].Y && points[0].Y != points[2].Y && points[2].Y != points[1].Y)
+            {
                 throw new ArgumentException("The given triangle is on an angle. Two of your points must form a horizontal side length.", "Triangle Vertices");
-
+            }
             //Checking if any two of the three points are equivalent
             else if (points[0].CheckEqual(points[1]) || points[0].CheckEqual(points[2]) || points[1].CheckEqual(points[2]))
+            {
                 throw new ArgumentException("Two or more of the points entered are equivalent, and subsequently do not form a valid triangle. Please try again.", "Triangle Vertices");
-
+            }
             //Checking if the three points are on the same line
             else if ((points[0].Y == points[1].Y && points[0].Y == points[2].Y && points[2].Y == points[1].Y) || (points[0].X == points[1].X && points[0].X == points[2].X && points[2].X == points[1].X))
+            {
                 throw new ArgumentException("The points entered are all on the same line, and do not form a valid triangle. Please try again.", "Triangle Vertices");
-
+            }
 
 
             //Sorting to ensure the first point in points array is the leftmost one.
@@ -94,7 +97,9 @@ namespace PASS2
 
                     //If the height is negative it means the triangle is rotated and an exception is thrown.
                     if (points[otherPointIndex].Y - points[i].Y < 0)
+                    {
                         throw new ArgumentException("This triangle is rotated. Please ensure the base of the triangle is below the ", "Triangle Vertices");
+                    }
                     else
                     {
                         //The height is calculated by taking the difference between the y-coordinates of one of the points of the base and the point that does not form the base.

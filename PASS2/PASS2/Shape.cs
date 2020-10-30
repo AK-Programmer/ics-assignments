@@ -2,7 +2,7 @@
 //File Name: Shape.cs
 //Project Name: PASS2
 //Creation Date: October 20, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: this class contains the code for the general shape class or 'archetype'. It contains all of the attributes and code that 
  * all of the child shape classes have in common, as well as an abstract method to indicate that all child classes must implement a method that checks for intersections with a point. 
  */
@@ -60,7 +60,10 @@ namespace PASS2
         public virtual void ScaleShape(double scaleFactor)
         {
             if (scaleFactor <= 0)
+            {
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be positive!");
+            }
+               
 
             try
             {

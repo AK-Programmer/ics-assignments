@@ -2,7 +2,7 @@
 //File Name: RectangularPrism.cs
 //Project Name: PASS2
 //Creation Date: October 26, 2020
-//Modified Date: October 30, 2020
+//Modified Date: Nov 1, 2020
 /* Description: This class inherits from the shape class, defines additional attributes of a rectangular prism (such as its sidelengths), and overrides the methods defined
  * in the shape class in order to carry out calculations specific to rectangular prisms. Often times, when this class overrides methods from its base class, it will still
  * call the base method its overriding and then add additional logic specific to the rectangle. This is possible since the base methods have been designed to 
@@ -37,9 +37,10 @@ namespace PASS2
             {
                 //Converts i to binary. Each binary number from 1 to 7 represents a different way to increment a combination of dimensions of the anchor point.
                 //PadLeft(3, '0') ensures the binary number always has at least 3 digits (e.g., 001, 010, 011, etc.)
+                //.Select converts each char '0' or '1' into ints 0 or 1. if b's char value is '0', then '0' - '0' = 0. If it's '1', then '1' - '0' = 1. ToArray() converts it into an int array.
                 bin = Convert.ToString(i, 2).PadLeft(3, '0').Select(b =>  b - '0').ToArray(); 
 
-                //Each coordinate is assigned a digit of bin. If that digit is 1, return the value of anchorPoint for that coordinate plus the user-inputted sidelength for that dimension. Otherwise, simply return the value of the anchorPoint.
+                //Each coordinate is assigned a digit of bin. If that digit is 1, set it to the value of anchorPoint for that coordinate plus the user-inputted sidelength for that dimension. Otherwise, simply return set it to value of the anchorPoint.
                 points[i] = new Point(anchorPoint.X + bin[0] * length, anchorPoint.Y - bin[1] * height, anchorPoint.Z + bin[2] * depth);
             }
 
@@ -49,14 +50,17 @@ namespace PASS2
 
             //If height, length, or depth are less than zero, throw an exception with an appropriate message.
             if (length <= 0)
+            {
                 throw new ArgumentOutOfRangeException("length", "Rectangle length must be a positive number!");
-
+            }
             if (height <= 0)
+            {
                 throw new ArgumentOutOfRangeException("height", "Rectangle height must be a positive number!");
-
-            if(depth <= 0)
-                throw new ArgumentOutOfRangeException("height", "Rectangle depth must be a positive number!");
-
+            }
+            if (depth <= 0)
+            {
+                throw new ArgumentOutOfRangeException("depth", "Rectangle depth must be a positive number!");
+            }
 
             surfaceArea = 2*length * height + 2*length*depth + 2*height*depth;
             volume = length*height*depth;
