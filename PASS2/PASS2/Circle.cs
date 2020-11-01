@@ -139,5 +139,13 @@ namespace PASS2
             return basicInfo;
         }
 
+        public override void PrintBasicInfo(int col, int row, int shapeNum)
+        {
+            base.PrintBasicInfo(col, row, shapeNum);
+
+            Console.SetCursorPosition(col, row + 2);
+            Console.WriteLine($"- Radius: {Math.Round(radius, 2)}");
+        }
+
     }
 }

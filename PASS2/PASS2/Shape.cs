@@ -42,6 +42,7 @@ namespace PASS2
         //Description: This method prints the shape's attributes. It's extended in all classes to print their unique attributes.
         public virtual void PrintAttributes()
         {
+            Console.WriteLine($"- {colour} {shapeName}");
             Console.Write("- Vertices: ");
             //For each vertex, print it in a nicely formatted way (rounding decimals, inside parentheses, etc.)
             foreach (Point point in points)
@@ -64,14 +65,12 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be positive!");
             }
                
-
             try
             {
-                //For each point
+                //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
+                //For each point, translate it so that the anchor point is the origin, scale it, and translate it back.
                 for (int i = 1; i < points.Length; i++)
                 {
-                    //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
-
                     //These expressions scale each point's coordinates by first treating the anchor point point[0] as the origin (by subtracting it). 
                     points[i].X = points[0].X + scaleFactor * (points[i].X - points[0].X);
                     points[i].Y = points[0].Y + scaleFactor * (points[i].Y - points[0].Y);
@@ -82,9 +81,7 @@ namespace PASS2
             {
                 throw new ArgumentOutOfRangeException("Scale Factor", "Scaling this shape by this much would parts of it go beyond the canvas. Try scaling by a smaller factor or repositioning first.");
             }
-
         }
-
 
         //Pre: translateX, translateY, translateZ, must not cause any of the shape's points to go out of bound.
         //Post: none.
@@ -109,8 +106,6 @@ namespace PASS2
             }
         }
 
-
-
         //Pre: none.
         //Post: none.
         //Description: this method displays the shape's basic information and is used when displaying all of the shapes on the canvas at once. 
@@ -120,6 +115,15 @@ namespace PASS2
             return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y}{pointZ})";
         }
 
+        public virtual void PrintBasicInfo(int col, int row, int shapeNum)
+        {
+            string pointZ = is3D ? $", {points[0].Z}" : "";
+
+            Console.SetCursorPosition(col, row);
+            Console.Write($"{shapeNum}. {colour} {shapeName}");
+            Console.SetCursorPosition(col, row + 1);
+            Console.Write($"- Anchor point: ({points[0].X}, {points[0].Y}{pointZ})");
+        }
 
         //Pre: none
         //Post: returns the value of the is3D attribute of the shape
@@ -128,7 +132,5 @@ namespace PASS2
         {
             return is3D;
         }
-
-        
     }
 }

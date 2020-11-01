@@ -36,20 +36,41 @@ namespace PASS2
         {
             if (shapes.Count > 0)
             {
+                int currentCursorRow = Console.CursorTop;
+                int colIncrement = 30;
+                int rowIncrement = 6;
+
+                int numShapes = shapes.Count;
+                int numInRow;
+
+                Console.WriteLine(shapes.Count);
+                for (int i = 0; i < (shapes.Count > 3 ? 2 : 1); i++)
+                {
+                    numInRow = numShapes <= 3 ? numShapes : i == 0 ? 3 : numShapes - 3;
+
+                    for (int j = 0; j < numInRow; j++)
+                    {
+                        shapes[j + (3 * i)].PrintBasicInfo(colIncrement * j, currentCursorRow + i * rowIncrement, j + 3*i + 1);
+                        //Console.WriteLine($"{i}, {j}, {j + 3 * i}");
+                    }
+                }
                 //For each of the shapes in the list, call its GetBasicInfo method and format it nicely with its place (i+1) in the list.
-                for (int i = 0; i < shapes.Count; i++)
+                /*for (int i = 0; i < shapes.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {shapes[i].GetBasicInfo()}");
-                    Console.WriteLine("\n\n");
-                }
+                    Console.WriteLine("\n\n")
+
+                    Console.SetCursorPosition(5,)
+                }*/
+
+                Console.WriteLine("\n");
             }
+
             //If there are no shapes in the list, display the following.
             else
             {
                 Console.WriteLine("There are no shapes on the canvas.\n\n");
             }
-                
-
         }
 
         //Pre: None
@@ -64,9 +85,7 @@ namespace PASS2
                 int userShapeChoice;
 
                 //Let user select desired shape
-                Console.Clear();
-                Console.WriteLine("CANVAS \n-------------");
-                ViewShapeList();
+                Program.PrintCanvas();
                 Console.WriteLine("ADD A SHAPE \n-------------\n");
 
                 Console.WriteLine("Choose one of the following shapes to add: \n1. Circle \n2. Line \n3. Triangle \n4. Rectangle \n5. Sphere \n6. Rectangular Prism");
@@ -74,11 +93,10 @@ namespace PASS2
 
 
                 //Let user select desired colour
-                Console.Clear();
-                Console.WriteLine("CANVAS \n-------------");
-                ViewShapeList();
+                Program.PrintCanvas();
                 Console.WriteLine("CHOOSE A COLOUR \n-------------\n");
 
+                //
                 Console.WriteLine("Which colour would you like your shape to be? \n1. Red \n2. Green \n3. Blue \n4. Orange");
                 userColourChoice = Program.GetInput(1, 4, "That's not a valid colour option.");
                 Program.ClearLines(1);
@@ -100,9 +118,7 @@ namespace PASS2
                     Point circleCenter;
                     Circle circle;
 
-                    Console.Clear();
-                    Console.WriteLine("CANVAS \n-------------");
-                    ViewShapeList();
+                    Program.PrintCanvas();
                     Console.WriteLine("ADD A CIRCLE \n-------------");
 
                     Console.WriteLine("Enter the coordinates of the center point. ");
@@ -118,7 +134,7 @@ namespace PASS2
                     circle = new Circle(rad, colour, circleCenter);
                     shapes.Add(circle);
 
-                    Console.WriteLine("Line added! (Press any key to continue).");
+                    Console.WriteLine("Circle added! (Press any key to continue).");
                     Console.ReadKey();
                 }
                 //Add Line
@@ -131,9 +147,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("ADD A LINE \n-------------\n");
 
                             Console.WriteLine("Enter the coordidnates of the first point: ");
@@ -170,9 +184,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("ADD A TRIANGLE \n-------------\n");
 
                             Console.WriteLine("Enter the coordidnates of the first point: ");
@@ -216,9 +228,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("ADD A RECTANGLE \n-------------\n");
 
                             Console.WriteLine("Enter the coordidnates of the anchor point: ");
@@ -259,9 +269,7 @@ namespace PASS2
                     Point sphereCenter;
                     Sphere sphere;
 
-                    Console.Clear();
-                    Console.WriteLine("CANVAS \n-------------");
-                    ViewShapeList();
+                    Program.PrintCanvas();
                     Console.WriteLine("ADD A SPHERE \n-------------");
 
                     Console.WriteLine("Enter the coordinates of the center point. ");
@@ -290,9 +298,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("ADD A RECTANGULAR PRISM \n-----------------\n");
 
                             Console.WriteLine("Enter the coordidnates of the anchor point: ");
@@ -303,17 +309,11 @@ namespace PASS2
                             Console.WriteLine($"Enter the length (maximum of {SCREEN_WIDTH - anchorPoint.X})");
                             length = Program.GetInput(1 / Double.MaxValue, SCREEN_WIDTH - anchorPoint.X, "That length isn't valid. Lengths must be larger than zero and less than or equal the maximum!");
 
-                            Program.ClearLines(1);
-
                             Console.WriteLine($"Enter the height  (maximum of {anchorPoint.Y})");
                             height = Program.GetInput(1 / Double.MaxValue, anchorPoint.Y, "That height isn't valid. Heights must be larger than zero and less than or equal the maximum!");
-
-                            Program.ClearLines(1);
-
+    
                             Console.WriteLine($"Enter the depth  (maximum of {SCREEN_DEPTH - anchorPoint.Z})");
                             depth = Program.GetInput(1 / Double.MaxValue, SCREEN_DEPTH - anchorPoint.Z, "That depth isn't valid. Depths must be larger than zero and less than or equal the maximum!");
-
-                            Program.ClearLines(1);
 
                             prism = new RectangularPrism(colour, length, height, depth, anchorPoint);
                             shapes.Add(prism);
@@ -346,9 +346,7 @@ namespace PASS2
         {
             int viewShapeIndex;
 
-            Console.Clear();
-            Console.WriteLine("CANVAS \n-------------");
-            ViewShapeList();
+            Program.PrintCanvas();
             Console.WriteLine("VIEW A SHAPE \n---------------");
 
             Console.WriteLine("Which of the following shapes would you like to view?");
@@ -376,10 +374,9 @@ namespace PASS2
             {
                 int delShapeIndex;
 
-                Console.Clear();
+                Program.PrintCanvas();
                 Console.WriteLine("DELETE A SHAPE \n---------------");
-                Console.WriteLine("Which of the following shapes would you like to delete?\n");
-                ViewShapeList();
+                Console.WriteLine("Which of these shapes would you like to delete?");
 
                 //User selects the index of the shape they'd like to delete
                 delShapeIndex = Program.GetInput(1,6, "That's not a valid option.") - 1;
@@ -421,19 +418,12 @@ namespace PASS2
                 int modShapeIndex;
                 int userChoice;
 
-                Console.Clear();
+                Program.PrintCanvas();
                 Console.WriteLine("MODIFY A SHAPE \n---------------");
+                Console.WriteLine("Which of these following shapes would you like to modify?");
 
-                Console.WriteLine("Which of the following shapes would you like to modify?\n");
-                ViewShapeList();
+                modShapeIndex = Program.GetInput(1, shapes.Count, "That's not an option.") - 1;
 
-                modShapeIndex = Program.GetInput(1, 6, "No such shape exists.") - 1;
-
-
-                Console.Clear();
-                Console.WriteLine("CANVAS \n-------------");
-                ViewShapeList();
-                Console.WriteLine("MODIFY A SHAPE \n---------------");
                 Console.WriteLine("Shape Attributes: ");
                 shapes[modShapeIndex].PrintAttributes();
 
@@ -452,9 +442,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("TRANSLATE SHAPE \n---------------");
 
                             Console.WriteLine("Shape Attributes: ");
@@ -503,9 +491,7 @@ namespace PASS2
                     {
                         try
                         {
-                            Console.Clear();
-                            Console.WriteLine("CANVAS \n-------------");
-                            ViewShapeList();
+                            Program.PrintCanvas();
                             Console.WriteLine("SCALE SHAPE \n---------------");
 
                             Console.WriteLine("Shape Attributes: ");
@@ -518,7 +504,7 @@ namespace PASS2
                             //Error handling (for things like negative input) is done inside the ScaleShape method
                             shapes[modShapeIndex].ScaleShape(scaleFactor);
 
-                            Console.WriteLine("Your shape has been scaled. New shape attributes: ");
+                            Console.WriteLine("\nYour shape has been scaled. New shape attributes: ");
                             shapes[modShapeIndex].PrintAttributes();
                             Console.WriteLine("\nPress any key to continue.");
                             Console.ReadKey();
@@ -541,9 +527,7 @@ namespace PASS2
                     //If the shape is 3D, this will contain the value of the z-coordinate. Otherwise it will be empty.
                     string pointZ;
 
-                    Console.Clear();
-                    Console.WriteLine("CANVAS \n-------------");
-                    ViewShapeList();
+                    Program.PrintCanvas();
                     Console.WriteLine("CHECK FOR INTERSECTION \n---------------------");
                     Console.WriteLine("Shape Attributes: ");
                     shapes[modShapeIndex].PrintAttributes();
@@ -582,8 +566,7 @@ namespace PASS2
             else
             {
                 Console.WriteLine("There are no shapes to modify. Addd some first! (Press ENTER to continue).");
-                Console.ReadKey();
-                    
+                Console.ReadKey();    
             }
         }
 
@@ -605,7 +588,7 @@ namespace PASS2
         public static Point GetPoint2D(bool haveMargin)
         {
             Point point = new Point();
-            double margin = haveMargin ? (1 / Double.MaxValue) : 0.0;
+            double margin = haveMargin ? (1 / Double.MaxValue) : 0;
 
             Console.WriteLine("Enter the x coordinate of the point: ");
             point.X = Program.GetInput(margin, SCREEN_WIDTH - margin, "This coordinate is not sufficiently within canvas width.");

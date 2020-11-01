@@ -138,5 +138,17 @@ namespace PASS2
             basicInfo += $"\n- Length: {Math.Round(length, 2)} \n- Height: {Math.Round(height, 2)}";
             return basicInfo;
         }
+
+        public override void PrintBasicInfo(int col, int row, int shapeNum)
+        {
+            base.PrintBasicInfo(col, row, shapeNum);
+            Console.SetCursorPosition(col, row + 2);
+            Console.Write($"- Length: {Math.Round(length, 2)}");
+            Console.SetCursorPosition(col, row + 3);
+            Console.Write($"- Height: {Math.Round(height, 2)}");
+            Console.SetCursorPosition(col, row + 4);
+            Console.WriteLine($"- Depth: {Math.Round(depth, 2)}");
+
+        }
     }
 }

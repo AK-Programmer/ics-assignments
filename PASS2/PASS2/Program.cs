@@ -8,7 +8,7 @@
  */
 
 using System;
-
+using System.Text;
 
 namespace PASS2
 {
@@ -22,24 +22,37 @@ namespace PASS2
         //Post: none.
         //Description: the main method. It calls the menu method which either sends the user to the canvas or exits the program, can continues to loop back to it until the user decides to exit.
         static void Main(string[] args)
-        { 
+        {
             
-            while (!exit)
+            for(int i = 0; i < 90; i ++)
+            {
+                Console.Write("0");
+            }
+
+            for (int i = 0; i < 29; i++)
+            {
+                Console.WriteLine("0");
+            }
+
+            Console.ReadKey();
+
+            ManipulateCanvas();
+            /*while (!exit)
              {
                  Menu();
-             }
+             }*/
         }
 
         public static void Menu()
         {
             //Variables & Objects
-            char option; //Will be used to navigate menu
+            int option; //Will be used to navigate menu
             Console.Clear();
 
             Console.WriteLine("SHAPE DRAWER \n-----------------------\n1. Draw! \n2. Exit");
 
             //Reads single key input and converts from ConsoleKeyInfo object to char data type
-            option = Console.ReadKey().KeyChar;
+            option = GetInput(1,2, "That's not an option.");
 
             //This switch statement either sends the user(s) to the actual game, quits, or handles their faulty input and sends them to the main menu again. 
             switch (option)
@@ -64,57 +77,42 @@ namespace PASS2
         //Description: This method lets the user navigate the canvas
         public static void ManipulateCanvas()
         {
-            char userOption;
-            while (true)
+            int userOption;
+            
+            PrintCanvas();
+            Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. Add a shape \n2. Delete a shape \n3. Modify a shape \n4. View one shape \n5. Clear the canvas \n6. Exit.\n");
+                
+
+            userOption = GetInput(1,6, "That's not an option.");
+
+            //Each of these if statements directs the user to a different canvas method, and always calls the ManipulateCanvas() method again (except the last one) to let the user manipulate the canvas in another way.
+            switch(userOption)
             {
-                Console.Clear();
-                Console.WriteLine("SHAPE DRAWER \n-----------------------\nWhat would  you like to do?\n1. Add a shape \n2. Delete a shape \n3. Modify a shape \n4. View one shape \n5. Clear the canvas \n6. Go back.\n");
-                Console.WriteLine("CANVAS \n-------------");
-                canvas.ViewShapeList();
-
-                userOption = Console.ReadKey().KeyChar;
-
-                //Each of these if statements directs the user to a different canvas method, and always calls the ManipulateCanvas() method again (except the last one) to let the user manipulate the canvas in another way.
-                if (userOption == '1')
-                {
+                case 1:
                     canvas.AddShape();
                     ManipulateCanvas();
                     break;
-                }
-                else if (userOption == '2')
-                {
+                case 2:
                     canvas.DeleteShape();
                     ManipulateCanvas();
                     break;
-                }
-                else if (userOption == '3')
-                {
+                case 3:
                     canvas.ModifyShape();
                     ManipulateCanvas();
                     break;
-                }
-                else if (userOption == '4')
-                {
+                case 4:
                     canvas.ViewShape();
                     ManipulateCanvas();
                     break;
-                }
-                else if (userOption == '5')
-                {
+                case 5:
                     canvas.ClearCanvas();
                     ManipulateCanvas();
                     break;
-                }
-                else if (userOption == '6')
-                {
+                default:
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
-                    Console.ReadKey();
-                }
-            }
+      
+            
         }
 
 
@@ -204,6 +202,15 @@ namespace PASS2
                 //Move the cursor up
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
+        }
+
+
+        public static void PrintCanvas()
+        {
+            Console.Clear();
+            Console.WriteLine("CANVAS \n-------------");
+            canvas.ViewShapeList();
+
         }
     }
 }

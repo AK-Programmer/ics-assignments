@@ -97,5 +97,12 @@ namespace PASS2
             basicInfo += $"\n- Other endpoint: ({Math.Round(points[1].X,2)}, {Math.Round(points[1].Y, 2)}, {Math.Round(points[1].Z,2)})";
             return basicInfo;
         }
+
+        public override void PrintBasicInfo(int col, int row, int shapeNum)
+        {
+            base.PrintBasicInfo(col, row, shapeNum);
+            Console.SetCursorPosition(col, row + 2);
+            Console.WriteLine($"- Other endpoint: ({ Math.Round(points[1].X, 2)}, { Math.Round(points[1].Y, 2)}, { Math.Round(points[1].Z, 2)})");
+        }
     }
 }

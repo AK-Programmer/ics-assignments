@@ -194,5 +194,15 @@ namespace PASS2
             basicInfo += $"\n- Other points: ({points[1].X}, {points[1].Y}), ({points[2].X}, {points[2].Y})";
             return basicInfo;
         }
+
+        public override void PrintBasicInfo(int col, int row, int shapeNum)
+        {
+            base.PrintBasicInfo(col, row, shapeNum);
+            Console.SetCursorPosition(col, row + 2);
+            Console.Write($"- Second point: ({points[1].X}, {points[1].Y})");
+            Console.SetCursorPosition(col, row + 3);
+            Console.WriteLine($"- Third point: ({points[2].X}, {points[2].Y})");
+
+        }
     }
 }
