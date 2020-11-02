@@ -15,6 +15,7 @@ namespace PASS2
 {
     public class RectangularPrism : Shape
     {
+        //These variables represent various characteristics that the prism doesn't share with most other shapes.
         private double length;
         private double height;
         private double depth;
@@ -27,6 +28,7 @@ namespace PASS2
         //Desc: This constructor calculates the positions of the other  7 vertices of the rectangular prism and calculates properties like volume and diagonal length.
         public RectangularPrism(string colour, double length, double height, double depth, Point anchorPoint) : base(colour, "Rectangular Prism", true, new Point[8])
         {
+            //This will store an array of 0s and 1s that will be used to get the coordinates of the other 7 points of the rectangle
             int[] bin;
 
             //setting vertices of the rectangular prism
@@ -62,6 +64,7 @@ namespace PASS2
                 throw new ArgumentOutOfRangeException("depth", "Rectangle depth must be a positive number!");
             }
 
+            //Setting all other properties of the prism to their approrpiate values (according to formulas)
             surfaceArea = 2*length * height + 2*length*depth + 2*height*depth;
             volume = length*height*depth;
             //Diagonal length calculated using pythagorean theorem
@@ -73,6 +76,7 @@ namespace PASS2
         //Description: This method scales the 7 non-anchor points of the prism, and scales the length, width, depth and calculated properties proportionally. Of course, all of this is error-trapped.
         public override void ScaleShape(double scaleFactor)
         {
+            //Temporary variables to store what the dimensions would be if the rectangle were scaled. These dimensions will become permanent if all point remain in the canvas when scaled.
             double potentialLength = length * scaleFactor;
             double potentialHeight = height * scaleFactor;
             double potentialDepth = depth * scaleFactor;
@@ -80,16 +84,21 @@ namespace PASS2
             //Here, the ArgumentOutOfRangeException that may be thrown by the Point class is caught and then thrown again. This is done to change the message shown to the user. 
             try
             {
-                string bin;
+                //This will store an array of 0s and 1s that will be used to get the coordinates of the other 7 points of the rectangle
+                int[] bin;
 
+                //For each point in the array, scale each of its coordinates by either nothing or by the scale factor depending on which point it is. 
                 for (int i = 1; i < points.Length; i++)
                 {
                     //Converts i to binary. Each binary number from 1 to 7 represents a different way to increment a combination of dimensions of the anchor point.
-                    bin = Convert.ToString(i, 2).PadLeft(3, '0');
+                    //PadLeft(3, '0') ensures the binary number always has at least 3 digits (e.g., 001, 010, 011, etc.)
+                    //.Select converts each char '0' or '1' into ints 0 or 1. if b's char value is '0', then '0' - '0' = 0. If it's '1', then '1' - '0' = 1. ToArray() converts it into an int array.
+                    bin = Convert.ToString(i, 2).PadLeft(3, '0').Select(b =>  b - '0').ToArray(); 
 
-                    points[i].X = points[0].X + bin[0] == 1 ? potentialLength : 0;
-                    points[i].Y = points[0].Y + bin[1] == 1 ? potentialHeight : 0;
-                    points[i].Z = points[0].Z + bin[2] == 1 ? potentialDepth : 0;
+                    //if bin[j] == 0, then the point's jth coordinate will remain the same. If bin[j] == 1, then the point's jth coordinate will be scaled by scaleFactor.
+                    points[i].X = points[0].X + bin[0]*potentialLength;
+                    points[i].Y = points[0].Y + bin[1]*potentialHeight;
+                    points[i].Z = points[0].Z + bin[2]*potentialDepth;
                 }
 
                 //Perimeter and diagonal length scale linearly, surface area scales by the square of the scale factor, volume scales by the cube of the scale factor.
@@ -113,6 +122,7 @@ namespace PASS2
         {
             base.PrintAttributes();
 
+            //Rounding all attributes to 2 decimals.
             Console.WriteLine($"- Length: {Math.Round(length, 2)}");
             Console.WriteLine($"- Height: {Math.Round(height, 2)}");
             Console.WriteLine($"- Volume: {Math.Round(volume, 2)}");
@@ -129,23 +139,20 @@ namespace PASS2
             return point.X >= points[0].X && point.X <= points[0].X + length && point.Y <= points[0].Y && point.Y >= points[0].Y - height && point.Z >= points[0].Z && point.Z <= points[0].X + depth;
         }
 
-        //Pre: none.
+        //Pre:col and row should be within the bounds of the console window. It's assumed the window has dimensions 90x30. shapeNum is the shape's 'place' in the list. It's used to display a number beside each shape. 
         //Post: none.
-        //Description: this method displays the rectangle's basic information and is used when displaying all of the shapes on the canvas at once. It calls the base GetBasicInfo method to display the general shape information.
-        public override string GetBasicInfo()
-        {
-            string basicInfo = base.GetBasicInfo();
-            basicInfo += $"\n- Length: {Math.Round(length, 2)} \n- Height: {Math.Round(height, 2)}";
-            return basicInfo;
-        }
-
+        //This method prints the shape's basic information at the specified column and row. It extends the method of the same name in the shape class to display more information about the shape.
         public override void PrintBasicInfo(int col, int row, int shapeNum)
         {
             base.PrintBasicInfo(col, row, shapeNum);
+
+            //Setting the cursor position to the given column and row (row incremented by 2)
             Console.SetCursorPosition(col, row + 2);
             Console.Write($"- Length: {Math.Round(length, 2)}");
+            //Setting the cursor position to the given column and row (row incremented by 3)
             Console.SetCursorPosition(col, row + 3);
             Console.Write($"- Height: {Math.Round(height, 2)}");
+            //Setting the cursor position to the given column and row (row incremented by 4)
             Console.SetCursorPosition(col, row + 4);
             Console.WriteLine($"- Depth: {Math.Round(depth, 2)}");
 

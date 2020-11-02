@@ -26,7 +26,6 @@ namespace PASS2
         //Desc: There isn't any special logic here. The class attributes are set to their respective parameters.
         public Shape(string colour, string shapeName, bool is3D, params Point[] points)
         {
-            
             this.colour = colour;
             this.shapeName = shapeName;
             this.is3D = is3D;
@@ -34,6 +33,9 @@ namespace PASS2
         }
 
 
+        //Pre: point must be inside the canvas.
+        //Post: returns true if the given point does intersect the shape, and false otherwise.
+        //Description: This method must be defined by each shape individually, as each shape has a unique intersection method (with the exception of the circle and sphere).
         public abstract bool CheckIntersectionWithPoint(Point point);
 
 
@@ -42,12 +44,20 @@ namespace PASS2
         //Description: This method prints the shape's attributes. It's extended in all classes to print their unique attributes.
         public virtual void PrintAttributes()
         {
+            //Will store the string value of the z-coordinate of the point if the shape is 3D. Otherwise it will be empty.
+            string pointZ;
+
             Console.WriteLine($"- {colour} {shapeName}");
             Console.Write("- Vertices: ");
+
             //For each vertex, print it in a nicely formatted way (rounding decimals, inside parentheses, etc.)
-            foreach (Point point in points)
+            for (int i = 0; i < points.Length; i ++)
             {
-                Console.Write($"({Math.Round(point.X, 2)}, {Math.Round(point.Y, 2)}, {Math.Round(point.Z, 2)}) ");
+                //If the shape is 3D, display it's z-coordinate. Otherwise, pointZ is empty.
+                pointZ = is3D ? $", {Math.Round(points[i].Z,2)}" : "";
+
+                //Displaying the coordinates of the point                                            i ==
+                Console.Write($"({Math.Round(points[i].X, 2)}, {Math.Round(points[i].Y, 2)}{pointZ}) {(i == 4 ? "\n" : "")}");
             }
 
             Console.WriteLine($"\n- Colour: {colour}");
@@ -60,6 +70,7 @@ namespace PASS2
         //Description: This method scales the shape's points by scaleFactor. It ensures that scaling the points by this factor does not cause any of them to go outside the canvas. This method is overridden either extended (by overriding and calling base.ScaleShape()) or completely overriden in all classes.
         public virtual void ScaleShape(double scaleFactor)
         {
+            //Scale factor cannot less than or equal to zero. 
             if (scaleFactor <= 0)
             {
                 throw new ArgumentOutOfRangeException("Scale Factor", "The scale factor must be positive!");
@@ -106,21 +117,18 @@ namespace PASS2
             }
         }
 
-        //Pre: none.
+        //Pre:col and row should be within the bounds of the console window. It's assumed the window has dimensions 90x30. shapeNum is the shape's 'place' in the list. It's used to display a number beside each shape. 
         //Post: none.
-        //Description: this method displays the shape's basic information and is used when displaying all of the shapes on the canvas at once. 
-        public virtual string GetBasicInfo()
-        {
-            string pointZ = is3D ? $", {points[0].Z}" : "";
-            return $"{colour} {shapeName} \n- Anchor point: ({points[0].X}, {points[0].Y}{pointZ})";
-        }
-
+        //This method prints the shape's basic information at the specified column and row.
         public virtual void PrintBasicInfo(int col, int row, int shapeNum)
         {
+            //If the shape is 3D, display the Z coordinate. Otherwise, don't.
             string pointZ = is3D ? $", {points[0].Z}" : "";
 
+            //Setting the cursor position to the given column and row.
             Console.SetCursorPosition(col, row);
             Console.Write($"{shapeNum}. {colour} {shapeName}");
+            //Incrementing the row
             Console.SetCursorPosition(col, row + 1);
             Console.Write($"- Anchor point: ({points[0].X}, {points[0].Y}{pointZ})");
         }

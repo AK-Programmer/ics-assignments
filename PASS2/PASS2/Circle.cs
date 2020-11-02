@@ -11,7 +11,6 @@
 
 using System;
 
-
 namespace PASS2
 {
 
@@ -127,25 +126,16 @@ namespace PASS2
             }
         }
 
-
-        //Pre: none.
+        //Pre:col and row should be within the bounds of the console window. It's assumed the window has dimensions 90x30. shapeNum is the shape's 'place' in the list. It's used to display a number beside each shape. 
         //Post: none.
-        //Description: this method displays the circle's basic information and is used when displaying all of the shapes on the canvas at once. It extends the base GetBasicInfo method by overriding and calling it.
-        public override string GetBasicInfo()
-        {
-            string basicInfo =  base.GetBasicInfo();
-            basicInfo += $"\n- Radius: {Math.Round(radius, 2)}";
-
-            return basicInfo;
-        }
-
+        //This method prints the shape's basic information at the specified column and row. It extends the method of the same name in the shape class to display more information about the shape.
         public override void PrintBasicInfo(int col, int row, int shapeNum)
         {
             base.PrintBasicInfo(col, row, shapeNum);
 
+            //Setting the cursor position to the given column and row (row incremented by 2).
             Console.SetCursorPosition(col, row + 2);
             Console.WriteLine($"- Radius: {Math.Round(radius, 2)}");
         }
-
     }
 }

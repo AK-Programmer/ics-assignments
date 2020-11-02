@@ -46,6 +46,9 @@ namespace PASS2
             Z = z;
         }
 
+        //Pre: none
+        //Post: none.
+        //Description: Overload of the constructor for when the coordinates of the point need to be set individually.
         public Point()
         {
 

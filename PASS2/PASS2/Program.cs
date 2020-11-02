@@ -14,8 +14,8 @@ namespace PASS2
 {
     class Program
     {
+        //Canvas that the entire program runs on.
         static Canvas canvas = new Canvas();
-        static bool exit = false;
 
 
         //Pre: technically none.
@@ -23,54 +23,8 @@ namespace PASS2
         //Description: the main method. It calls the menu method which either sends the user to the canvas or exits the program, can continues to loop back to it until the user decides to exit.
         static void Main(string[] args)
         {
-            
-            for(int i = 0; i < 90; i ++)
-            {
-                Console.Write("0");
-            }
-
-            for (int i = 0; i < 29; i++)
-            {
-                Console.WriteLine("0");
-            }
-
-            Console.ReadKey();
-
             ManipulateCanvas();
-            /*while (!exit)
-             {
-                 Menu();
-             }*/
         }
-
-        public static void Menu()
-        {
-            //Variables & Objects
-            int option; //Will be used to navigate menu
-            Console.Clear();
-
-            Console.WriteLine("SHAPE DRAWER \n-----------------------\n1. Draw! \n2. Exit");
-
-            //Reads single key input and converts from ConsoleKeyInfo object to char data type
-            option = GetInput(1,2, "That's not an option.");
-
-            //This switch statement either sends the user(s) to the actual game, quits, or handles their faulty input and sends them to the main menu again. 
-            switch (option)
-            {
-                case '1':
-                    ManipulateCanvas();
-                    break;
-                case '2':
-                    exit = true;
-                    Console.WriteLine("\nThanks for playing. Bye!");
-                    break;
-                default:
-                    Console.WriteLine("\nThat's not a valid option. Try again (Press any key to continue).");
-                    Console.ReadKey();
-                    break;
-            }
-        }
-
 
         //Pre: None
         //Pro: None
@@ -167,6 +121,7 @@ namespace PASS2
                     //If user input is not within the specified range, throw an exception with the given error message.
                     if (input > max || input < min)
                     {
+                        //If errorMessage is empty, throw an exception with no custom message. Otherwise, throw an exception with errorMessage as the message.
                         if (errorMessage == "")
                         {
                             throw new Exception();
@@ -176,6 +131,7 @@ namespace PASS2
                 }
                 catch (Exception e)
                 {
+
                     Console.WriteLine(e.Message + " (Press ENTER to continue). ");
                     Console.ReadLine();
                     ClearLines(3);
@@ -204,7 +160,9 @@ namespace PASS2
             }
         }
 
-
+        //Pre: none
+        //Post: none
+        //Description: clears the console, and prints the canvas (i.e., lists all existing shapes' basic properties).
         public static void PrintCanvas()
         {
             Console.Clear();

@@ -137,6 +137,7 @@ namespace PASS2
             Console.WriteLine($"- Side lengths: {Math.Round(sideLens[0], 2)}, {Math.Round(sideLens[1], 2)}, {Math.Round(sideLens[2], 2)}");
             Console.WriteLine($"- Height:  {Math.Round(height, 2)}");
             Console.WriteLine($"- Surface Area: {Math.Round(surfaceArea, 2)}");
+            Console.WriteLine($"- Perimeter: {Math.Round(perimeter, 2)}");
         }
 
 
@@ -166,40 +167,33 @@ namespace PASS2
             //Defining all the necessary values as variables for ease of reading.
             double px = point.X;
             double py = point.Y;
-            double x1 = points[0].X;
-            double y1 = points[0].Y;
-            double x2 = points[1].X;
-            double y2 = points[1].Y;
-            double x3 = points[2].X;
-            double y3 = points[2].Y;
 
-            //Areas are calculated using Heron's formula
-            double area1 = Math.Abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
-            double area2 = Math.Abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
-            double area3 = Math.Abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
+            //Will store the sum of the areas of the three triangles the given point forms with combinations of the 3 points of the triangle.
+            double totalArea = 0;
+
+            //For each combination of 2 vertices of the triangle, calculate the double of the area of the triangle they form with the given point using Heron's formula.
+            for (int i = 0; i < 3; i ++)
+            {
+                totalArea += Math.Abs((points[i].X - px) * (points[(i+1)%3].Y - py) - (points[(i+1)%3].X - px) * (points[i].Y - py));
+            }
+
+            //Divide by 2 to get the actual area.
+            totalArea /= 2;
 
             //If the area of the triangle equals the sum of the areas of the 3 triangles the point forms with combinations of vertices of the triangle, return true.
-            return surfaceArea == (area1 + area2 + area3) / 2;
-            
-
+            return surfaceArea == totalArea;
         }
 
-        //Pre: none.
+        //Pre:col and row should be within the bounds of the console window. It's assumed the window has dimensions 90x30. shapeNum is the shape's 'place' in the list. It's used to display a number beside each shape. 
         //Post: none.
-        //Description: this method displays the triangle's basic information and is used when displaying all of the shapes on the canvas at once. It calls the base GetBasicInfo method to display the general shape information.
-        public override string GetBasicInfo()
-        {
-            string basicInfo = base.GetBasicInfo();
-
-            basicInfo += $"\n- Other points: ({points[1].X}, {points[1].Y}), ({points[2].X}, {points[2].Y})";
-            return basicInfo;
-        }
-
+        //This method prints the shape's basic information at the specified column and row. It extends the method of the same name in the shape class to display more information about the shape.
         public override void PrintBasicInfo(int col, int row, int shapeNum)
         {
             base.PrintBasicInfo(col, row, shapeNum);
+            //Setting the cursor position to the given column and row (row incremented by 2)
             Console.SetCursorPosition(col, row + 2);
             Console.Write($"- Second point: ({points[1].X}, {points[1].Y})");
+            //Setting the cursor position to the given column and row (row incremented by 3)
             Console.SetCursorPosition(col, row + 3);
             Console.WriteLine($"- Third point: ({points[2].X}, {points[2].Y})");
 
