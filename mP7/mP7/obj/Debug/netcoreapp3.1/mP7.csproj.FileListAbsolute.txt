@@ -1,0 +1,12 @@
+/Users/adarkahiri/ICS Assignments/mP7/mP7/bin/Debug/netcoreapp3.1/mP7.deps.json
+/Users/adarkahiri/ICS Assignments/mP7/mP7/bin/Debug/netcoreapp3.1/mP7.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/mP7/mP7/bin/Debug/netcoreapp3.1/mP7.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/mP7/mP7/bin/Debug/netcoreapp3.1/mP7.dll
+/Users/adarkahiri/ICS Assignments/mP7/mP7/bin/Debug/netcoreapp3.1/mP7.pdb
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.csprojAssemblyReference.cache
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.dll
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.pdb
+/Users/adarkahiri/ICS Assignments/mP7/mP7/obj/Debug/netcoreapp3.1/mP7.genruntimeconfig.cache

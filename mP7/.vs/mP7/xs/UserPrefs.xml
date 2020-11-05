@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{8E092952-6081-449C-BEFB-07A2094671F2}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="mP7/NumberStack.cs">
+    <Files>
+      <File FileName="mP7/Program.cs" Line="41" Column="10" />
+      <File FileName="mP7/NumberStack.cs" Line="122" Column="2" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="mP7" expanded="True">
+            <Node name="mP7" expanded="True">
+              <Node name="NumberStack.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.mP7 FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
