@@ -1,17 +1,31 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Grid.cs
+//Project Name: mP9
+//Creation Date: Nov. 13, 2020
+//Modified Date: Nov. 13, 2020
+//Description: This class handles all functionality related to the grid, such as setting up the game, displaying the grid, and checking for wins/losses.
+
+using System;
 namespace mP9
 {
     public class Grid
     {
+        //Constants that are used throughout the program. Self-explanatory names.
         const int ROWS = 5;
         const int COLS = 5;
         const int NUM_OBSTACLES = 2;
 
+        //Store the positions of the player and goal
         int playerPos, goalPos;
+        //Array to store the obstacles
         Obstacle[] obstacles = new Obstacle[NUM_OBSTACLES];
 
+        //Random variable to generate the positions of the player, goal, and obstacles
         static Random rnd = new Random();
 
+        //Pre: none
+        //Post: none
+        //Description: Basic constructor that calls the SetGame() method to place the player, goal, and obstacles
         public Grid()
         {
             SetGame();
@@ -22,12 +36,19 @@ namespace mP9
         //Description: this function carries out the user's sequences of moves, and 
         public bool CheckWin(SequenceQueue moveSequence)
         {
+            //Keeps track of the player's position after being moved according to the inputted sequence
             int potentialPlayerPos =  playerPos;
+
+            //Keeps track of the next character in the queue
             char nextMove;
+
+            //Stores the queue's initial size
             int size = moveSequence.Size();
 
+            //For each character in the queue, try to move the player according to that character, throw exceptions if the player went out of bounds or ran into an obstacle, and check for a win. 
             for (int i = 0; i < size; i++)
             {
+                //Casting to char since Dequeue returns a nullable char
                 nextMove = (char) moveSequence.Dequeue();
 
                 switch(nextMove)
@@ -47,19 +68,25 @@ namespace mP9
                     default:
                         throw new ArgumentException("This sequence is invalid.");
                 }
-               
+
+                //If the potential position is less than zero and greater than the maximum position, it's out of bounds.
+                //If the player was on the left edge before being moved by nextMove and the user tried moving it further left, it's out of bounds
+                //If the player was on the right edge before being moved by nextMove and the user tried moving it further right, it's out of bounds.
                 if((potentialPlayerPos < 0 && potentialPlayerPos >= ROWS * COLS) || ((potentialPlayerPos + 1) % COLS == 0 && nextMove == 'a') || (potentialPlayerPos % 5 == 0 && nextMove == 'd'))
                 {
                     throw new ArgumentException("This sequence of moves would make the player go out of bounds!");
                 }
 
+                //If the player's newly incremented position is equal to the position of the goal, they have won, so return true.
                 if(potentialPlayerPos == goalPos)
                 {
                     return true;
                 }
 
+                //For each obstacle, check if the player has touched it.
                 for(int j = 0; j < obstacles.Length; j++)
                 {
+                    //If the player has touched the obstacle, make it visible and throw an exception. 
                     if(potentialPlayerPos == obstacles[j].GetPos())
                     {
                         obstacles[j].ToggleVisibility();
@@ -69,7 +96,7 @@ namespace mP9
                 }
             }
 
-
+            //If no win was found, return false.
             return false;
         }
 
