@@ -1,17 +1,18 @@
 ﻿<Properties StartupConfiguration="{83D26252-5F29-4A47-8FD6-79AC574AE574}|Default">
-  <MonoDevelop.Ide.ItemProperties.mP9 FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="mP9/Grid.cs">
+  <MonoDevelop.Ide.ItemProperties.mP9 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="mP9/SequenceQueue.cs">
     <Files>
-      <File FileName="mP9/Program.cs" Line="1" Column="1" />
-      <File FileName="mP9/Grid.cs" Line="8" Column="23" />
-      <File FileName="mP9/Obstacle.cs" Line="9" Column="6" />
+      <File FileName="mP9/Program.cs" Line="8" Column="10" />
+      <File FileName="mP9/Grid.cs" Line="9" Column="1" />
+      <File FileName="mP9/Obstacle.cs" Line="30" Column="24" />
+      <File FileName="mP9/SequenceQueue.cs" Line="5" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="mP9" expanded="True">
             <Node name="mP9" expanded="True">
-              <Node name="Grid.cs" selected="True" />
+              <Node name="SequenceQueue.cs" selected="True" />
             </Node>
           </Node>
         </State>
