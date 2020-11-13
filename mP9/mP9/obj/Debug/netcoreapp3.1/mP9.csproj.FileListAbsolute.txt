@@ -1,0 +1,12 @@
+/Users/adarkahiri/ICS Assignments/mP9/mP9/bin/Debug/netcoreapp3.1/mP9.deps.json
+/Users/adarkahiri/ICS Assignments/mP9/mP9/bin/Debug/netcoreapp3.1/mP9.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/mP9/mP9/bin/Debug/netcoreapp3.1/mP9.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/mP9/mP9/bin/Debug/netcoreapp3.1/mP9.dll
+/Users/adarkahiri/ICS Assignments/mP9/mP9/bin/Debug/netcoreapp3.1/mP9.pdb
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.csprojAssemblyReference.cache
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.dll
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.pdb
+/Users/adarkahiri/ICS Assignments/mP9/mP9/obj/Debug/netcoreapp3.1/mP9.genruntimeconfig.cache
