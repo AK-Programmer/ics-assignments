@@ -34,9 +34,9 @@ namespace mP9
         //Pre: none
         //Post: none
         //Description: this method toggles the isVisible attribute
-        public void ToggleVisibility()
+        public void makeVisible()
         {
-            isVisible = !isVisible;
+            this.isVisible = true;
         }
 
         //Pre: none

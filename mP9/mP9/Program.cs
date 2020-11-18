@@ -51,8 +51,9 @@ namespace mP9
 
                 Console.Clear();
                 Console.WriteLine("REACH THE GOAL \n-----------------");
-                Console.WriteLine("Enter a sequence of moves (wasd) to try to reach the goal. Press enter when you've finished making your sequence.");
-                gameGrid.DisplayGrid();
+                Console.WriteLine("Enter a sequence of moves (wasd) to try to reach the goal. \nPress enter when you've finished making your sequence.");
+                //input to DisplayGrid is true because we want to display the original position of the player
+                gameGrid.DisplayGrid(true);
 
                 userInput = Console.ReadLine();
 
@@ -70,7 +71,7 @@ namespace mP9
                 {
                     //decrementing i to ensure the player does not lose a round for entering faulty input
                     i--;
-                    Console.WriteLine("One or more of the characters you entered is invalid. Press ENTER to try again.");
+                    Console.WriteLine("One or more of the characters you entered is invalid. \nPress ENTER to try again.");
                     Console.ReadLine();
                     continue;
                 }
@@ -84,17 +85,32 @@ namespace mP9
                     //If the CheckWin function returns true, break out of the loop. 
                     if(playerWon)
                     {
+                        Console.Clear();
+                        Console.WriteLine("REACH THE GOAL \n-----------------");
+                        Console.WriteLine("Enter a sequence of moves (wasd) to try to reach the goal. \nPress enter when you've finished making your sequence.");
+                        //input to DisplayGrid is false because we want to display the player's  updated position rather than the original position
+                        gameGrid.DisplayGrid(false);
                         break;
                     }
                     //Otherwise, notify the user that they haven't yet succeeded and display the number of tries they have left. 
                     else
                     {
-                        Console.WriteLine($"Close! But that sequence didn't get you to the goal. Try again!  ({NUM_ROUNDS - i - 1} tries left). Press ENTER to continue.");
+                        Console.Clear();
+                        Console.WriteLine("REACH THE GOAL \n-----------------");
+                        Console.WriteLine("Enter a sequence of moves (wasd) to try to reach the goal. \nPress enter when you've finished making your sequence.");
+                        //input to DisplayGrid is false because we want to display the player's  updated position rather than the original position
+                        gameGrid.DisplayGrid(false);
+                        Console.WriteLine($"That sequence didn't get you to the goal. ({NUM_ROUNDS - i - 1} tries left). \nPress ENTER to continue.");
                     }
                 }
                 catch(ArgumentException e)
                 {
-                    Console.WriteLine($"{e.Message} Press ENTER to continue.");
+                    Console.Clear();
+                    Console.WriteLine("REACH THE GOAL \n-----------------");
+                    Console.WriteLine("Enter a sequence of moves (wasd) to try to reach the goal. \nPress enter when you've finished making your sequence.");
+                    //input to DisplayGrid is false because we want to display the player's  updated position rather than the original position
+                    gameGrid.DisplayGrid(false);
+                    Console.WriteLine($"{e.Message} \nPress ENTER to continue.");
                 }
                 Console.ReadLine();
             }
@@ -103,11 +119,11 @@ namespace mP9
             //Display to the user whether they have won or not, and ask them if they would like to play again. 
             if(playerWon)
             {
-                Console.WriteLine("You reached the goal! Good job! Would you like to play again? Enter 'y' if yes, and anything else if not.");
+                Console.WriteLine("You reached the goal! Good job! Would you like to play again? \nEnter 'y' if yes, and anything else if not.");
             }
             else
             {
-                Console.WriteLine("You didn't win this time. Would you like to play again? Enter 'y' if yes, and anything else if not.");
+                Console.WriteLine("You didn't win this time. Would you like to play again? \nEnter 'y' if yes, and anything else if not.");
             }
             //If the user would like to play again, call PlayGame() again. Otherwise, display a goodbye message. 
             if(Console.ReadLine() == "y" ? true : false)

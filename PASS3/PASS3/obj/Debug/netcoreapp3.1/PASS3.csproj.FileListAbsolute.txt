@@ -1,0 +1,12 @@
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.csprojAssemblyReference.cache
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/bin/Debug/netcoreapp3.1/PASS3.deps.json
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/bin/Debug/netcoreapp3.1/PASS3.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/bin/Debug/netcoreapp3.1/PASS3.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/bin/Debug/netcoreapp3.1/PASS3.dll
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/bin/Debug/netcoreapp3.1/PASS3.pdb
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.dll
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.pdb
+/Users/adarkahiri/ICS Assignments/PASS3/PASS3/obj/Debug/netcoreapp3.1/PASS3.genruntimeconfig.cache

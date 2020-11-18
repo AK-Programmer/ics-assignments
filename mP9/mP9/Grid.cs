@@ -16,7 +16,11 @@ namespace mP9
         const int NUM_OBSTACLES = 2;
 
         //Store the positions of the player and goal
-        int playerPos, goalPos;
+        private int playerPos, goalPos;
+
+        //Keeps track of the player's position after being moved according to the inputted sequence
+        private int tempPlayerPos;
+
         //Array to store the obstacles
         Obstacle[] obstacles = new Obstacle[NUM_OBSTACLES];
 
@@ -36,8 +40,8 @@ namespace mP9
         //Description: this function carries out the user's sequences of moves, and 
         public bool CheckWin(SequenceQueue moveSequence)
         {
-            //Keeps track of the player's position after being moved according to the inputted sequence
-            int potentialPlayerPos =  playerPos;
+            
+            tempPlayerPos = playerPos;
 
             //Keeps track of the next character in the queue
             char nextMove;
@@ -54,16 +58,16 @@ namespace mP9
                 switch(nextMove)
                 {
                     case 'w':
-                        potentialPlayerPos -= COLS;
+                        tempPlayerPos -= COLS;
                         break;
                     case 's':
-                        potentialPlayerPos += COLS;
+                        tempPlayerPos += COLS;
                         break;
                     case 'a':
-                        potentialPlayerPos -= 1;
+                        tempPlayerPos -= 1;
                         break;
                     case 'd':
-                        potentialPlayerPos += 1;
+                        tempPlayerPos += 1;
                         break;
                     default:
                         throw new ArgumentException("This sequence is invalid.");
@@ -72,13 +76,16 @@ namespace mP9
                 //If the potential position is less than zero and greater than the maximum position, it's out of bounds.
                 //If the player was on the left edge before being moved by nextMove and the user tried moving it further left, it's out of bounds
                 //If the player was on the right edge before being moved by nextMove and the user tried moving it further right, it's out of bounds.
-                if((potentialPlayerPos < 0 && potentialPlayerPos >= ROWS * COLS) || ((potentialPlayerPos + 1) % COLS == 0 && nextMove == 'a') || (potentialPlayerPos % 5 == 0 && nextMove == 'd'))
+                if((tempPlayerPos < 0 || tempPlayerPos >= ROWS * COLS) || ((tempPlayerPos + 1) % COLS == 0 && nextMove == 'a') || (tempPlayerPos % 5 == 0 && nextMove == 'd'))
                 {
+                    //Moving the  player piece completely off the screen to indicate that they went out of bounds
+                    tempPlayerPos = -1;
+
                     throw new ArgumentException("This sequence of moves would make the player go out of bounds!");
                 }
 
                 //If the player's newly incremented position is equal to the position of the goal, they have won, so return true.
-                if(potentialPlayerPos == goalPos)
+                if(tempPlayerPos == goalPos)
                 {
                     return true;
                 }
@@ -87,9 +94,9 @@ namespace mP9
                 for(int j = 0; j < obstacles.Length; j++)
                 {
                     //If the player has touched the obstacle, make it visible and throw an exception. 
-                    if(potentialPlayerPos == obstacles[j].GetPos())
+                    if(tempPlayerPos == obstacles[j].GetPos())
                     {
-                        obstacles[j].ToggleVisibility();
+                        obstacles[j].makeVisible();
 
                         throw new ArgumentException("You ran into an obstacle!");
                     }
@@ -104,10 +111,12 @@ namespace mP9
         //Pre: none
         //Post: none
         //Description: This method displays the game grid
-        public void DisplayGrid()
+        public void DisplayGrid(bool usePlayerPos)
         {
             //The string that will be displayed in each slot
             string stringToDisplay;
+
+            int playerPos = usePlayerPos ? this.playerPos : tempPlayerPos;
 
             Console.WriteLine("--------------------------");
 
