@@ -1,0 +1,12 @@
+/Users/adarkahiri/ICS Assignments/MP2/MP2/bin/Debug/netcoreapp3.1/MP2.deps.json
+/Users/adarkahiri/ICS Assignments/MP2/MP2/bin/Debug/netcoreapp3.1/MP2.runtimeconfig.json
+/Users/adarkahiri/ICS Assignments/MP2/MP2/bin/Debug/netcoreapp3.1/MP2.runtimeconfig.dev.json
+/Users/adarkahiri/ICS Assignments/MP2/MP2/bin/Debug/netcoreapp3.1/MP2.dll
+/Users/adarkahiri/ICS Assignments/MP2/MP2/bin/Debug/netcoreapp3.1/MP2.pdb
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.csprojAssemblyReference.cache
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.AssemblyInfoInputs.cache
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.AssemblyInfo.cs
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.csproj.CoreCompileInputs.cache
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.dll
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.pdb
+/Users/adarkahiri/ICS Assignments/MP2/MP2/obj/Debug/netcoreapp3.1/MP2.genruntimeconfig.cache
