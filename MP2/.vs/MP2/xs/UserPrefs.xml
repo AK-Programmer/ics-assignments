@@ -1,8 +1,9 @@
 ﻿<Properties StartupConfiguration="{589205FC-B6CC-4C50-A9C1-C6C295617D33}|Default">
-  <MonoDevelop.Ide.ItemProperties.MP2 FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.MP2 PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="MP2/Program.cs">
     <Files>
-      <File FileName="MP2/Program.cs" Line="1" Column="1" />
+      <File FileName="MP2/Program.cs" Line="11" Column="17" />
+      <File FileName="MP2/MP2.csproj" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

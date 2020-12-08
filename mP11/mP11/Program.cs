@@ -8,7 +8,6 @@
 using System;
 using System.Diagnostics;
 
-
 namespace mP11
 {
     class Program
@@ -17,35 +16,81 @@ namespace mP11
 
         static void Main(string[] args)
         {
-            int fibNum;
+            //The index of the desired fibonacci number
+            int fibNumIndex;
+            //UInt64 in order to store very large positive integers
+            UInt64 fibNum;
+            string userInput;
 
-            //Resetting and starting the timer
-            stopWatch.Reset();
-            stopWatch.Start();
+            //This loop keeps asking the users for indices until they decide to quit
+            while(true)
+            {
+                Console.Clear();
+                Console.WriteLine("FIBONACCI NUMBER CALCULATOR\n------------------------------------\nEnter a positive integer to calculate the fibonacci number at that index, or 'q' to quit.");
 
-            fibNum = CalcFib(46);
-            //Stopping the timer as soon as the Fibonacci number is calculated
-            stopWatch.Stop();
+                userInput = Console.ReadLine();
 
-            Console.WriteLine(fibNum);
+                //Break the loop if the user decides to quit
+                if(userInput == "q")
+                {
+                    break;
+                }
+                //Otherwise, check if their input is valid, and if so, calculate the fibonacci number at that index
+                else
+                {
+                    try
+                    {
+                        fibNumIndex = Convert.ToInt32(userInput);
 
-            //Printing how long it took to calculate the fibonacci number
-            Console.WriteLine(GetTimeOutput(stopWatch));
+                        if(fibNumIndex < 0)
+                        {
+                            Console.WriteLine("Only positive integers are allowed. Press ENTER to try again.");
+                        }
+                        else
+                        {
+                            //Resetting and starting the timer
+                            stopWatch.Reset();
+                            stopWatch.Start();
 
-            Console.WriteLine(MysterySub(6, 2, 5));
+                            fibNum = CalcFib(fibNumIndex);
+                            //Stopping the timer as soon as the Fibonacci number is calculated
+                            stopWatch.Stop();
+                            Console.WriteLine(fibNum);
+
+                            //Printing how long it took to calculate the fibonacci number
+                            Console.WriteLine(GetTimeOutput(stopWatch));
+
+                        }
+
+                    }
+                    catch(FormatException)
+                    {
+                        Console.WriteLine("That's not a valid input. Press ENTER to try again.");
+                    }
+
+                    Console.ReadLine();
+                }
+            }
+            
+
         }
 
         //Pre: must be a positive integer
         //Post: returns the sum of the previous two Fibonacci numbers.
         //Description: this method recursively calculates the value of the nth fibonacci number.
-        public static int CalcFib(int n)
+        public static UInt64 CalcFib(int n)
         {
-            //If n = 1 or n = 2, then the nth fibonacci number is 1 (the fibonacci sequence starts with 1 as its first 2 numbers)
-            if (n <= 2)
+            //The 0th term of the sequence is zero
+            if(n == 0)
+            {
+                return 0;
+            }
+            //The 1st term is one
+            else if (n == 1)
             {
                 return 1;
             }
-            //Otherwise, recursively return the previous two fibonacci numbers. Those function calls will also recursively return the previous two, until n = 2 or n = 1.
+            //The rest of the terms are the sum of the previous two terms
             else
             {
                 return CalcFib(n - 1) + CalcFib(n - 2);
@@ -54,7 +99,7 @@ namespace mP11
 
         //Pre: must be a valid Stopwatch object
         //Post: returns how much time has elapsed in a nicely formatted fashion
-        //Descrption: This method returns the days, hours, minutes, seconds, and milliseconds that the given timer was running for
+        //Descrption: This method returnss the days, hours, minutes, seconds, and milliseconds that the given timer was running for
         public static string GetTimeOutput(Stopwatch timer)
         {
             TimeSpan ts = timer.Elapsed;
@@ -70,20 +115,5 @@ namespace mP11
                                                                       seconds + "." +
                                                                       millis;
         }
-
-        public static int MysterySub(int a, int b, int c)
-        {
-            if (a <= 3)
-            {
-                return b;
-            }
-            else
-            {
-                return c + MysterySub(a - 2, b, c);
-            }
-        }
-
-
     }
-
 }
