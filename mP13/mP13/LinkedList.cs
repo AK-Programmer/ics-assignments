@@ -3,9 +3,9 @@ namespace mP13
 {
     public class LinkedList<T>
     {
-        int listLength;
+        private int listLength;
+        private  Comparison greaterThan;
         Node<T> head;
-        Comparison greaterThan;
 
         public LinkedList(Comparison greaterThan)
         {
@@ -18,7 +18,7 @@ namespace mP13
 
             Node<T> node = new Node<T>(data);
 
-            Node<T> lastNode = QueryList( n => n.NextNode == null || n == null);
+            Node<T> lastNode = GetTail();
 
             if(lastNode == null)
             {
@@ -55,14 +55,17 @@ namespace mP13
         }
 
 
-        public void Delete(Node<T> node)
+        public bool Delete(Func<Node<T>, bool> query)
         {
-            Node<T> nodeBefore = QueryList(n => n.NextNode == node);
+            Node<T> nodeBefore = QueryList(node => query(node.NextNode));
             if(nodeBefore != null)
             {
-                nodeBefore.NextNode = node.NextNode;
+                nodeBefore.NextNode = nodeBefore.NextNode.NextNode;
                 listLength--;
+                return true;
             }
+
+            return false;
         }
 
         public Node<T> QueryList(Func<Node<T>,bool> queryCondition)
@@ -95,12 +98,31 @@ namespace mP13
                 printNode(currentNode);
                 currentNode = currentNode.NextNode;
             }
-
             Console.WriteLine("");
         }
 
+        public Node<T> GetTail()
+        {
+            return QueryList((node) => node.NextNode == null || node == null);
+        }
+
+        public int GetLength()
+        {
+            return listLength;
+        }
+
         public delegate bool Comparison(T data1, T data2);
+    }
 
 
+    public class Node<T>
+    {
+        public T Data { get; set; }
+        public Node<T> NextNode { get; set; }
+
+        public Node(T data)
+        {
+            Data = data;
+        }
     }
 }
