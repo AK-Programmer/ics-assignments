@@ -18,22 +18,30 @@ namespace PASS4
 {
     public class GameEntity
     {
+        public enum CollisionType
+        {
+            SideCollision,
+            BottomCollision,
+            TopCollision,
+            NoCollision = -1
+        };
 
-        private const float GRAVITY = 0.8f;
-        private Texture2D sprite;
-        private Rectangle destRec;
-        private Rectangle srcRec;
+        protected const float GRAVITY = 0.8f;
+        protected Texture2D sprite;
+        protected Rectangle destRec;
+        protected Rectangle srcRec;
         Vector2 pos;
         public Vector2 speed = new Vector2(0, 0);
         private string assetDirPath;
         public bool standingOnGround = true;
+        protected bool facingRight = true;
+        private CollisionType collisionType;
 
         public GameEntity(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
             this.sprite = sprite;
             this.destRec = destRec;
             this.srcRec = srcRec;
-            this.assetDirPath = assetDirPath;
 
             pos.X = destRec.X;
             pos.Y = destRec.Y;
@@ -41,8 +49,17 @@ namespace PASS4
         }
 
 
-        public void Update()
+        public virtual void Update(params Rectangle[] terrain)
         {
+            if(speed.X < 0)
+            {
+                facingRight = false;
+            }
+            else if (speed.X > 0)
+            {
+                facingRight = true;
+            }
+
             if (speed.Y != 0 || !standingOnGround)
             {
                 speed.Y += GRAVITY;
@@ -50,12 +67,18 @@ namespace PASS4
 
 
             //Collision detection here
-            if (pos.Y + destRec.Height >= 420)
+            for(int i = 0; i < terrain.Length; i++)
             {
-                speed.Y = 0;
-                pos.Y--;
-                standingOnGround = true;
+                collisionType = Main.CheckCollision(destRec, terrain[i]);
+
+                if (collisionType == CollisionType.BottomCollision)
+                {
+                    speed.Y = 0;
+                    pos.Y--;
+                    standingOnGround = true;
+                }
             }
+            
 
             //Updating entity's position (updating its position vector, then setting the destination rectangle's location to that vector (casted as int)
             pos.X += speed.X;
@@ -64,7 +87,7 @@ namespace PASS4
             destRec.Y = (int) pos.Y;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, destRec, srcRec, Color.White);
         }

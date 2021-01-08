@@ -53,3 +53,5 @@
 /Users/adarkahiri/ICS Assignments/PASS4/PASS4/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/soft_oal.dll
 /Users/adarkahiri/ICS Assignments/PASS4/PASS4/obj/Debug/netcoreapp3.1/PASS4.csproj.CopyComplete
 /Users/adarkahiri/ICS Assignments/PASS4/PASS4/obj/Debug/netcoreapp3.1/PASS4.genruntimeconfig.cache
+/Users/adarkahiri/ICS Assignments/PASS4/PASS4/bin/Debug/netcoreapp3.1/Content/Images/Sprites/Player/Jump (78x58).xnb
+/Users/adarkahiri/ICS Assignments/PASS4/PASS4/bin/Debug/netcoreapp3.1/Content/Images/Sprites/Player/Run (78x58).xnb
