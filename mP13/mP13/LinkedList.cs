@@ -54,6 +54,10 @@ namespace mP13
             listLength++;
         }
 
+        public Node<T> GetHead()
+        {
+            return head;
+        }
 
         public bool Delete(Func<Node<T>, bool> query)
         {

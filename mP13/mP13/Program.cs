@@ -86,7 +86,7 @@ namespace mP13
 
             Console.Clear();
             Console.WriteLine("Enter the ID of the employee you'd like to delete: ");
-            employeeID = GetInput();
+            employeeID = GetInput("ID must be a positive integer");
             userDeleted = employeeLinkedList.Delete(node => node.Data.EmployeeID == employeeID);
 
             if (userDeleted)
