@@ -1,0 +1,5 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Fonts/GameFont.spritefont","/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Fonts/TitleFont.xnb","FontDescriptionProcessor","SpriteFontContent",2010,70690,0.409233
+"/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Level Assets/Terrain (32x32).png","/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Images/Sprites/Level Assets/Terrain (32x32).xnb","TextureProcessor","Texture2DContent",22886,1011797,0.116697
+"/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Player/Idle.png","/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Images/Sprites/Player/Idle.xnb","TextureProcessor","Texture2DContent",2822,199141,0.046598
+"/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Player/Idle/Idle 1.png","/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Images/Sprites/Player/Idle/Idle 1.xnb","TextureProcessor","Texture2DContent",1430,3933,0.01001
