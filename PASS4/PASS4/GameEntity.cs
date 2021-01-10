@@ -35,7 +35,7 @@ namespace PASS4
 
         //Physics-related variables
         protected const float GRAVITY = 0.8f;
-        protected Vector2 velocity = new Vector2(0, 0);
+        public Vector2 velocity = new Vector2(0, 0);
         public CollisionType terrainCollision;
 
         public GameEntity(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
@@ -55,13 +55,15 @@ namespace PASS4
             //Gravity
             velocity.Y += GRAVITY;
 
+
             //Collision detection (terrain)
+            terrainCollision = CollisionType.NoCollision;
+
             for (int i = 0; i < terrain.Length; i++)
             {
                 HandleTerrainCollision(terrain[i]);
             }
 
-            
         }
 
 
@@ -78,7 +80,7 @@ namespace PASS4
                 int minDist = Math.Abs(destRec.Y + destRec.Height - otherDestRec.Y);
 
                 //Checking top collision
-                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) < minDist)
+                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) < minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 4)
                 {
                     return CollisionType.TopCollision;
                 }
@@ -103,14 +105,14 @@ namespace PASS4
 
         protected void HandleTerrainCollision(Rectangle terrainDestRec)
         {
-            CollisionType collisionType = GetCollisionType(terrainDestRec);
+            terrainCollision = GetCollisionType(terrainDestRec);
 
-            if (collisionType == CollisionType.TopCollision)
+            if (terrainCollision == CollisionType.TopCollision)
             {
                 pos.Y = terrainDestRec.Y + terrainDestRec.Height + 1;
-                velocity.Y = 0;
+                velocity.Y = 0.1f;
             }
-            else if (collisionType == CollisionType.BottomCollision)
+            else if (terrainCollision == CollisionType.BottomCollision)
             {
                 pos.Y = terrainDestRec.Y - destRec.Height + 1;
                 if (velocity.Y > 0)
@@ -118,12 +120,12 @@ namespace PASS4
                     velocity.Y = 0;
                 }
             }
-            else if(collisionType == CollisionType.RightCollision)
+            else if(terrainCollision == CollisionType.RightCollision)
             {
                 pos.X = terrainDestRec.X - destRec.Width - 1;
                 velocity.X = 0;
             }
-            else if(collisionType == CollisionType.LeftCollision)
+            else if(terrainCollision == CollisionType.LeftCollision)
             {
                 pos.X = terrainDestRec.X + terrainDestRec.Width + 1;
                 velocity.X = 0;

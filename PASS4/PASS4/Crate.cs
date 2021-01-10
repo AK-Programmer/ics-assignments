@@ -22,7 +22,6 @@ namespace PASS4
                 if (entities[i] != this)
                 {
                     entityCollision = GetCollisionType(entities[i].GetDestRec());
-                    Console.WriteLine(entityCollision);
 
                     if (entityCollision == CollisionType.BottomCollision)
                     {
@@ -30,11 +29,18 @@ namespace PASS4
                         if (velocity.Y > 0)
                         {
                             velocity.Y = 0;
+                            if(entities[i].GetVelocity().X != 0)
+                            {
+                                velocity.X = entities[i].GetVelocity().X;
+                            }
+                            break;
+
                         }
                     }
-                    else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
+                    else if ((entityCollision == CollisionType.LeftCollision && entities[i].GetVelocity().X > 0)|| (entityCollision == CollisionType.RightCollision && entities[i].GetVelocity().X < 0))
                     {
                         velocity.X = entities[i].GetVelocity().X;
+                        break;
                     }
                     else
                     {

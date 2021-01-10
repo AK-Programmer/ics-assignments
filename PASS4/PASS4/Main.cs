@@ -48,7 +48,7 @@ namespace PASS4
 
         //Game Entities
         private Player player;
-        private Crate crate;
+        private Crate [] crates;
         private GameEntity[] entities;
 
         //Game Constants
@@ -57,9 +57,10 @@ namespace PASS4
 
         //Destination rectangles for Terrain
         Rectangle destRecFloatingPlatform = new Rectangle(200, 250, 250, 30);
-        Rectangle crateDestRec = new Rectangle(250, 100, 63, 48);
+        Rectangle [] crateDestRecs = new Rectangle[] { new Rectangle(230, 100, 63, 48), new Rectangle(294, 100, 63, 48)};
+
         //Terrain rectangle array
-        private Rectangle[] terrainRecs = new Rectangle[] { new Rectangle(0, 420, 231, 72), new Rectangle(231, 370, 231, 72), new Rectangle(462, 420, 231, 72), new Rectangle(693, 420, 231, 72), new Rectangle(924, 420, 231, 72), new Rectangle(200, 250, 250, 30) };
+        private Rectangle[] terrainRecs = new Rectangle[] { new Rectangle(0, 420, 231, 72), new Rectangle(231, 420, 231, 72), new Rectangle(462, 420, 231, 72), new Rectangle(693, 420, 231, 72), new Rectangle(924, 420, 231, 72), new Rectangle(200, 250, 250, 30) };
         
 
         public Main()
@@ -94,15 +95,28 @@ namespace PASS4
             playerSprites.Add("jump", jumpSprite);
             playerSprites.Add("run", runSprite);
             playerSprites.Add("fall", fallSprite);
-
+            
             //Adding locations of all images in terrain sprite to terrain dictionary
             terrainCoords.Add("floor", new Rectangle(41, 32, 77, 24));
             terrainCoords.Add("floating platform", new Rectangle(41, 32, 78, 9));
 
             player = new Player(idleSprite, new Rectangle(50, 368, 74, 52), new Rectangle(9, 17, 37, 26), playerSprites);
-            crate = new Crate(crateSprite, new Rectangle(250, 100, 63, 48), new Rectangle(0,0, 21, 16));
 
-            entities = new GameEntity[] { player, crate };
+            crates = new Crate[crateDestRecs.Length];
+
+            for(int i = 0; i < crateDestRecs.Length; i++)
+            {
+                crates[i] = new Crate(crateSprite, crateDestRecs[i], new Rectangle(0, 0, 21, 16));
+            }
+
+            
+
+            entities = new GameEntity[crates.Length + 1];
+            entities[0] = player;
+            for(int i = 1; i < entities.Length; i++)
+            {
+                entities[i] = crates[i - 1];
+            }
 
         }
 
@@ -111,7 +125,7 @@ namespace PASS4
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && player.velocity.Y == 0 )
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && player.velocity.Y == 0)
             {
                 player.velocity.Y = Player.JUMP_SPEED;
             }
@@ -128,8 +142,11 @@ namespace PASS4
                 player.velocity.X = 0.0f;
             }
 
-            player.Update(terrainRecs, entities);
-            crate.Update(terrainRecs, entities);
+            for(int i = 0; i < entities.Length; i++)
+            {
+                entities[i].Update(terrainRecs, entities);
+            }
+
             base.Update(gameTime);
         }
 
@@ -147,8 +164,10 @@ namespace PASS4
 
             _spriteBatch.Draw(terrainSprite, destRecFloatingPlatform, terrainCoords["floating platform"], Color.White);
 
-            player.Draw(_spriteBatch);
-            crate.Draw(_spriteBatch);
+            for(int i = 0; i < entities.Length; i++)
+            {
+                entities[i].Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
 

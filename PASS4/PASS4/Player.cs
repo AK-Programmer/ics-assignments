@@ -33,13 +33,13 @@ namespace PASS4
 
             base.Update(terrain, entities);
 
-            //Collision detection (other entities)
+            //Collision detection (with other entities)
             for (int i = 0; i < entities.Length; i++)
             {
                 if (entities[i] != this)
                 {
                     entityCollision = GetCollisionType(entities[i].GetDestRec());
-                    
+                    //Console.WriteLine(entityCollision);
                     if (entityCollision == CollisionType.BottomCollision)
                     {
                         pos.Y = entities[i].GetDestRec().Y - entities[i].GetDestRec().Height + 1;
