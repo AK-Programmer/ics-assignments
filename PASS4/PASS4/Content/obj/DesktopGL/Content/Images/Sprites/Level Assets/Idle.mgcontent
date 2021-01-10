@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/../../../../Downloads/Kings and Pigs/Sprites/01-King Human/Idle.png</SourceFile>
-  <SourceTime>2019-10-14T20:26:48-04:00</SourceTime>
-  <DestFile>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Images/Sprites/Player/Idle.xnb</DestFile>
-  <DestTime>2021-01-08T18:48:44.760021-05:00</DestTime>
+  <SourceFile>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Level Assets/Idle.png</SourceFile>
+  <SourceTime>2019-10-14T22:34:42-04:00</SourceTime>
+  <DestFile>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/bin/DesktopGL/Content/Images/Sprites/Level Assets/Idle.xnb</DestFile>
+  <DestTime>2021-01-09T19:22:33.8822529-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

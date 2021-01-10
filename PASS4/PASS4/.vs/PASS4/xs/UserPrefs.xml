@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.ItemProperties.PASS4 PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="GameEntity.cs">
     <Files>
-      <File FileName="Main.cs" Line="83" Column="1" />
-      <File FileName="GameEntity.cs" Line="31" Column="1" />
-      <File FileName="Player.cs" />
+      <File FileName="Main.cs" Line="121" Column="81" />
+      <File FileName="GameEntity.cs" Line="13" Column="17" />
+      <File FileName="Player.cs" Line="16" Column="1" />
+      <File FileName="Crate.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,8 +18,8 @@
                     <Node name="Level Assets" expanded="True" />
                   </Node>
                 </Node>
-                <Node name="Content.mgcb" selected="True" />
               </Node>
+              <Node name="GameEntity.cs" selected="True" />
             </Node>
           </Node>
         </State>

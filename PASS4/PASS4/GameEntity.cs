@@ -10,32 +10,33 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 
 
 namespace PASS4
 {
-    public class GameEntity
+    public abstract class GameEntity
     {
         public enum CollisionType
         {
-            SideCollision,
             BottomCollision,
             TopCollision,
+            LeftCollision,
+            RightCollision,
             NoCollision = -1
         };
 
-        protected const float GRAVITY = 0.8f;
+        
+        //Graphics-related variables
         protected Texture2D sprite;
         protected Rectangle destRec;
         protected Rectangle srcRec;
-        Vector2 pos;
-        public Vector2 speed = new Vector2(0, 0);
-        private string assetDirPath;
-        public bool standingOnGround = true;
+        protected Vector2 pos;
         protected bool facingRight = true;
-        private CollisionType collisionType;
+
+        //Physics-related variables
+        protected const float GRAVITY = 0.8f;
+        protected Vector2 velocity = new Vector2(0, 0);
+        public CollisionType terrainCollision;
 
         public GameEntity(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
@@ -45,52 +46,101 @@ namespace PASS4
 
             pos.X = destRec.X;
             pos.Y = destRec.Y;
-            //Loading graphics data
+
         }
 
 
-        public virtual void Update(params Rectangle[] terrain)
+        public virtual void Update(Rectangle[] terrain, GameEntity[] entities)
         {
-            if(speed.X < 0)
-            {
-                facingRight = false;
-            }
-            else if (speed.X > 0)
-            {
-                facingRight = true;
-            }
+            //Gravity
+            velocity.Y += GRAVITY;
 
-            if (speed.Y != 0 || !standingOnGround)
+            //Collision detection (terrain)
+            for (int i = 0; i < terrain.Length; i++)
             {
-                speed.Y += GRAVITY;
+                HandleTerrainCollision(terrain[i]);
             }
 
-
-            //Collision detection here
-            for(int i = 0; i < terrain.Length; i++)
-            {
-                collisionType = Main.CheckCollision(destRec, terrain[i]);
-
-                if (collisionType == CollisionType.BottomCollision)
-                {
-                    speed.Y = 0;
-                    pos.Y--;
-                    standingOnGround = true;
-                }
-            }
             
-
-            //Updating entity's position (updating its position vector, then setting the destination rectangle's location to that vector (casted as int)
-            pos.X += speed.X;
-            destRec.X = (int) pos.X;
-            pos.Y += speed.Y;
-            destRec.Y = (int) pos.Y;
         }
+
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, destRec, srcRec, Color.White);
         }
+
+        protected CollisionType GetCollisionType(Rectangle otherDestRec)
+        {
+            if (destRec.Intersects(otherDestRec))
+            {
+                //This variable stores the minimum distance destRec would need to move along the y-axis to un-intersect its bottom side
+                int minDist = Math.Abs(destRec.Y + destRec.Height - otherDestRec.Y);
+
+                //Checking top collision
+                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) < minDist)
+                {
+                    return CollisionType.TopCollision;
+                }
+                //Checking right collision
+                else if (Math.Abs(destRec.X + destRec.Width - otherDestRec.X) < minDist)
+                {
+                    return CollisionType.RightCollision;
+                }
+                //Checking left collision
+                else if (Math.Abs(otherDestRec.X + otherDestRec.Width - destRec.X) < minDist)
+                {
+                    return CollisionType.LeftCollision;
+                }
+                //Otherwise, the bottom of destRec is closest to destRec, so un-intersect the bottom
+                else
+                {
+                    return CollisionType.BottomCollision;
+                }
+            }
+            return CollisionType.NoCollision;
+        }
+
+        protected void HandleTerrainCollision(Rectangle terrainDestRec)
+        {
+            CollisionType collisionType = GetCollisionType(terrainDestRec);
+
+            if (collisionType == CollisionType.TopCollision)
+            {
+                pos.Y = terrainDestRec.Y + terrainDestRec.Height + 1;
+                velocity.Y = 0;
+            }
+            else if (collisionType == CollisionType.BottomCollision)
+            {
+                pos.Y = terrainDestRec.Y - destRec.Height + 1;
+                if (velocity.Y > 0)
+                {
+                    velocity.Y = 0;
+                }
+            }
+            else if(collisionType == CollisionType.RightCollision)
+            {
+                pos.X = terrainDestRec.X - destRec.Width - 1;
+                velocity.X = 0;
+            }
+            else if(collisionType == CollisionType.LeftCollision)
+            {
+                pos.X = terrainDestRec.X + terrainDestRec.Width + 1;
+                velocity.X = 0;
+            }
+        }
+
+        public Rectangle GetDestRec()
+        {
+            return destRec;
+        }
+
+        public Vector2 GetVelocity()
+        {
+            return velocity;
+        }
+
+
 
 
     }
