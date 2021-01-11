@@ -1,4 +1,11 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Main.cs
+//Project Name: PASS4
+//Creation Date: Jan 7, 2021
+//Modified Date: Jan 22, 2021
+/* Description: This class stores the properties and functions of the player. It inherits the GameEntity class
+ */
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

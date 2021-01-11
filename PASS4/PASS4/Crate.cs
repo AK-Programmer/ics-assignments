@@ -23,7 +23,6 @@ namespace PASS4
                 if (entities[i] != this)
                 {
                     entityCollision = GetCollisionType(entities[i].GetDestRec());
-                    Console.WriteLine(entityCollision);
 
                     if (entityCollision == CollisionType.BottomCollision)
                     {

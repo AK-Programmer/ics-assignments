@@ -76,7 +76,7 @@ namespace PASS4
                     return CollisionType.LeftCollision;
                 }
                 //Checking top collision
-                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) == minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 4)
+                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) == minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 3)
                 {
                     return CollisionType.TopCollision;
                 }
