@@ -60,8 +60,11 @@ namespace PASS4
         Rectangle [] crateDestRecs = new Rectangle[] { new Rectangle(230, 100, 63, 48), new Rectangle(294, 100, 63, 48)};
 
         //Terrain rectangle array
-        private Rectangle[] terrainRecs = new Rectangle[] { new Rectangle(0, 420, 231, 72), new Rectangle(231, 420, 231, 72), new Rectangle(462, 420, 231, 72), new Rectangle(693, 420, 231, 72), new Rectangle(924, 420, 231, 72), new Rectangle(200, 250, 250, 30) };
-        
+        private Rectangle[] terrainRecs = new Rectangle[] { new Rectangle(0, 420, 231, 72), new Rectangle(231, 420, 231, 72), new Rectangle(462, 420, 231, 72), new Rectangle(693, 370, 231, 72), new Rectangle(924, 420, 231, 72), new Rectangle(200, 250, 250, 30) };
+
+        //Game variables
+        private int numKeys;
+        private int numGems;
 
         public Main()
         {

@@ -14,7 +14,8 @@ namespace PASS4
         {
             CollisionType entityCollision;
 
-            base.Update(terrain, entities);
+            //Gravity
+            velocity.Y += GRAVITY;
 
             //Collision detection (other entities)
             for (int i = 0; i < entities.Length; i++)
@@ -22,6 +23,7 @@ namespace PASS4
                 if (entities[i] != this)
                 {
                     entityCollision = GetCollisionType(entities[i].GetDestRec());
+                    Console.WriteLine(entityCollision);
 
                     if (entityCollision == CollisionType.BottomCollision)
                     {
@@ -33,14 +35,15 @@ namespace PASS4
                             {
                                 velocity.X = entities[i].GetVelocity().X;
                             }
-                            break;
+                            //break;
 
                         }
                     }
-                    else if ((entityCollision == CollisionType.LeftCollision && entities[i].GetVelocity().X > 0)|| (entityCollision == CollisionType.RightCollision && entities[i].GetVelocity().X < 0))
+                    else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
                     {
-                        velocity.X = entities[i].GetVelocity().X;
-                        break;
+                        //velocity.X = entities[i].GetVelocity().X;
+                        HandleTerrainCollision(entities[i].GetDestRec());
+                        //break;
                     }
                     else
                     {
@@ -48,6 +51,13 @@ namespace PASS4
                     }
 
                 }
+            }
+
+            //Collision detection (terrain)
+
+            for (int i = 0; i < terrain.Length; i++)
+            {
+                HandleTerrainCollision(terrain[i]);
             }
 
             //Updating crate's position based on its velocity

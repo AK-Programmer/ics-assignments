@@ -31,7 +31,8 @@ namespace PASS4
         {
             CollisionType entityCollision;
 
-            base.Update(terrain, entities);
+            //Gravity
+            velocity.Y += GRAVITY;
 
             //Collision detection (with other entities)
             for (int i = 0; i < entities.Length; i++)
@@ -47,9 +48,24 @@ namespace PASS4
                         {
                             velocity.Y = 0;
                         }
+
+                        break;
+                    }
+                    else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
+                    {
+                        HandleTerrainCollision(entities[i].GetDestRec());
+                        break;
                     }
 
                 }
+            }
+
+            //Collision detection (with terrain)
+            terrainCollision = CollisionType.NoCollision;
+
+            for (int i = 0; i < terrain.Length; i++)
+            {
+                HandleTerrainCollision(terrain[i]);
             }
 
             if (velocity.X < 0)

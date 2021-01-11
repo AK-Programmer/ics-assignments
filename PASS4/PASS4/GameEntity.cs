@@ -50,21 +50,7 @@ namespace PASS4
         }
 
 
-        public virtual void Update(Rectangle[] terrain, GameEntity[] entities)
-        {
-            //Gravity
-            velocity.Y += GRAVITY;
-
-
-            //Collision detection (terrain)
-            terrainCollision = CollisionType.NoCollision;
-
-            for (int i = 0; i < terrain.Length; i++)
-            {
-                HandleTerrainCollision(terrain[i]);
-            }
-
-        }
+        public abstract void Update(Rectangle[] terrain, GameEntity[] entities);
 
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -77,23 +63,24 @@ namespace PASS4
             if (destRec.Intersects(otherDestRec))
             {
                 //This variable stores the minimum distance destRec would need to move along the y-axis to un-intersect its bottom side
-                int minDist = Math.Abs(destRec.Y + destRec.Height - otherDestRec.Y);
+                int minDist = Math.Min(Math.Abs(destRec.Y + destRec.Height - otherDestRec.Y), Math.Min(Math.Abs(destRec.X + destRec.Width - otherDestRec.X), Math.Min(Math.Abs(otherDestRec.X + otherDestRec.Width - destRec.X), Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y))));
 
-                //Checking top collision
-                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) < minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 4)
-                {
-                    return CollisionType.TopCollision;
-                }
                 //Checking right collision
-                else if (Math.Abs(destRec.X + destRec.Width - otherDestRec.X) < minDist)
+                if (Math.Abs(destRec.X + destRec.Width - otherDestRec.X) == minDist)
                 {
                     return CollisionType.RightCollision;
                 }
                 //Checking left collision
-                else if (Math.Abs(otherDestRec.X + otherDestRec.Width - destRec.X) < minDist)
+                else if (Math.Abs(otherDestRec.X + otherDestRec.Width - destRec.X) == minDist)
                 {
                     return CollisionType.LeftCollision;
                 }
+                //Checking top collision
+                if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) == minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 4)
+                {
+                    return CollisionType.TopCollision;
+                }
+                
                 //Otherwise, the bottom of destRec is closest to destRec, so un-intersect the bottom
                 else
                 {
@@ -106,7 +93,6 @@ namespace PASS4
         protected void HandleTerrainCollision(Rectangle terrainDestRec)
         {
             terrainCollision = GetCollisionType(terrainDestRec);
-
             if (terrainCollision == CollisionType.TopCollision)
             {
                 pos.Y = terrainDestRec.Y + terrainDestRec.Height + 1;
@@ -122,7 +108,7 @@ namespace PASS4
             }
             else if(terrainCollision == CollisionType.RightCollision)
             {
-                pos.X = terrainDestRec.X - destRec.Width - 1;
+                pos.X = terrainDestRec.X - destRec.Width;
                 velocity.X = 0;
             }
             else if(terrainCollision == CollisionType.LeftCollision)
