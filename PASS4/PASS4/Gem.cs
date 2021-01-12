@@ -16,6 +16,10 @@ namespace PASS4
         private int animationCounter = 0;
         private const int DIST_BTWN_FRAMES = 18;
         private const int NUM_FRAMES = 10;
+        private float verticalVelocity = -0.3f;
+        private const float floatingSpeed = 0.3f;
+        private float floatingResistence = 0.05f;
+
 
         private bool beenCollected = false;
 
@@ -32,22 +36,34 @@ namespace PASS4
 
         public void Update(Player player, ref int numGemsCollected)
         {
-            if(destRec.Intersects(player.GetDestRec()) && !beenCollected)
+            if(!beenCollected)
             {
-                beenCollected = true;
-                numGemsCollected++;
+                if (destRec.Intersects(player.GetDestRec()))
+                {
+                    beenCollected = true;
+                    numGemsCollected++;
+                }
+                if (animationCounter == 0)
+                {
+                    srcRec.X += DIST_BTWN_FRAMES;
+
+                    srcRec.X %= DIST_BTWN_FRAMES * NUM_FRAMES;
+                }
+
+                animationCounter++;
+                animationCounter %= 7;
+
+                if (Math.Abs(verticalVelocity) > floatingSpeed)
+                {
+                    floatingResistence *= -1;
+                }
+
+                verticalVelocity += floatingResistence;
+                pos.Y += verticalVelocity;
+
+                destRec.Y = (int)pos.Y;
             }
-            if(animationCounter == 0)
-            {
-                srcRec.X += DIST_BTWN_FRAMES;
-
-                srcRec.X %= DIST_BTWN_FRAMES * NUM_FRAMES;
-
-                
-            }
-
-            animationCounter++;
-            animationCounter %= 7;
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)

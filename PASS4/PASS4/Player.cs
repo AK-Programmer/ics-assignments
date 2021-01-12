@@ -63,13 +63,11 @@ namespace PASS4
                         HandleTerrainCollision(entities[i].GetDestRec());
                         break;
                     }
-
                 }
             }
 
             //Collision detection (with terrain)
             terrainCollision = CollisionType.NoCollision;
-
             for (int i = 0; i < terrain.Length; i++)
             {
                 HandleTerrainCollision(terrain[i]);

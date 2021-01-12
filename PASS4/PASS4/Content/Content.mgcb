@@ -37,12 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:../../../../Downloads/Kings and Pigs/Sprites/08-Box/Crate.png;Images/Sprites/Level Assets/Crate.png
 
-#begin Fonts/GameFont.spritefont
+#begin Fonts/8BitFont.spritefont
 /importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
+/processor:LocalizedFontProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/GameFont.spritefont;Fonts/TitleFont.spritefont
+/build:Fonts/8BitFont.spritefont
 
 #begin Images/Sprites/Level Assets/Big Diamond Idle (18x14).png
 /importer:TextureImporter

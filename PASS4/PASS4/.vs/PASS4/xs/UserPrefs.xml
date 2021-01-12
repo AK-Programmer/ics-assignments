@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{9150E962-1F31-49D9-ADC5-B294310C1674}|Default">
   <MonoDevelop.Ide.ItemProperties.PASS4 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameEntity.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Main.cs">
     <Files>
-      <File FileName="Main.cs" Line="37" Column="22" />
-      <File FileName="GameEntity.cs" Line="27" Column="1" />
-      <File FileName="Player.cs" Line="55" Column="22" />
-      <File FileName="Crate.cs" Line="18" Column="35" />
-      <File FileName="Gem.cs" Line="5" Column="6" />
+      <File FileName="Main.cs" Line="213" Column="10" />
+      <File FileName="Player.cs" Line="8" Column="14" />
+      <File FileName="Gem.cs" Line="49" Column="1" />
+      <File FileName="GameEntity.cs" Line="79" Column="158" />
+      <File FileName="Crate.cs" Line="21" Column="36" />
+      <File FileName="Content/Fonts/8BitFont.spritefont" Line="40" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,13 +15,14 @@
           <Node name="PASS4" expanded="True">
             <Node name="PASS4" expanded="True">
               <Node name="Content" expanded="True">
+                <Node name="Fonts" expanded="True" />
                 <Node name="Images" expanded="True">
                   <Node name="Sprites" expanded="True">
                     <Node name="Level Assets" expanded="True" />
                   </Node>
                 </Node>
               </Node>
-              <Node name="GameEntity.cs" selected="True" />
+              <Node name="Main.cs" selected="True" />
             </Node>
           </Node>
         </State>

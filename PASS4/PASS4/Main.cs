@@ -17,12 +17,23 @@ namespace PASS4
 {
     public class Main : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-
         //General Constants
         const int SCREEN_W = 800;
         const int SCREEN_H = 560;
+
+        //Asset paths
+        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/Terrain (32x32)";
+        private const string IDLE_SPRITE_PATH = "Images/Sprites/Player/Idle";
+        private const string JUMP_SPRITE_PATH = "Images/Sprites/Player/Jump (78x58)";
+        private const string RUN_SPRITE_PATH = "Images/Sprites/Player/Run (78x58)";
+        private const string FALL_SPRITE_PATH = "Images/Sprites/Player/Fall (78x58)";
+        private const string CRATE_SPRITE_PATH = "Images/Sprites/Level Assets/Crate";
+        private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
+        private const string FONT_PATH = "Fonts/8BitFont";
+
+        //Graphics & Display-related objects
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
         //player sprites
         private Texture2D idleSprite;
@@ -35,14 +46,8 @@ namespace PASS4
         private Texture2D terrainSprite;
         private Texture2D gemSprite;
 
-        //Asset paths
-        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/Terrain (32x32)";
-        private const string IDLE_SPRITE_PATH = "Images/Sprites/Player/Idle";
-        private const string JUMP_SPRITE_PATH = "Images/Sprites/Player/Jump (78x58)";
-        private const string RUN_SPRITE_PATH = "Images/Sprites/Player/Run (78x58)";
-        private const string FALL_SPRITE_PATH = "Images/Sprites/Player/Fall (78x58)";
-        private const string CRATE_SPRITE_PATH = "Images/Sprites/Level Assets/Crate";
-        private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
+        //
+        private SpriteFont gameFont;
 
         //Dictionaries
         private Dictionary<string, Rectangle> terrainCoords = new Dictionary<string, Rectangle>();
@@ -95,6 +100,7 @@ namespace PASS4
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Loading all sprites
             terrainSprite = Content.Load<Texture2D>(TERRAIN_SPRITE_PATH);
             idleSprite = Content.Load<Texture2D>(IDLE_SPRITE_PATH);
             jumpSprite = Content.Load<Texture2D>(JUMP_SPRITE_PATH);
@@ -102,6 +108,9 @@ namespace PASS4
             fallSprite = Content.Load<Texture2D>(FALL_SPRITE_PATH);
             crateSprite = Content.Load<Texture2D>(CRATE_SPRITE_PATH);
             gemSprite = Content.Load<Texture2D>(GEM_SPRITE_PATH);
+
+            //Loading the game font
+            gameFont = Content.Load<SpriteFont>(FONT_PATH);
 
             //Adding various player sprites to playerSprite dictionary
             playerSprites.Add("jump", jumpSprite);
@@ -112,31 +121,31 @@ namespace PASS4
             terrainCoords.Add("floor", new Rectangle(41, 32, 77, 24));
             terrainCoords.Add("floating platform", new Rectangle(41, 32, 78, 9));
 
+            //Initializing game entities and collectibles
             player = new Player(idleSprite, new Rectangle(50, 368, 74, 52), new Rectangle(9, 17, 37, 26), playerSprites);
-
             crates = new Crate[crateDestRecs.Length];
             gems = new Gem[gemDestRecs.Length];
 
-
+            //Initializing a crate for every element in the array
             for(int i = 0; i < crateDestRecs.Length; i++)
             {
                 crates[i] = new Crate(crateSprite, crateDestRecs[i], new Rectangle(0, 0, 21, 16));
             }
 
+            //Initializing a gem for every gem in the array
             for(int i = 0; i < gemDestRecs.Length; i++)
             {
                 gems[i] = new Gem(gemSprite, gemDestRecs[i], new Rectangle(5, 2, 12, 10));
             }
 
-
-            Console.WriteLine(gems.Length);
+            //Crating the entities array to store all game entities
             entities = new GameEntity[crates.Length + 1];
             entities[0] = player;
+            //Adding the crates to the entity array
             for(int i = 1; i < entities.Length; i++)
             {
                 entities[i] = crates[i - 1];
             }
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -176,11 +185,9 @@ namespace PASS4
 
         protected override void Draw(GameTime gameTime)
         {
-            Console.WriteLine(numGemsCollected);
             GraphicsDevice.Clear(new Color(63, 56, 81));
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null);
-
 
             for(int i = 0; i < terrainRecs.Length - 1; i++)
             {
@@ -198,16 +205,17 @@ namespace PASS4
             {
                 gems[i].Draw(_spriteBatch);
             }
-
+            DrawHUD();
+            
             _spriteBatch.End();
-
 
             base.Draw(gameTime);
         }
 
-        private void DrawHUD(SpriteBatch spriteBatch)
+        private void DrawHUD()
         {
-
+            _spriteBatch.DrawString(gameFont, numGemsCollected.ToString(), new Vector2(35, 10), Color.White);
+            _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
         }
     }
 
