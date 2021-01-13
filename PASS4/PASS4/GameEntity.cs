@@ -10,6 +10,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 
 namespace PASS4
@@ -50,7 +51,7 @@ namespace PASS4
         }
 
 
-        public abstract void Update(Rectangle[] terrain, GameEntity[] entities);
+        public abstract void Update(List<Rectangle> terrain, GameEntity [] entities);
 
 
         public virtual void Draw(SpriteBatch spriteBatch)

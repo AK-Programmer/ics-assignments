@@ -56,6 +56,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Level Assets/Big Diamond Idle (18x14).png
 
+#begin Images/Sprites/Level Assets/brick wall.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Level Assets/brick wall.png
+
 #begin Images/Sprites/Level Assets/Terrain (32x32).png
 /importer:TextureImporter
 /processor:TextureProcessor

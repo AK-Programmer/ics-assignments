@@ -34,7 +34,7 @@ namespace PASS4
             this.additionalSprites = additionalSprites;
         }
 
-        public override void Update(Rectangle[] terrain, GameEntity [] entities)
+        public override void Update(List<Rectangle> terrain, GameEntity[] entities)
         {
             CollisionType entityCollision;
 
@@ -50,7 +50,7 @@ namespace PASS4
                     //Console.WriteLine(entityCollision);
                     if (entityCollision == CollisionType.BottomCollision)
                     {
-                        pos.Y = entities[i].GetDestRec().Y - entities[i].GetDestRec().Height + 1;
+                        pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
                         if (velocity.Y > 0)
                         {
                             velocity.Y = 0;
@@ -68,7 +68,7 @@ namespace PASS4
 
             //Collision detection (with terrain)
             terrainCollision = CollisionType.NoCollision;
-            for (int i = 0; i < terrain.Length; i++)
+            for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
             }

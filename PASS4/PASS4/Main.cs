@@ -12,17 +12,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
 
 namespace PASS4
 {
     public class Main : Game
     {
-        //General Constants
-        const int SCREEN_W = 800;
-        const int SCREEN_H = 560;
 
         //Asset paths
-        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/Terrain (32x32)";
+        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/brick wall";
         private const string IDLE_SPRITE_PATH = "Images/Sprites/Player/Idle";
         private const string JUMP_SPRITE_PATH = "Images/Sprites/Player/Jump (78x58)";
         private const string RUN_SPRITE_PATH = "Images/Sprites/Player/Run (78x58)";
@@ -31,9 +29,22 @@ namespace PASS4
         private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
         private const string FONT_PATH = "Fonts/8BitFont";
 
+
+        //Graphics constants
+        private const int TILE_SIZE = 74;
+        private const int NUM_TILES_W = 20;
+        private const int NUM_TILES_H = 9;
+        private const int GEM_SIZE = 30;
+        private const int CRATE_SIZE = 74;
+
+
         //Graphics & Display-related objects
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        //File IO
+        private static StreamReader readFile;
+        private static StreamWriter writeFile;
 
         //player sprites
         private Texture2D idleSprite;
@@ -46,34 +57,37 @@ namespace PASS4
         private Texture2D terrainSprite;
         private Texture2D gemSprite;
 
-        //
+        //Fonts
         private SpriteFont gameFont;
 
         //Dictionaries
         private Dictionary<string, Rectangle> terrainCoords = new Dictionary<string, Rectangle>();
         private Dictionary<string, Texture2D> playerSprites = new Dictionary<string, Texture2D>();
 
+        //Destination rectangles for terrain, crates, collectibles, etc.
+        private List<Rectangle> terrainRecs = new List<Rectangle>();
+        private List<Rectangle> crateDestRecs = new List<Rectangle>();
+        private List<Rectangle> gemDestRecs = new List<Rectangle>();
+        private List<Rectangle> keyDestRecs = new List<Rectangle>();
+        private List<Rectangle> spikeDestRecs = new List<Rectangle>();
+        private List<Rectangle> doorDestRecs = new List<Rectangle>();
+        private Rectangle playerDestRec;
+        private Rectangle flagPoleDestRec;
+
         //Game Entities
         private Player player;
         private Crate [] crates;
+        //Stores both the player and crates for easy iteration
         private GameEntity[] entities;
 
-        //Collectibles
+        //Collectibles and spikes
         private Gem[] gems;
+        private Spike[] spikes;
 
-
-        //Game Constants
-        //Floor height
-        private const int FLOOR_H = 420;
-
-        //Destination rectangles for terrain, crates, and collectibles
-        Rectangle destRecFloatingPlatform = new Rectangle(200, 250, 250, 30);
-        Rectangle [] crateDestRecs = new Rectangle[] { new Rectangle(230, 100, 63, 48), new Rectangle(294, 100, 63, 48)};
-        Rectangle[] gemDestRecs = new Rectangle[] { new Rectangle(10, 385, 36, 30) };
-
-
-        //Terrain rectangle array
-        private Rectangle[] terrainRecs = new Rectangle[] { new Rectangle(0, 420, 231, 72), new Rectangle(231, 420, 231, 72), new Rectangle(462, 420, 231, 72), new Rectangle(693, 370, 231, 72), new Rectangle(924, 420, 231, 72), new Rectangle(200, 250, 250, 30) };
+        //Source rectangles
+        private Rectangle crateSrcRec = new Rectangle(0, 0, 21, 16);
+        private Rectangle playerSrcRec = new Rectangle(9, 17, 37, 26);
+        private Rectangle gemSrcRec = new Rectangle(5, 2, 12, 10);
 
         //Game variables
         private int numKeysCollected = 0;
@@ -88,8 +102,8 @@ namespace PASS4
 
         protected override void Initialize()
         {
-            this._graphics.PreferredBackBufferWidth = SCREEN_W;
-            this._graphics.PreferredBackBufferHeight = SCREEN_H;
+            this._graphics.PreferredBackBufferWidth = TILE_SIZE * NUM_TILES_W;
+            this._graphics.PreferredBackBufferHeight = TILE_SIZE * NUM_TILES_H;
             _graphics.PreferMultiSampling = false;
             this._graphics.ApplyChanges();
 
@@ -98,6 +112,7 @@ namespace PASS4
 
         protected override void LoadContent()
         {
+            Console.WriteLine(System.IO.Path.GetPathRoot("Main.cs"));
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //Loading all sprites
@@ -116,36 +131,8 @@ namespace PASS4
             playerSprites.Add("jump", jumpSprite);
             playerSprites.Add("run", runSprite);
             playerSprites.Add("fall", fallSprite);
-            
-            //Adding locations of all images in terrain sprite to terrain dictionary
-            terrainCoords.Add("floor", new Rectangle(41, 32, 77, 24));
-            terrainCoords.Add("floating platform", new Rectangle(41, 32, 78, 9));
 
-            //Initializing game entities and collectibles
-            player = new Player(idleSprite, new Rectangle(50, 368, 74, 52), new Rectangle(9, 17, 37, 26), playerSprites);
-            crates = new Crate[crateDestRecs.Length];
-            gems = new Gem[gemDestRecs.Length];
-
-            //Initializing a crate for every element in the array
-            for(int i = 0; i < crateDestRecs.Length; i++)
-            {
-                crates[i] = new Crate(crateSprite, crateDestRecs[i], new Rectangle(0, 0, 21, 16));
-            }
-
-            //Initializing a gem for every gem in the array
-            for(int i = 0; i < gemDestRecs.Length; i++)
-            {
-                gems[i] = new Gem(gemSprite, gemDestRecs[i], new Rectangle(5, 2, 12, 10));
-            }
-
-            //Crating the entities array to store all game entities
-            entities = new GameEntity[crates.Length + 1];
-            entities[0] = player;
-            //Adding the crates to the entity array
-            for(int i = 1; i < entities.Length; i++)
-            {
-                entities[i] = crates[i - 1];
-            }
+            LoadLevel("level 1.txt");
         }
 
         protected override void Update(GameTime gameTime)
@@ -189,12 +176,10 @@ namespace PASS4
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null);
 
-            for(int i = 0; i < terrainRecs.Length - 1; i++)
+            for(int i = 0; i < terrainRecs.Count; i++)
             {
-                _spriteBatch.Draw(terrainSprite, terrainRecs[i], terrainCoords["floor"], Color.White);
+                _spriteBatch.Draw(terrainSprite, terrainRecs[i], Color.White);
             }
-
-            _spriteBatch.Draw(terrainSprite, destRecFloatingPlatform, terrainCoords["floating platform"], Color.White);
 
             for(int i = 0; i < entities.Length; i++)
             {
@@ -216,6 +201,123 @@ namespace PASS4
         {
             _spriteBatch.DrawString(gameFont, numGemsCollected.ToString(), new Vector2(35, 10), Color.White);
             _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
+        }
+
+        private void DrawGame()
+        {
+
+        }
+
+
+        private void LoadLevel(string levelFileName)
+        {
+            readFile = new StreamReader(levelFileName);
+            int numLines = 0;
+
+            string line;
+
+            /*
+             * 0 = Player
+             * 1 = Wall
+             * 2 = Crate
+             * 3 = Goal
+             * 4 = Door
+             * 5 = Spike
+             * 6 = Gem
+             * 7 = Key
+             */
+
+            //Clearing all rectangle lists in case a level was previously loaded
+            terrainRecs.Clear();
+            crateDestRecs.Clear();
+            gemDestRecs.Clear();
+            spikeDestRecs.Clear();
+
+            while ((line = readFile.ReadLine()) != null)
+            {
+                numLines++;
+                if(numLines > NUM_TILES_H)
+                {
+                    throw new FormatException($"There are too many tiles. The level must be no larger than {NUM_TILES_H} tiles in height.");
+                }
+
+                if (line.Length > NUM_TILES_W)
+                {
+                    throw new FormatException($"There are too many tiles. The level must be no larger than {NUM_TILES_W} tiles in width.");
+                }
+
+                for(int i = 0; i < line.Length; i++)
+                {
+                    switch(line[i])
+                    {
+                        case '0':
+                            playerDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                            break;
+                        case '1':
+                            terrainRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                        case '2':
+                            crateDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                        case '3':
+                            flagPoleDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                            break;
+                        case '4':
+                            doorDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                        case '5':
+                            spikeDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                        case '6':
+                            gemDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                        case '7':
+                            keyDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+                            break;
+                    }
+                }
+            }
+           
+            crates = new Crate[crateDestRecs.Count];
+            gems = new Gem[gemDestRecs.Count];
+            spikes = new Spike[spikeDestRecs.Count];
+
+            for (int i = 0; i < crates.Length; i++)
+            {
+                crates[i] = new Crate(crateSprite, crateDestRecs[i], crateSrcRec);
+            }
+
+            for (int i = 0; i < gems.Length; i++)
+            {
+                gems[i] = new Gem(gemSprite, gemDestRecs[i], gemSrcRec);
+            }
+
+            player = new Player(idleSprite, playerDestRec, playerSrcRec, playerSprites);
+
+            //Crating the entities array to store all game entities
+            entities = new GameEntity[crates.Length + 1];
+            entities[0] = player;
+
+            //Adding the crates to the entity array
+            for (int i = 1; i < entities.Length; i++)
+            {
+                entities[i] = crates[i - 1];
+            }
+
+            Console.WriteLine(numLines);
+
+            try
+            {
+
+            }
+            catch(FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch(FormatException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 

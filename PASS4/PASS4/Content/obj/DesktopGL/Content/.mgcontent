@@ -8,6 +8,7 @@
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/../../../../Downloads/Kings and Pigs/Sprites/08-Box/Crate.png</File>
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Fonts/8BitFont.spritefont</File>
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Level Assets/Big Diamond Idle (18x14).png</File>
+    <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Level Assets/brick wall.png</File>
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Level Assets/Terrain (32x32).png</File>
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Player/Fall (78x58).png</File>
     <File>/Users/adarkahiri/ICS Assignments/PASS4/PASS4/Content/Images/Sprites/Player/Jump (78x58).png</File>
@@ -16,6 +17,7 @@
   <DestFiles>
     <File>Images/Sprites/Player/Idle.png</File>
     <File>Images/Sprites/Level Assets/Crate.png</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

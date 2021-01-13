@@ -1,13 +1,14 @@
 ﻿<Properties StartupConfiguration="{9150E962-1F31-49D9-ADC5-B294310C1674}|Default">
   <MonoDevelop.Ide.ItemProperties.PASS4 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Main.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Main.cs" Line="213" Column="10" />
-      <File FileName="Player.cs" Line="8" Column="14" />
-      <File FileName="Gem.cs" Line="49" Column="1" />
-      <File FileName="GameEntity.cs" Line="79" Column="158" />
-      <File FileName="Crate.cs" Line="21" Column="36" />
-      <File FileName="Content/Fonts/8BitFont.spritefont" Line="40" Column="9" />
+      <File FileName="Main.cs" Line="118" Column="34" />
+      <File FileName="Player.cs" Line="45" Column="54" />
+      <File FileName="Gem.cs" Line="7" Column="21" />
+      <File FileName="GameEntity.cs" Line="54" Column="75" />
+      <File FileName="Crate.cs" Line="22" Column="48" />
+      <File FileName="Spike.cs" Line="11" Column="1" />
+      <File FileName="Program.cs" Line="12" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,13 +17,8 @@
             <Node name="PASS4" expanded="True">
               <Node name="Content" expanded="True">
                 <Node name="Fonts" expanded="True" />
-                <Node name="Images" expanded="True">
-                  <Node name="Sprites" expanded="True">
-                    <Node name="Level Assets" expanded="True" />
-                  </Node>
-                </Node>
               </Node>
-              <Node name="Main.cs" selected="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>

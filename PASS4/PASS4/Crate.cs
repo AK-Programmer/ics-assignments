@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace PASS4
 {
@@ -10,7 +11,7 @@ namespace PASS4
         {
         }
 
-        public override void Update(Rectangle[] terrain, GameEntity [] entities)
+        public override void Update(List<Rectangle> terrain, GameEntity [] entities)
         {
             CollisionType entityCollision;
 
@@ -26,7 +27,7 @@ namespace PASS4
 
                     if (entityCollision == CollisionType.BottomCollision)
                     {
-                        pos.Y = entities[i].GetDestRec().Y - entities[i].GetDestRec().Height + 1;
+                        pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
                         if (velocity.Y > 0)
                         {
                             velocity.Y = 0;
@@ -54,7 +55,7 @@ namespace PASS4
 
             //Collision detection (terrain)
 
-            for (int i = 0; i < terrain.Length; i++)
+            for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
             }
