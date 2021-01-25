@@ -7,17 +7,22 @@ namespace PASS4
 {
     public class Crate : GameEntity
     {
+        CollisionType entityCollision;
+
         public Crate(Texture2D sprite, Rectangle destRec, Rectangle srcRec) : base(sprite, destRec, srcRec)
         {
         }
 
         public override void Update(List<Rectangle> terrain, GameEntity [] entities)
         {
-            CollisionType entityCollision;
+
+            collideLeft = false;
+            collideRight = false;
+            collideTop = false;
+            collideBottom = false;
 
             //Gravity
             velocity.Y += GRAVITY;
-
             //Collision detection (other entities)
             for (int i = 0; i < entities.Length; i++)
             {
@@ -27,6 +32,8 @@ namespace PASS4
 
                     if (entityCollision == CollisionType.BottomCollision)
                     {
+                        collideBottom = true;
+
                         pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
                         if (velocity.Y > 0)
                         {
@@ -35,15 +42,17 @@ namespace PASS4
                             {
                                 velocity.X = entities[i].GetVelocity().X;
                             }
-                            //break;
-
                         }
                     }
                     else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
                     {
-                        //velocity.X = entities[i].GetVelocity().X;
+                        velocity.X = entities[i].GetVelocity().X;
                         HandleTerrainCollision(entities[i].GetDestRec());
-                        //break;
+                    }
+                    else if (entityCollision == CollisionType.TopCollision)
+                    {
+                        collideTop = true;
+                        velocity.X = 0;
                     }
                     else
                     {

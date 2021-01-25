@@ -20,18 +20,19 @@ namespace PASS4
     {
 
         //Asset paths
-        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/brick wall";
+        //Sprite file paths
         private const string IDLE_SPRITE_PATH = "Images/Sprites/Player/Idle";
         private const string JUMP_SPRITE_PATH = "Images/Sprites/Player/Jump (78x58)";
         private const string RUN_SPRITE_PATH = "Images/Sprites/Player/Run (78x58)";
         private const string FALL_SPRITE_PATH = "Images/Sprites/Player/Fall (78x58)";
+        private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/brick wall";
         private const string CRATE_SPRITE_PATH = "Images/Sprites/Level Assets/Crate";
         private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
         private const string FONT_PATH = "Fonts/8BitFont";
 
 
         //Graphics constants
-        private const int TILE_SIZE = 74;
+        public const int TILE_SIZE = 50;
         private const int NUM_TILES_W = 20;
         private const int NUM_TILES_H = 9;
         private const int GEM_SIZE = 30;
@@ -251,7 +252,7 @@ namespace PASS4
                     switch(line[i])
                     {
                         case '0':
-                            playerDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                            playerDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE - 10);
                             break;
                         case '1':
                             terrainRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));

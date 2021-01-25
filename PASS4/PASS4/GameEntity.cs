@@ -39,6 +39,9 @@ namespace PASS4
         public Vector2 velocity = new Vector2(0, 0);
         public CollisionType terrainCollision;
 
+        //Collision trackers
+        protected bool collideLeft, collideRight, collideTop, collideBottom;
+
         public GameEntity(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
             this.sprite = sprite;
@@ -69,22 +72,26 @@ namespace PASS4
                 //Checking right collision
                 if (Math.Abs(destRec.X + destRec.Width - otherDestRec.X) == minDist)
                 {
+                    collideRight = true;
                     return CollisionType.RightCollision;
                 }
                 //Checking left collision
                 else if (Math.Abs(otherDestRec.X + otherDestRec.Width - destRec.X) == minDist)
                 {
+                    collideLeft = true;
                     return CollisionType.LeftCollision;
                 }
                 //Checking top collision
                 if (Math.Abs(otherDestRec.Y + otherDestRec.Height - destRec.Y) == minDist && destRec.Y + destRec.Height - otherDestRec.Y - destRec.Height > 3)
                 {
+                    collideTop = true;
                     return CollisionType.TopCollision;
                 }
                 
                 //Otherwise, the bottom of destRec is closest to destRec, so un-intersect the bottom
                 else
                 {
+                    collideBottom = true;
                     return CollisionType.BottomCollision;
                 }
             }
