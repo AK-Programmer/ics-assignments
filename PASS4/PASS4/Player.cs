@@ -235,7 +235,66 @@ namespace PASS4
 
         public void SetControlSeq(string controlSequence)
         {
-            currentControlSeq = controlSequence; 
+            bool inLoop = false;
+            int numLoopIter = -1;
+            string loopedSequence = "";
+
+
+            if(controlSequence.Length > 68)
+            {
+                throw new FormatException("The control sequence must not exceed 68 characters.");
+            }
+            while(controlSequence.Length > 0)
+            {
+                if ((controlSequence[0] == 'd' || controlSequence[0] == 'a' || controlSequence[0] == 'c' || controlSequence[0] == 'e'
+                    || controlSequence[0] == 'q' || controlSequence[0] == '+' || controlSequence[0] == '-'))
+                {
+                    if (!inLoop)
+                    {
+                        currentControlSeq.Enqueue(controlSequence[0]);
+                    }
+                    else
+                    {
+                        loopedSequence += controlSequence[0];
+                    }
+
+                    controlSequence.Remove(0, 1);
+                }
+                else if (controlSequence[0] == 's')
+                {
+                    inLoop = true;
+                    controlSequence.Remove(0, 1);
+
+                    try
+                    {
+                        numLoopIter = (int)Char.GetNumericValue(controlSequence[0]);
+                        controlSequence.Remove(0, 1);
+                    }
+                    catch(Exception)
+                    {
+                        throw new FormatException("Loop iteration number must be a valid positive integer!");
+                    }
+                }
+                else if(controlSequence[0] == 'f')
+                {
+                    inLoop = false;
+                    for(int i = 0; i < numLoopIter; i++)
+                    {
+                        for(int j = 0; j < loopedSequence.Length; j++)
+                        {
+                            currentControlSeq.Enqueue(loopedSequence[j]);
+                        }
+                    }
+
+                    loopedSequence = "";
+                    controlSequence.Remove(0, 1);
+                }
+                else
+                {
+                    throw new FormatException("Invalid character. Refer to the instructions to view all valid characters.");
+                }
+            }
+
         }
 
 
