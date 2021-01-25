@@ -262,6 +262,11 @@ namespace PASS4
                 }
                 else if (controlSequence[0] == 's')
                 {
+                    if(inLoop)
+                    {
+                        throw new FormatException("A loop cannot be inside another loop!");
+                    }
+
                     inLoop = true;
                     controlSequence.Remove(0, 1);
 
@@ -293,6 +298,11 @@ namespace PASS4
                 {
                     throw new FormatException("Invalid character. Refer to the instructions to view all valid characters.");
                 }
+            }
+
+            if(inLoop)
+            {
+                throw new FormatException("All loops must be closed!");
             }
 
         }
