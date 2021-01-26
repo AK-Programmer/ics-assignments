@@ -134,40 +134,21 @@ namespace PASS4
             playerSprites.Add("fall", fallSprite);
 
             LoadLevel("level 1.txt");
+
+            player.SetControlSeq("deeeadee");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && player.velocity.Y == 0)
-            {
-                player.velocity.Y = Player.JUMP_SPEED;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                player.velocity.X = -Player.WALK_SPEED;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                player.velocity.X = Player.WALK_SPEED;
-            }
-            else
-            {
-                player.velocity.X = 0.0f;
-            }
-
-            for(int i = 0; i < entities.Length; i++)
+            for (int i = 0; i < entities.Length; i++)
             {
                 entities[i].Update(terrainRecs, entities);
             }
 
-            for(int i = 0; i < gems.Length; i++)
+            for (int i = 0; i < gems.Length; i++)
             {
                 gems[i].Update(player, ref numGemsCollected);
             }
-
             base.Update(gameTime);
         }
 

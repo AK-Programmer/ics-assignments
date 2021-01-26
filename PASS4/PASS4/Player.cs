@@ -26,12 +26,11 @@ namespace PASS4
             CollectItem,
             PushLeft,
             PushRight
-
         }
            
         //Physics constants
-        public const float WALK_SPEED = 3f;
-        public const float JUMP_SPEED = -18f;
+        public const float WALK_SPEED = 2f;
+        public const float JUMP_SPEED = -10f;
 
         //Graphics variables
         private Texture2D spriteToUse;
@@ -45,7 +44,12 @@ namespace PASS4
         //Movement variables
         CurrentMove currentMove;
         int distanceTravelledX = 0;
+        int targetPosX;
         CharQueue currentControlSeq;
+        CollisionType entityCollision;
+        bool anyMovement = false;
+        bool alreadyJumped = false;
+        bool isPushingCrate = false;
 
 
         public Player(Texture2D sprite, Rectangle destRec, Rectangle srcRec, Dictionary<string, Texture2D> additionalSprites) : base(sprite, destRec, srcRec)
@@ -54,69 +58,20 @@ namespace PASS4
 
             //Initializing currentControlSeq
             currentControlSeq = new CharQueue();
+            targetPosX = destRec.X;
         }
 
         public override void Update(List<Rectangle> terrain, GameEntity[] entities)
         {
-            CollisionType entityCollision;
+            collideBottom = false;
+            collideTop = false;
+            collideLeft = false;
+            collideRight = false;
+
+            anyMovement = false;
 
             //Gravity
             velocity.Y += GRAVITY;
-
-            if(currentMove == CurrentMove.None && !currentControlSeq.IsEmpty())
-            {
-                switch(currentControlSeq.Dequeue())
-                {
-                    //Move right
-                    case 'd':
-                        currentMove = CurrentMove.MoveRight;
-                        break;
-                    //Move left
-                    case 'a':
-                        currentMove = CurrentMove.MoveLeft;
-                        break;
-                    //Collect item
-                    case 'c':
-                        currentMove = CurrentMove.CollectItem;
-                        break;
-                    //Jump right
-                    case 'e':
-                        currentMove = CurrentMove.JumpRight;
-                        break;
-                    //Jump left
-                    case 'q':
-                        currentMove = CurrentMove.JumpLeft;
-                        break;
-                    //Push right
-                    case '+':
-                        currentMove = CurrentMove.PushRight;
-                        break;
-                    //Push left
-                    case '-':
-                        currentMove = CurrentMove.PushLeft;
-                        break;
-                }
-            }
-
-            if(currentMove == CurrentMove.None && velocity.X != 0)
-            {
-                velocity.X = 0;
-                velocity.Y = 0;
-            }
-            else if ((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && velocity.X != WALK_SPEED)
-            {
-                velocity.X = WALK_SPEED;
-            }
-            else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && velocity.X != -WALK_SPEED)
-            {
-                velocity.X = -WALK_SPEED;
-            }
-
-            if ((currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.JumpRight) && collideBottom == true)
-            {
-                velocity.Y = JUMP_SPEED;
-            }
-
 
             //Collision detection (with other entities)
             for (int i = 0; i < entities.Length; i++)
@@ -178,6 +133,86 @@ namespace PASS4
                 numFrameIntervals = 11;
             }
 
+            //Checking if any entities are currently moving
+            if (velocity.X != 0 || velocity.Y != 0)
+            {
+                anyMovement = true;
+            }
+
+            for(int i = 0; i < entities.Length; i++)
+            {
+                if (entities[i].GetVelocity().X !=0 || entities[i].GetVelocity().Y != 0)
+                {
+                    anyMovement = true;
+                }
+            }
+
+            if(currentMove == CurrentMove.None && !anyMovement && !currentControlSeq.IsEmpty())
+            {
+                switch(currentControlSeq.Dequeue())
+                {
+                    //Move right
+                    case 'd':
+                        targetPosX = destRec.X + Main.TILE_SIZE;
+                        currentMove = CurrentMove.MoveRight;
+                        break;
+                    //Move left
+                    case 'a':
+                        targetPosX = destRec.X - Main.TILE_SIZE;
+                        currentMove = CurrentMove.MoveLeft;
+                        break;
+                    //Collect item
+                    case 'c':
+                        currentMove = CurrentMove.CollectItem;
+                        break;
+                    //Jump right
+                    case 'e':
+                        targetPosX = destRec.X + Main.TILE_SIZE;
+                        alreadyJumped = false;
+                        currentMove = CurrentMove.JumpRight;
+                        break;
+                    //Jump left
+                    case 'q':
+                        targetPosX = destRec.X - Main.TILE_SIZE;
+                        alreadyJumped = false;
+                        currentMove = CurrentMove.JumpLeft;
+                        break;
+                    //Push right
+                    case '+':
+                        targetPosX = destRec.X + Main.TILE_SIZE;
+                        currentMove = CurrentMove.PushRight;
+                        break;
+                    //Push left
+                    case '-':
+                        targetPosX = destRec.X - Main.TILE_SIZE;
+                        currentMove = CurrentMove.PushLeft;
+                        break;
+                    //Default is no movement
+                    default:
+                        currentMove = CurrentMove.None;
+                        break;
+                }
+            }
+
+            if(currentMove == CurrentMove.None)
+            {
+                velocity.X = 0;
+            }
+            else if ((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && velocity.X != WALK_SPEED)
+            {
+                velocity.X = WALK_SPEED;
+            }
+            else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && velocity.X != -WALK_SPEED)
+            {
+                velocity.X = -WALK_SPEED;
+            }
+
+            if ((currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.JumpRight) && !alreadyJumped)
+            {
+                alreadyJumped = true;
+                velocity.Y = JUMP_SPEED;
+            }
+
             //Updating player's animation
             if (spriteToUse == sprite || spriteToUse == additionalSprites["run"])
             {
@@ -197,19 +232,19 @@ namespace PASS4
             }
 
             //Updating player position based on its velocity
+            distanceTravelledX += (int)velocity.X;
             pos.Y += velocity.Y;
             pos.X += velocity.X;
             destRec.X = (int)pos.X;
             destRec.Y = (int)pos.Y;
-            distanceTravelledX += (int) pos.X;
-
+            
             //Resetting currentMove and distanceTravelled so that they're ready for the next command in currentMoveSeq
-            if((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight) && distanceTravelledX >= Main.TILE_SIZE)
+            if((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
                 distanceTravelledX = 0;
             }
-            else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft) && distanceTravelledX <= -Main.TILE_SIZE)
+            else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
                 distanceTravelledX = 0;
@@ -233,19 +268,24 @@ namespace PASS4
             }
         }
 
+        //Pre: a string containing the movement commands
+        //Post: none
+        //Description: this method parses the control sequence the user entered, and adds the expanded sequence into the currentMoveSeq queue.
         public void SetControlSeq(string controlSequence)
         {
             bool inLoop = false;
             int numLoopIter = -1;
             string loopedSequence = "";
-
+            int whileCount = 0;
 
             if(controlSequence.Length > 68)
             {
                 throw new FormatException("The control sequence must not exceed 68 characters.");
             }
+
             while(controlSequence.Length > 0)
             {
+                whileCount++;
                 if ((controlSequence[0] == 'd' || controlSequence[0] == 'a' || controlSequence[0] == 'c' || controlSequence[0] == 'e'
                     || controlSequence[0] == 'q' || controlSequence[0] == '+' || controlSequence[0] == '-'))
                 {
@@ -258,22 +298,22 @@ namespace PASS4
                         loopedSequence += controlSequence[0];
                     }
 
-                    controlSequence.Remove(0, 1);
+                    controlSequence = controlSequence.Remove(0, 1);
                 }
                 else if (controlSequence[0] == 's')
                 {
                     if(inLoop)
                     {
-                        throw new FormatException("A loop cannot be inside another loop!");
+                        throw new FormatException($"A loop cannot be inside another loop!");
                     }
 
                     inLoop = true;
-                    controlSequence.Remove(0, 1);
+                    controlSequence = controlSequence.Remove(0, 1);
 
                     try
                     {
                         numLoopIter = (int)Char.GetNumericValue(controlSequence[0]);
-                        controlSequence.Remove(0, 1);
+                        controlSequence = controlSequence.Remove(0, 1);
                     }
                     catch(Exception)
                     {
@@ -292,7 +332,7 @@ namespace PASS4
                     }
 
                     loopedSequence = "";
-                    controlSequence.Remove(0, 1);
+                    controlSequence = controlSequence.Remove(0, 1);
                 }
                 else
                 {
@@ -304,6 +344,11 @@ namespace PASS4
             {
                 throw new FormatException("All loops must be closed!");
             }
+
+        }
+
+        public bool GetPushingCrate()
+        {
 
         }
 
