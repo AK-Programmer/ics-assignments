@@ -17,14 +17,10 @@ namespace PASS4
             collideBottomTerrain = false;
             collideLeftTerrain = false;
             collideRightTerrain = false;
-
-
         }
 
-        public override void Update(List<Rectangle> terrain, GameEntity [] entities)
+        public override void Update(List<Rectangle> terrain, GameEntity [] entities, Door[] doors)
         {
-            Console.WriteLine(destRec.X);
-
             collideLeft = false;
             collideRight = false;
             collideTop = false;

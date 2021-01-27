@@ -54,9 +54,7 @@ namespace PASS4
 
         }
 
-
-        public abstract void Update(List<Rectangle> terrain, GameEntity [] entities);
-
+        public abstract void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors);
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

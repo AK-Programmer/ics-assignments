@@ -43,7 +43,6 @@ namespace PASS4
 
         //Movement variables
         CurrentMove currentMove;
-        int distanceTravelledX = 0;
         int targetPosX;
         CharQueue currentControlSeq;
         CollisionType entityCollision;
@@ -60,9 +59,8 @@ namespace PASS4
             targetPosX = destRec.X;
         }
 
-        public override void Update(List<Rectangle> terrain, GameEntity[] entities)
+        public override void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors)
         {
-            Console.WriteLine($"Player pos: {destRec.X}");
             collideBottom = false;
             collideTop = false;
             collideLeft = false;
@@ -73,7 +71,7 @@ namespace PASS4
             //Gravity
             velocity.Y += GRAVITY;
 
-            //Collision detection (with other entities)
+            //Collision handling (with other entities)
             for (int i = 0; i < entities.Length; i++)
             {
                 if (entities[i] != this)
@@ -99,12 +97,21 @@ namespace PASS4
             }
 
             
-
-            //Collision detection (with terrain)
+            //Collision handling (with terrain)
             terrainCollision = CollisionType.NoCollision;
             for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
+            }
+
+
+            //Collision handling with doors
+            for (int i = 0; i < doors.Length; i++)
+            {
+                if (destRec.Intersects(doors[i].GetDestRec()) && !doors[i].GetBeenOpened())
+                {
+                    HandleTerrainCollision(doors[i].GetDestRec());
+                }
             }
 
             if (velocity.X < 0)

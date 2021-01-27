@@ -68,6 +68,30 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Level Assets/brick wall.png
 
+#begin Images/Sprites/Level Assets/Door.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Level Assets/Door.png
+
+#begin Images/Sprites/Level Assets/goldkey.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Level Assets/goldkey.png
+
 #begin Images/Sprites/Level Assets/Terrain (32x32).png
 /importer:TextureImporter
 /processor:TextureProcessor

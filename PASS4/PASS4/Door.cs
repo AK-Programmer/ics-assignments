@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PASS4
 {
-    public class Key
+    public class Door
     {
         //Graphics variables
         private Texture2D sprite;
@@ -20,14 +20,10 @@ namespace PASS4
         private Rectangle srcRec;
         private Vector2 pos;
 
-        //Animation variables
-        private float verticalVelocity = -0.3f;
-        private const float floatingSpeed = 0.3f;
-        private float floatingResistence = 0.05f;
+        private bool beenOpened = false;
+        
 
-        private bool beenCollected = false;
-
-        public Key(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
+        public Door(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
             this.sprite = sprite;
             this.destRec = destRec;
@@ -39,33 +35,33 @@ namespace PASS4
 
         public void Update(Player player, ref int numKeysCollected)
         {
-            if (!beenCollected)
+            if (!beenOpened)
             {
-                if (destRec.Intersects(player.GetDestRec()))
+                if (destRec.Intersects(player.GetDestRec()) && numKeysCollected > 0)
                 {
-                    beenCollected = true;
-                    numKeysCollected++;
+                    beenOpened = true;
+                    numKeysCollected--;
                 }
-
-                if (Math.Abs(verticalVelocity) > floatingSpeed)
-                {
-                    floatingResistence *= -1;
-                }
-
-                verticalVelocity += floatingResistence;
-                pos.Y += verticalVelocity;
-                
-                destRec.Y = (int)pos.Y;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!beenCollected)
+            if(!beenOpened)
             {
-                spriteBatch.Draw(sprite, destRec, srcRec, Color.White);
+                spriteBatch.Draw(sprite, destRec, Color.White);
             }
+            
+        }
 
+        public bool GetBeenOpened()
+        {
+            return beenOpened;
+        }
+
+        public Rectangle GetDestRec()
+        {
+            return destRec;
         }
     }
 }

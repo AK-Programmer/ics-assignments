@@ -28,7 +28,10 @@ namespace PASS4
         private const string TERRAIN_SPRITE_PATH = "Images/Sprites/Level Assets/brick wall";
         private const string CRATE_SPRITE_PATH = "Images/Sprites/Level Assets/Crate";
         private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
+        private const string DOOR_SPRITE_PATH = "Images/Sprites/Level Assets/Door";
+        private const string KEY_SPRITE_PATH = "Images/Sprites/Level Assets/goldkey";
         private const string FONT_PATH = "Fonts/8BitFont";
+        
 
 
         //Graphics constants
@@ -37,6 +40,7 @@ namespace PASS4
         private const int NUM_TILES_H = 9;
         private const int GEM_SIZE = 30;
         private const int CRATE_SIZE = 74;
+        private const int KEY_SIZE = 30;
 
 
         //Graphics & Display-related objects
@@ -57,12 +61,13 @@ namespace PASS4
         private Texture2D crateSprite;
         private Texture2D terrainSprite;
         private Texture2D gemSprite;
+        private Texture2D keySprite;
+        private Texture2D doorSprite;
 
         //Fonts
         private SpriteFont gameFont;
 
         //Dictionaries
-        private Dictionary<string, Rectangle> terrainCoords = new Dictionary<string, Rectangle>();
         private Dictionary<string, Texture2D> playerSprites = new Dictionary<string, Texture2D>();
 
         //Destination rectangles for terrain, crates, collectibles, etc.
@@ -81,21 +86,25 @@ namespace PASS4
         //Stores both the player and crates for easy iteration
         private GameEntity[] entities;
 
-        //Collectibles and spikes
+        //Collectibles, spikes, and doors
         private Gem[] gems;
+        private Key[] keys;
+        private Door[] doors;
         private Spike[] spikes;
 
         //Source rectangles
         private Rectangle crateSrcRec = new Rectangle(0, 0, 21, 16);
         private Rectangle playerSrcRec = new Rectangle(9, 17, 37, 26);
         private Rectangle gemSrcRec = new Rectangle(5, 2, 12, 10);
+        private Rectangle keySrcRec = new Rectangle(0, 0, 992, 1000);
+        private Rectangle doorSrcRec = new Rectangle(0, 0, 46, 56);
 
         //Game variables
         private int numKeysCollected = 0;
         private int numGemsCollected = 0;
 
         //Player movement variables
-        public static bool isPlayerPushingCrate = true;
+        public static bool isPlayerPushingCrate = false;
 
         public Main()
         {
@@ -130,6 +139,8 @@ namespace PASS4
             fallSprite = Content.Load<Texture2D>(FALL_SPRITE_PATH);
             crateSprite = Content.Load<Texture2D>(CRATE_SPRITE_PATH);
             gemSprite = Content.Load<Texture2D>(GEM_SPRITE_PATH);
+            keySprite = Content.Load<Texture2D>(KEY_SPRITE_PATH);
+            doorSprite = Content.Load<Texture2D>(DOOR_SPRITE_PATH);
 
             //Loading the game font
             gameFont = Content.Load<SpriteFont>(FONT_PATH);
@@ -138,10 +149,10 @@ namespace PASS4
             playerSprites.Add("jump", jumpSprite);
             playerSprites.Add("run", runSprite);
             playerSprites.Add("fall", fallSprite);
-
+           
             LoadLevel("level 1.txt");
 
-            player.SetControlSeq("dee+ee");
+            player.SetControlSeq("qqqqdddddee");
         }
 
         //Pre: GameTime object
@@ -151,13 +162,24 @@ namespace PASS4
         {
             for (int i = 0; i < entities.Length; i++)
             {
-                entities[i].Update(terrainRecs, entities);
+                entities[i].Update(terrainRecs, entities, doors);
             }
 
             for (int i = 0; i < gems.Length; i++)
             {
                 gems[i].Update(player, ref numGemsCollected);
             }
+
+            for(int i = 0; i < keys.Length; i++)
+            {
+                keys[i].Update(player, ref numKeysCollected);
+            }
+
+            for(int i = 0; i < doors.Length; i++)
+            {
+                doors[i].Update(player, ref numKeysCollected);
+            }
+
             base.Update(gameTime);
         }
 
@@ -184,6 +206,17 @@ namespace PASS4
             {
                 gems[i].Draw(_spriteBatch);
             }
+
+            for(int i = 0; i < keys.Length; i++)
+            {
+                keys[i].Draw(_spriteBatch);
+            }
+
+            for(int i = 0; i < doors.Length; i++)
+            {
+                doors[i].Draw(_spriteBatch);
+            }
+
             DrawHUD();
             
             _spriteBatch.End();
@@ -193,8 +226,13 @@ namespace PASS4
 
         private void DrawHUD()
         {
-            _spriteBatch.DrawString(gameFont, numGemsCollected.ToString(), new Vector2(35, 10), Color.White);
             _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
+            _spriteBatch.DrawString(gameFont, numGemsCollected.ToString(), new Vector2(35, 10), Color.White);
+
+            _spriteBatch.Draw(keySprite, new Rectangle(60, 10, 20, 20), Color.White);
+            _spriteBatch.DrawString(gameFont, numKeysCollected.ToString(), new Vector2(85, 10), Color.White);
+
+
         }
 
         private void DrawGame()
@@ -209,7 +247,6 @@ namespace PASS4
             int numLines = 0;
 
             string line;
-
             /*
              * 0 = Player
              * 1 = Wall
@@ -226,6 +263,20 @@ namespace PASS4
             crateDestRecs.Clear();
             gemDestRecs.Clear();
             spikeDestRecs.Clear();
+
+            //Resetting counters
+            numGemsCollected = 0;
+            numKeysCollected = 0;
+
+            //Adding all level borders
+            //The floor of the level
+            terrainRecs.Add(new Rectangle(0, NUM_TILES_H * TILE_SIZE, NUM_TILES_W * TILE_SIZE, TILE_SIZE));
+            //The left wall of the level
+            terrainRecs.Add(new Rectangle(-TILE_SIZE, 0, TILE_SIZE, NUM_TILES_H * TILE_SIZE));
+            //The Right wall of the level
+            terrainRecs.Add(new Rectangle(NUM_TILES_W * TILE_SIZE, 0, TILE_SIZE, NUM_TILES_H * TILE_SIZE));
+            //The ceiling of the level
+            terrainRecs.Add(new Rectangle(0, -TILE_SIZE, NUM_TILES_W * TILE_SIZE, TILE_SIZE));
 
             while ((line = readFile.ReadLine()) != null)
             {
@@ -282,16 +333,33 @@ namespace PASS4
            
             crates = new Crate[crateDestRecs.Count];
             gems = new Gem[gemDestRecs.Count];
+            keys = new Key[keyDestRecs.Count];
+            doors = new Door[doorDestRecs.Count];
             spikes = new Spike[spikeDestRecs.Count];
 
+
+            //Initializing all crates
             for (int i = 0; i < crates.Length; i++)
             {
                 crates[i] = new Crate(crateSprite, crateDestRecs[i], crateSrcRec);
             }
 
+            //Initializing all gems
             for (int i = 0; i < gems.Length; i++)
             {
                 gems[i] = new Gem(gemSprite, gemDestRecs[i], gemSrcRec);
+            }
+
+            //Initializing all keys
+            for(int i = 0; i < keys.Length; i++)
+            {
+                keys[i] = new Key(keySprite, keyDestRecs[i], keySrcRec);
+            }
+
+            //Initializing all doors
+            for(int i = 0; i < doors.Length; i++)
+            {
+                doors[i] = new Door(doorSprite, doorDestRecs[i], doorSrcRec);
             }
 
             player = new Player(idleSprite, playerDestRec, playerSrcRec, playerSprites);
@@ -306,8 +374,6 @@ namespace PASS4
                 entities[i] = crates[i - 1];
             }
 
-            Console.WriteLine(numLines);
-
             try
             {
 
@@ -320,6 +386,7 @@ namespace PASS4
             {
                 Console.WriteLine(e.Message);
             }
+
         }
     }
 
