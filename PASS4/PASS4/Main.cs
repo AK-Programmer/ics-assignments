@@ -2,8 +2,9 @@
 //File Name: Main.cs
 //Project Name: PASS4
 //Creation Date: Jan 6, 2021
-//Modified Date: Jan 22, 2021
-/* Description:
+//Modified Date: Jan 27, 2021
+/* Description: This is the main class. It handles all top-level logic such as the game loop, calling the update and draw methods of game objects, 
+ * as well as handling gameflow (such as main menu, level transitions, gameplay, etc.)
  */
 //Assets used: https://pixelfrog-store.itch.io/kings-and-pigs
 
@@ -18,6 +19,14 @@ namespace PASS4
 {
     public class Main : Game
     {
+        enum GameState
+        {
+            MainMenu,
+            Play,
+            ViewInstructions,
+            ViewHighScores,
+            Exit
+        }
 
         //Asset paths
         //Sprite file paths
@@ -30,14 +39,16 @@ namespace PASS4
         private const string GEM_SPRITE_PATH = "Images/Sprites/Level Assets/Big Diamond Idle (18x14)";
         private const string DOOR_SPRITE_PATH = "Images/Sprites/Level Assets/Door";
         private const string KEY_SPRITE_PATH = "Images/Sprites/Level Assets/goldkey";
+        private const string SPIKE_SPRITE_PATH = "Images/Sprites/Level Assets/spikes";
+        private const string FLAGPOLE_SPRITE_PATH = "Images/Sprites/Level Assets/flagpole";
+
+        //Font file path
         private const string FONT_PATH = "Fonts/8BitFont";
         
-
-
         //Graphics constants
         public const int TILE_SIZE = 50;
         private const int NUM_TILES_W = 20;
-        private const int NUM_TILES_H = 9;
+        private const int NUM_TILES_H = 12;
         private const int GEM_SIZE = 30;
         private const int CRATE_SIZE = 74;
         private const int KEY_SIZE = 30;
@@ -102,6 +113,14 @@ namespace PASS4
         //Game variables
         private int numKeysCollected = 0;
         private int numGemsCollected = 0;
+        private int totalNumGems = 0;
+        private string commandSequence = "";
+        private char[] validCommandKeys = {'a', 'd', 'c', 'e', 'q', '+', '-', 's', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        //Game-state variables
+        GameState gameState = GameState.MainMenu;
+        int currentLevel = 0;
+        bool viewLegend = false;
 
         //Player movement variables
         public static bool isPlayerPushingCrate = false;
@@ -145,14 +164,15 @@ namespace PASS4
             //Loading the game font
             gameFont = Content.Load<SpriteFont>(FONT_PATH);
 
+            Helper.graphics = _graphics;
             //Adding various player sprites to playerSprite dictionary
             playerSprites.Add("jump", jumpSprite);
             playerSprites.Add("run", runSprite);
             playerSprites.Add("fall", fallSprite);
-           
+
             LoadLevel("level 1.txt");
 
-            player.SetControlSeq("qqqqdddddee");
+            //player.SetControlSeq("qqqqdddddee");
         }
 
         //Pre: GameTime object
@@ -160,26 +180,7 @@ namespace PASS4
         //Description: This is the 'global' update method for the entire game. It updates all entities and collectibles and handles gameflow logic.
         protected override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < entities.Length; i++)
-            {
-                entities[i].Update(terrainRecs, entities, doors);
-            }
-
-            for (int i = 0; i < gems.Length; i++)
-            {
-                gems[i].Update(player, ref numGemsCollected);
-            }
-
-            for(int i = 0; i < keys.Length; i++)
-            {
-                keys[i].Update(player, ref numKeysCollected);
-            }
-
-            for(int i = 0; i < doors.Length; i++)
-            {
-                doors[i].Update(player, ref numKeysCollected);
-            }
-
+            UpdateGame();
             base.Update(gameTime);
         }
 
@@ -192,50 +193,130 @@ namespace PASS4
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null);
 
-            for(int i = 0; i < terrainRecs.Count; i++)
-            {
-                _spriteBatch.Draw(terrainSprite, terrainRecs[i], Color.White);
-            }
-
-            for(int i = 0; i < entities.Length; i++)
-            {
-                entities[i].Draw(_spriteBatch);
-            }
-
-            for(int i = 0; i < gems.Length; i++)
-            {
-                gems[i].Draw(_spriteBatch);
-            }
-
-            for(int i = 0; i < keys.Length; i++)
-            {
-                keys[i].Draw(_spriteBatch);
-            }
-
-            for(int i = 0; i < doors.Length; i++)
-            {
-                doors[i].Draw(_spriteBatch);
-            }
-
-            DrawHUD();
-            
+            DrawGame();
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        private void DrawHUD()
+        private void DrawUI()
         {
+            Rectangle controlCenterRec = new Rectangle(0, TILE_SIZE * 9, NUM_TILES_W * TILE_SIZE, TILE_SIZE * 3);
+            Texture2D controlCenterTexture = Helper.GetColouredRec(controlCenterRec, Color.Black);
+
+
+            //Gems and Keys
             _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
-            _spriteBatch.DrawString(gameFont, numGemsCollected.ToString(), new Vector2(35, 10), Color.White);
+            _spriteBatch.DrawString(gameFont, $"{numGemsCollected}/{totalNumGems}", new Vector2(35, 10), Color.White);
 
-            _spriteBatch.Draw(keySprite, new Rectangle(60, 10, 20, 20), Color.White);
-            _spriteBatch.DrawString(gameFont, numKeysCollected.ToString(), new Vector2(85, 10), Color.White);
+            _spriteBatch.Draw(keySprite, new Rectangle(70, 10, 20, 20), Color.White);
+            _spriteBatch.DrawString(gameFont, numKeysCollected.ToString(), new Vector2(95, 10), Color.White);
 
+            //Command center
+            _spriteBatch.Draw(controlCenterTexture, controlCenterRec, Color.White);
+            _spriteBatch.DrawString(gameFont, $"Command Sequence: {commandSequence}", new Vector2(TILE_SIZE/2, TILE_SIZE * 9 + 10), Color.White);
+        }
+
+
+        private void UpdateMainMenu()
+        {
 
         }
 
+        private void DrawMainMenu()
+        {
+
+        }
+
+        private void UpdateGame()
+        {
+            //Update all entities
+            for (int i = 0; i < entities.Length; i++)
+            {
+                entities[i].Update(terrainRecs, entities, doors);
+            }
+
+            //Update all gems
+            for (int i = 0; i < gems.Length; i++)
+            {
+                gems[i].Update(player, ref numGemsCollected);
+            }
+
+
+            //Update all keys
+            for (int i = 0; i < keys.Length; i++)
+            {
+                keys[i].Update(player, ref numKeysCollected);
+            }
+
+            //Update all doors
+            for (int i = 0; i < doors.Length; i++)
+            {
+                doors[i].Update(player, ref numKeysCollected);
+            }
+
+            //Get user command input
+            for(int i = 0; i < validCommandKeys.Length; i++)
+            {
+                if(Input.HasBeenPressed((Keys) char.ToUpper(validCommandKeys[i]), false))
+                {
+                    commandSequence += validCommandKeys[i];
+                }
+            }
+
+            if(Input.HasBeenPressed(Keys.Enter, true))
+            {
+                //Console.WriteLine("Hello");
+                player.SetControlSeq(commandSequence);
+                commandSequence = "";
+            }
+        }
         private void DrawGame()
+        {
+            for (int i = 0; i < terrainRecs.Count; i++)
+            {
+                _spriteBatch.Draw(terrainSprite, terrainRecs[i], Color.White);
+            }
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                entities[i].Draw(_spriteBatch);
+            }
+
+            for (int i = 0; i < gems.Length; i++)
+            {
+                gems[i].Draw(_spriteBatch);
+            }
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                keys[i].Draw(_spriteBatch);
+            }
+
+            for (int i = 0; i < doors.Length; i++)
+            {
+                doors[i].Draw(_spriteBatch);
+            }
+
+            DrawUI();
+        }
+
+        private void UpdateInstructions()
+        {
+
+        }
+
+        private void DrawInstructions()
+        {
+
+        }
+
+        private void UpdateHighScores()
+        {
+
+        }
+
+        private void DrawHighScores()
         {
 
         }
@@ -330,14 +411,16 @@ namespace PASS4
                     }
                 }
             }
-           
+
+            //Initializing all game object arrays
             crates = new Crate[crateDestRecs.Count];
             gems = new Gem[gemDestRecs.Count];
             keys = new Key[keyDestRecs.Count];
             doors = new Door[doorDestRecs.Count];
             spikes = new Spike[spikeDestRecs.Count];
 
-
+            //Setting totalNumGems variable
+            totalNumGems = gems.Length;
             //Initializing all crates
             for (int i = 0; i < crates.Length; i++)
             {

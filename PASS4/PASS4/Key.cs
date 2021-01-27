@@ -3,8 +3,7 @@
 //Project Name: PASS4
 //Creation Date: Jan 26, 2021
 //Modified Date: Jan 27, 2021
-/* Description: This class stores the basic properties of entities in the game (player and crates). 
- * This includes sprite, rectangles, position, speed, and more.
+/* Description: This is the key class. It handles all key-related logic, such as incrementing the numKeysCollected variable, toggling its visibility when its collected, displaying, etc.
  */
 using System;
 using Microsoft.Xna.Framework;

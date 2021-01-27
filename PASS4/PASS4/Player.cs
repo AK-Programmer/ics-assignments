@@ -2,7 +2,7 @@
 //File Name: Main.cs
 //Project Name: PASS4
 //Creation Date: Jan 7, 2021
-//Modified Date: Jan 22, 2021
+//Modified Date: Jan 27, 2021
 /* Description: This class stores the properties and functions of the player. It inherits the GameEntity class
  */
 using System;
@@ -15,7 +15,6 @@ namespace PASS4
 {
     public class Player : GameEntity
     {
-
         enum CurrentMove
         {
             None,

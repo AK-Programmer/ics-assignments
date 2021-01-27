@@ -26,7 +26,6 @@ namespace PASS4
             NoCollision = -1
         };
 
-        
         //Graphics-related variables
         protected Texture2D sprite;
         protected Rectangle destRec;

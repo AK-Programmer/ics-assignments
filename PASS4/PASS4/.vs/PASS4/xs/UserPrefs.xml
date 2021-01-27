@@ -1,15 +1,14 @@
 ﻿<Properties StartupConfiguration="{9150E962-1F31-49D9-ADC5-B294310C1674}|Default">
   <MonoDevelop.Ide.ItemProperties.PASS4 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Key.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Input.cs">
     <Files>
-      <File FileName="Main.cs" Line="144" Column="41" />
-      <File FileName="Player.cs" Line="75" Column="1" />
-      <File FileName="GameEntity.cs" Line="129" Column="43" />
-      <File FileName="Crate.cs" Line="48" Column="18" />
-      <File FileName="Door.cs" Line="16" Column="9" />
-      <File FileName="Key.cs" Line="20" Column="44" />
+      <File FileName="Main.cs" Line="267" Column="14" />
+      <File FileName="Player.cs" />
+      <File FileName="GameEntity.cs" />
+      <File FileName="Crate.cs" />
       <File FileName="Spike.cs" />
-      <File FileName="Gem.cs" Line="69" Column="9" />
+      <File FileName="Input.cs" Line="13" Column="1" />
+      <File FileName="Helper.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,9 +16,11 @@
           <Node name="PASS4" expanded="True">
             <Node name="PASS4" expanded="True">
               <Node name="Content" expanded="True">
-                <Node name="Fonts" expanded="True" />
+                <Node name="bin" expanded="True">
+                  <Node name="DesktopGL" expanded="True" />
+                </Node>
               </Node>
-              <Node name="Key.cs" selected="True" />
+              <Node name="Input.cs" selected="True" />
             </Node>
           </Node>
         </State>
