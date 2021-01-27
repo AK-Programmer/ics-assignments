@@ -94,6 +94,9 @@ namespace PASS4
         private int numKeysCollected = 0;
         private int numGemsCollected = 0;
 
+        //Player movement variables
+        public static bool isPlayerPushingCrate = true;
+
         public Main()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -111,6 +114,9 @@ namespace PASS4
             base.Initialize();
         }
 
+        //Pre: none
+        //Post: none
+        //Description: this is the load method for the entire game. It loads all the assets.
         protected override void LoadContent()
         {
             Console.WriteLine(System.IO.Path.GetPathRoot("Main.cs"));
@@ -135,9 +141,12 @@ namespace PASS4
 
             LoadLevel("level 1.txt");
 
-            player.SetControlSeq("deeeadee");
+            player.SetControlSeq("dee+eeea");
         }
 
+        //Pre: GameTime object
+        //Post: none
+        //Description: This is the 'global' update method for the entire game. It updates all entities and collectibles and handles gameflow logic.
         protected override void Update(GameTime gameTime)
         {
             for (int i = 0; i < entities.Length; i++)
@@ -152,6 +161,9 @@ namespace PASS4
             base.Update(gameTime);
         }
 
+        //Pre: GameTime object
+        //Post: none
+        //Description: this is the 'global draw method for the entire game. It draws all entities, collectibles, and terrain.
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(63, 56, 81));

@@ -121,7 +121,7 @@ namespace PASS4
             }
             else if(terrainCollision == CollisionType.LeftCollision)
             {
-                pos.X = terrainDestRec.X + terrainDestRec.Width + 1;
+                pos.X = terrainDestRec.X + terrainDestRec.Width;
                 velocity.X = 0;
             }
         }

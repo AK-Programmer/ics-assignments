@@ -49,7 +49,6 @@ namespace PASS4
         CollisionType entityCollision;
         bool anyMovement = false;
         bool alreadyJumped = false;
-        bool isPushingCrate = false;
 
 
         public Player(Texture2D sprite, Rectangle destRec, Rectangle srcRec, Dictionary<string, Texture2D> additionalSprites) : base(sprite, destRec, srcRec)
@@ -73,13 +72,17 @@ namespace PASS4
             //Gravity
             velocity.Y += GRAVITY;
 
+            Console.WriteLine(destRec.X);
+            Console.WriteLine(targetPosX);
+
+
             //Collision detection (with other entities)
             for (int i = 0; i < entities.Length; i++)
             {
                 if (entities[i] != this)
                 {
                     entityCollision = GetCollisionType(entities[i].GetDestRec());
-                    //Console.WriteLine(entityCollision);
+
                     if (entityCollision == CollisionType.BottomCollision)
                     {
                         pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
@@ -97,6 +100,8 @@ namespace PASS4
                     }
                 }
             }
+
+            
 
             //Collision detection (with terrain)
             terrainCollision = CollisionType.NoCollision;
@@ -147,17 +152,21 @@ namespace PASS4
                 }
             }
 
+
+            //If there is no movement happening and  the control sequence isn't empty, call the next command in the queue.
             if(currentMove == CurrentMove.None && !anyMovement && !currentControlSeq.IsEmpty())
             {
                 switch(currentControlSeq.Dequeue())
                 {
                     //Move right
                     case 'd':
+                        //Setting target position
                         targetPosX = destRec.X + Main.TILE_SIZE;
                         currentMove = CurrentMove.MoveRight;
                         break;
                     //Move left
                     case 'a':
+                        //Setting target position
                         targetPosX = destRec.X - Main.TILE_SIZE;
                         currentMove = CurrentMove.MoveLeft;
                         break;
@@ -181,11 +190,13 @@ namespace PASS4
                     case '+':
                         targetPosX = destRec.X + Main.TILE_SIZE;
                         currentMove = CurrentMove.PushRight;
+                        Main.isPlayerPushingCrate = true;
                         break;
                     //Push left
                     case '-':
                         targetPosX = destRec.X - Main.TILE_SIZE;
                         currentMove = CurrentMove.PushLeft;
+                        Main.isPlayerPushingCrate = true;
                         break;
                     //Default is no movement
                     default:
@@ -194,14 +205,17 @@ namespace PASS4
                 }
             }
 
+            //If there is no movement, then the horizontal velocity should be zero
             if(currentMove == CurrentMove.None)
             {
                 velocity.X = 0;
             }
+            //If the player is moving to the right (moving, pushing, jumping) set horizontal velocity to WALK_SPEED
             else if ((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && velocity.X != WALK_SPEED)
             {
                 velocity.X = WALK_SPEED;
             }
+            //If the player is moving to the left (moving, pushing, jumping) set horizontal velocity to -WALK_SPEED
             else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && velocity.X != -WALK_SPEED)
             {
                 velocity.X = -WALK_SPEED;
@@ -232,7 +246,6 @@ namespace PASS4
             }
 
             //Updating player position based on its velocity
-            distanceTravelledX += (int)velocity.X;
             pos.Y += velocity.Y;
             pos.X += velocity.X;
             destRec.X = (int)pos.X;
@@ -243,11 +256,13 @@ namespace PASS4
             {
                 currentMove = CurrentMove.None;
                 distanceTravelledX = 0;
+                Main.isPlayerPushingCrate = false;
             }
             else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
                 distanceTravelledX = 0;
+                Main.isPlayerPushingCrate = false;
             }
             else if (currentMove == CurrentMove.CollectItem)
             {
@@ -344,11 +359,6 @@ namespace PASS4
             {
                 throw new FormatException("All loops must be closed!");
             }
-
-        }
-
-        public bool GetPushingCrate()
-        {
 
         }
 
