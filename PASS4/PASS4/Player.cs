@@ -47,6 +47,7 @@ namespace PASS4
         CollisionType entityCollision;
         bool anyMovement = false;
         bool alreadyJumped = false;
+        int currentControlSeqTotalSize = 0;
 
 
         public Player(Texture2D sprite, Rectangle destRec, Rectangle srcRec, Dictionary<string, Texture2D> additionalSprites) : base(sprite, destRec, srcRec)
@@ -255,12 +256,15 @@ namespace PASS4
             destRec.Y = (int)pos.Y;
 
             //Resetting currentMove and distanceTravelled so that they're ready for the next command in currentMoveSeq
-            if (velocity.X == 0 && targetPosX == destRec.X + Main.TILE_SIZE)
+            if (velocity.X == 0 && (targetPosX == destRec.X + Main.TILE_SIZE || targetPosX == destRec.X - Main.TILE_SIZE))
             {
                 currentMove = CurrentMove.None;
                 Main.isPlayerPushingCrate = false;
                 targetPosX = destRec.X;
             }
+
+
+
 
             if((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && destRec.X == targetPosX)
             {
@@ -300,6 +304,8 @@ namespace PASS4
             int numLoopIter = -1;
             string loopedSequence = "";
             int whileCount = 0;
+
+            currentControlSeqTotalSize = controlSequence.Length;
 
             if(controlSequence.Length > 68)
             {
@@ -371,7 +377,14 @@ namespace PASS4
         }
 
 
-
+        public int getControlSeqTotalSize()
+        {
+            return currentControlSeqTotalSize;
+        }
+        public int getControlSeqCurrentSize()
+        {
+            return currentControlSeq.Size();
+        }
 
 
 

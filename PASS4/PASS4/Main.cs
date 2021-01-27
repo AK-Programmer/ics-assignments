@@ -202,8 +202,12 @@ namespace PASS4
         private void DrawUI()
         {
             Rectangle controlCenterRec = new Rectangle(0, TILE_SIZE * 9, NUM_TILES_W * TILE_SIZE, TILE_SIZE * 3);
-            Texture2D controlCenterTexture = Helper.GetColouredRec(controlCenterRec, Color.Black);
+            Rectangle progressBarBg = new Rectangle(TILE_SIZE, TILE_SIZE * 10, TILE_SIZE * 5, 20);
+            Rectangle progressBarFg = new Rectangle(TILE_SIZE, TILE_SIZE * 10, TILE_SIZE * 5, 20);
 
+            Texture2D controlCenterTexture = Helper.GetColouredRec(controlCenterRec, Color.Black);
+            Texture2D progressBarBgTexture = Helper.GetColouredRec(progressBarBg, Color.Gray);
+            Texture2D progressBarFgTexture = Helper.GetColouredRec(progressBarFg, Color.Green);
 
             //Gems and Keys
             _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
@@ -214,7 +218,19 @@ namespace PASS4
 
             //Command center
             _spriteBatch.Draw(controlCenterTexture, controlCenterRec, Color.White);
-            _spriteBatch.DrawString(gameFont, $"Command Sequence: {commandSequence}", new Vector2(TILE_SIZE/2, TILE_SIZE * 9 + 10), Color.White);
+            //_spriteBatch.DrawString(gameFont, "Command Sequence:", new Vector2(TILE_SIZE/2, TILE_SIZE * 9 + 10), Color.White);
+            _spriteBatch.DrawString(gameFont, commandSequence, new Vector2(TILE_SIZE, TILE_SIZE * 9 + 10), Color.White);
+
+            //Progress bar
+            if(player.getControlSeqCurrentSize() > 0)
+            {
+                float progressBarProgress = (float) (player.getControlSeqTotalSize() - player.getControlSeqCurrentSize()) / player.getControlSeqTotalSize();
+                Console.WriteLine($"Progress: {(int) (progressBarProgress * TILE_SIZE * 5)}");
+                progressBarFg = new Rectangle(TILE_SIZE, TILE_SIZE * 10,(int) (progressBarProgress * TILE_SIZE*5), 20);
+                _spriteBatch.Draw(progressBarBgTexture, progressBarBg, Color.White);
+                _spriteBatch.Draw(progressBarFgTexture, progressBarFg, Color.White);
+            }
+            
         }
 
 
