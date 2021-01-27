@@ -7,36 +7,51 @@ namespace PASS4
 {
     public class Crate : GameEntity
     {
+
         CollisionType entityCollision;
 
         public Crate(Texture2D sprite, Rectangle destRec, Rectangle srcRec) : base(sprite, destRec, srcRec)
         {
+            
+            collideTopTerrain = false;
+            collideBottomTerrain = false;
+            collideLeftTerrain = false;
+            collideRightTerrain = false;
+
+
         }
 
         public override void Update(List<Rectangle> terrain, GameEntity [] entities)
         {
+            Console.WriteLine(destRec.X);
 
             collideLeft = false;
             collideRight = false;
             collideTop = false;
             collideBottom = false;
+            collideTopTerrain = false;
+            collideBottomTerrain = false;
+            collideLeftTerrain = false;
+            collideRightTerrain = false;
 
             //Gravity
             velocity.Y += GRAVITY;
+
+            //By default horizontal velocity should be zero. It will be set to something else if a collision with a player/crate is detected
+            velocity.X = 0;
+
+            
             //Collision detection (other entities)
             if (Main.isPlayerPushingCrate)
             {
-                for (int i = 0; i < entities.Length; i++)
+                for(int i = 0; i < entities.Length; i++)
                 {
-                    if (entities[i] != this)
+                    if(entities[i] != this)
                     {
                         entityCollision = GetCollisionType(entities[i].GetDestRec());
 
-
                         if (entityCollision == CollisionType.BottomCollision)
                         {
-                            collideBottom = true;
-
                             pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
                             if (velocity.Y > 0)
                             {
@@ -47,29 +62,23 @@ namespace PASS4
                                 }
                             }
                         }
-                        else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
+
+                        if (((entityCollision == CollisionType.LeftCollision && !collideRightTerrain) || (entityCollision == CollisionType.RightCollision && !collideLeftTerrain)) && velocity.X == 0)
                         {
                             velocity.X = entities[i].GetVelocity().X;
-                            HandleTerrainCollision(entities[i].GetDestRec());
                         }
-                        else if (entityCollision == CollisionType.TopCollision)
-                        {
-                            collideTop = true;
-                            velocity.X = 0;
-                        }
-                        else
+
+                        if (collideTop)
                         {
                             velocity.X = 0;
                         }
-
-
                     }
+                    
                 }
+
             }
-            
 
             //Collision detection (terrain)
-
             for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
@@ -80,6 +89,8 @@ namespace PASS4
             pos.X += velocity.X;
             destRec.X = (int)pos.X;
             destRec.Y = (int)pos.Y;
+
+
         }
     }
 }

@@ -41,6 +41,7 @@ namespace PASS4
 
         //Collision trackers
         protected bool collideLeft, collideRight, collideTop, collideBottom;
+        protected bool collideTopTerrain, collideBottomTerrain, collideLeftTerrain, collideRightTerrain;
 
         public GameEntity(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
@@ -103,11 +104,14 @@ namespace PASS4
             terrainCollision = GetCollisionType(terrainDestRec);
             if (terrainCollision == CollisionType.TopCollision)
             {
+                collideTopTerrain = true;
                 pos.Y = terrainDestRec.Y + terrainDestRec.Height + 1;
+                //'Bounce back' velocity
                 velocity.Y = 0.1f;
             }
             else if (terrainCollision == CollisionType.BottomCollision)
             {
+                collideBottomTerrain = true;
                 pos.Y = terrainDestRec.Y - destRec.Height + 1;
                 if (velocity.Y > 0)
                 {
@@ -116,11 +120,13 @@ namespace PASS4
             }
             else if(terrainCollision == CollisionType.RightCollision)
             {
+                collideRightTerrain = true;
                 pos.X = terrainDestRec.X - destRec.Width;
                 velocity.X = 0;
             }
             else if(terrainCollision == CollisionType.LeftCollision)
             {
+                collideLeftTerrain = true;
                 pos.X = terrainDestRec.X + terrainDestRec.Width;
                 velocity.X = 0;
             }

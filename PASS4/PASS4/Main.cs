@@ -141,7 +141,7 @@ namespace PASS4
 
             LoadLevel("level 1.txt");
 
-            player.SetControlSeq("dee+eeea");
+            player.SetControlSeq("dee+ee");
         }
 
         //Pre: GameTime object
@@ -244,27 +244,35 @@ namespace PASS4
                 {
                     switch(line[i])
                     {
+                        //Player
                         case '0':
                             playerDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE - 10);
                             break;
+                        //Terrain
                         case '1':
                             terrainRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;
+                        //Crates
                         case '2':
                             crateDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;
+                        //Flag
                         case '3':
                             flagPoleDestRec = new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                             break;
+                        //Doors
                         case '4':
                             doorDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;
+                        //Spikes
                         case '5':
                             spikeDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;
+                        //Gems
                         case '6':
                             gemDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;
+                        //Keys
                         case '7':
                             keyDestRecs.Add(new Rectangle(i * TILE_SIZE, numLines * TILE_SIZE, TILE_SIZE, TILE_SIZE));
                             break;

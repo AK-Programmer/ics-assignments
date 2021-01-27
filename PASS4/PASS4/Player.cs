@@ -62,6 +62,7 @@ namespace PASS4
 
         public override void Update(List<Rectangle> terrain, GameEntity[] entities)
         {
+            Console.WriteLine($"Player pos: {destRec.X}");
             collideBottom = false;
             collideTop = false;
             collideLeft = false;
@@ -71,10 +72,6 @@ namespace PASS4
 
             //Gravity
             velocity.Y += GRAVITY;
-
-            Console.WriteLine(destRec.X);
-            Console.WriteLine(targetPosX);
-
 
             //Collision detection (with other entities)
             for (int i = 0; i < entities.Length; i++)
@@ -250,18 +247,23 @@ namespace PASS4
             pos.X += velocity.X;
             destRec.X = (int)pos.X;
             destRec.Y = (int)pos.Y;
-            
+
             //Resetting currentMove and distanceTravelled so that they're ready for the next command in currentMoveSeq
+            if (velocity.X == 0 && targetPosX == destRec.X + Main.TILE_SIZE)
+            {
+                currentMove = CurrentMove.None;
+                Main.isPlayerPushingCrate = false;
+                targetPosX = destRec.X;
+            }
+
             if((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
-                distanceTravelledX = 0;
                 Main.isPlayerPushingCrate = false;
             }
             else if ((currentMove == CurrentMove.MoveLeft || currentMove == CurrentMove.JumpLeft || currentMove == CurrentMove.PushLeft) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
-                distanceTravelledX = 0;
                 Main.isPlayerPushingCrate = false;
             }
             else if (currentMove == CurrentMove.CollectItem)
