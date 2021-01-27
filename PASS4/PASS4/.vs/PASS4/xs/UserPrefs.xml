@@ -1,21 +1,13 @@
 ﻿<Properties StartupConfiguration="{9150E962-1F31-49D9-ADC5-B294310C1674}|Default">
   <MonoDevelop.Ide.ItemProperties.PASS4 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Button.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Main.cs">
     <Files>
-      <File FileName="Main.cs" Line="152" Column="1" />
-      <File FileName="Player.cs" Line="376" Column="46" />
-      <File FileName="GameEntity.cs" Line="56" Column="113" />
-      <File FileName="Crate.cs" Line="93" Column="64" />
+      <File FileName="Main.cs" Line="151" Column="57" />
+      <File FileName="Player.cs" Line="84" Column="44" />
+      <File FileName="Crate.cs" Line="57" Column="26" />
       <File FileName="Input.cs" Line="2" Column="19" />
-      <File FileName="Spike.cs" Line="35" Column="28" />
-      <File FileName="Key.cs" Line="17" Column="9" />
-      <File FileName="Helper.cs" Line="7" Column="4" />
-      <File FileName="Door.cs" Line="1" Column="1" />
-      <File FileName="CharQueue.cs" Line="1" Column="1" />
       <File FileName="Gem.cs" Line="46" Column="16" />
-      <File FileName="Content/Fonts/File.spritefont" Line="1" Column="1" />
-      <File FileName="Content/Fonts/TitleFont.spritefont" Line="20" Column="13" />
-      <File FileName="Button.cs" Line="1" Column="1" />
+      <File FileName="Button.cs" Line="57" Column="77" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,7 +20,7 @@
                 </Node>
                 <Node name="Fonts" expanded="True" />
               </Node>
-              <Node name="Button.cs" selected="True" />
+              <Node name="Main.cs" selected="True" />
             </Node>
           </Node>
         </State>

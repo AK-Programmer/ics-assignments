@@ -142,7 +142,9 @@ namespace PASS4
         //Player movement variables
         public static bool isPlayerPushingCrate = false;
 
-        //Menu Buttons
+        //Menu Button Text
+        private static string[] buttonText = { "Play", "Instructions", "View high scores", "Exit" };
+
 
         public Main()
         {
@@ -261,7 +263,6 @@ namespace PASS4
             {
                 //The percentage of the progress bar that should be filled
                 float progressBarProgress = (float) (player.getControlSeqTotalSize() - player.getControlSeqCurrentSize()) / player.getControlSeqTotalSize();
-                Console.WriteLine($"Progress: {(int) (progressBarProgress * PROGRESS_BAR_WIDTH)}");
                 //Setting the width of the % progress * progress bar max width
                 progressBarFg.Width = (int) (progressBarProgress * PROGRESS_BAR_WIDTH);
                 //Drawing the background and foreground of the progress bar

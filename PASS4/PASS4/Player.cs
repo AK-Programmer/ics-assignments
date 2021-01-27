@@ -49,7 +49,6 @@ namespace PASS4
         bool alreadyJumped = false;
         int currentControlSeqTotalSize = 0;
 
-
         public Player(Texture2D sprite, Rectangle destRec, Rectangle srcRec, Dictionary<string, Texture2D> additionalSprites) : base(sprite, destRec, srcRec)
         {
             this.additionalSprites = additionalSprites;
@@ -61,6 +60,7 @@ namespace PASS4
 
         public override void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors, Spike[] spikes)
         {
+            Console.WriteLine($"Player pos: {destRec.X}");
             collideBottom = false;
             collideTop = false;
             collideLeft = false;
@@ -88,7 +88,7 @@ namespace PASS4
 
                         break;
                     }
-                    else if (entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision)
+                    else if ((entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision) && destRec.X % Main.TILE_SIZE != 0)
                     {
                         HandleTerrainCollision(entities[i].GetDestRec());
                         break;
@@ -96,14 +96,12 @@ namespace PASS4
                 }
             }
 
-            
             //Collision handling (with terrain)
             terrainCollision = CollisionType.NoCollision;
             for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
             }
-
 
             //Collision handling with doors
             for (int i = 0; i < doors.Length; i++)
@@ -272,9 +270,6 @@ namespace PASS4
                 targetPosX = destRec.X;
             }
 
-
-
-
             if((currentMove == CurrentMove.MoveRight || currentMove == CurrentMove.JumpRight || currentMove == CurrentMove.PushRight) && destRec.X == targetPosX)
             {
                 currentMove = CurrentMove.None;
@@ -291,12 +286,17 @@ namespace PASS4
             }
         }
 
+        //Pre: none
+        //Post: none
+        //Description: this method draws the player to the screen
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //If the player is facing right, draw normally
             if(facingRight)
             {
                 spriteBatch.Draw(spriteToUse, destRec, srcRec, Color.White);
             }
+            //otherwise, reflect the player along its central y-axis
             else
             {
                 //This overload of the draw method gives the option to display the flipped version of the sprite (flipped horizontally)

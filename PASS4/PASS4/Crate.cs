@@ -16,6 +16,7 @@ namespace PASS4
     {
 
         CollisionType entityCollision;
+        bool isPlayerPushingCrate = false;
 
         public Crate(Texture2D sprite, Rectangle destRec, Rectangle srcRec) : base(sprite, destRec, srcRec)
         {
@@ -43,9 +44,8 @@ namespace PASS4
             //By default horizontal velocity should be zero. It will be set to something else if a collision with a player/crate is detected
             velocity.X = 0;
 
-            
             //Collision detection (other entities)
-            if (Main.isPlayerPushingCrate)
+            if (isPlayerPushingCrate)
             {
                 for(int i = 0; i < entities.Length; i++)
                 {
@@ -56,17 +56,9 @@ namespace PASS4
                         if (entityCollision == CollisionType.BottomCollision)
                         {
                             pos.Y = entities[i].GetDestRec().Y - destRec.Height + 1;
-                            if (velocity.Y > 0)
-                            {
-                                velocity.Y = 0;
-                                if (entities[i].GetVelocity().X != 0)
-                                {
-                                    velocity.X = entities[i].GetVelocity().X;
-                                }
-                            }
                         }
 
-                        if (((entityCollision == CollisionType.LeftCollision && !collideRightTerrain) || (entityCollision == CollisionType.RightCollision && !collideLeftTerrain)) && velocity.X == 0)
+                        if ((entityCollision == CollisionType.LeftCollision || entityCollision == CollisionType.RightCollision) && velocity.X == 0)
                         {
                             velocity.X = entities[i].GetVelocity().X;
                         }
@@ -76,10 +68,10 @@ namespace PASS4
                             velocity.X = 0;
                         }
                     }
-                    
                 }
-
             }
+
+
 
             //Collision detection (terrain)
             for (int i = 0; i < terrain.Count; i++)
@@ -98,7 +90,7 @@ namespace PASS4
             pos.X += velocity.X;
             destRec.X = (int)pos.X;
             destRec.Y = (int)pos.Y;
-
+            isPlayerPushingCrate = Main.isPlayerPushingCrate;
 
         }
     }
