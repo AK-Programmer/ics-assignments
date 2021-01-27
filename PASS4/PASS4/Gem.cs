@@ -1,4 +1,11 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Gem.cs
+//Project Name: PASS4
+//Creation Date: Jan 8, 2021
+//Modified Date: Jan 27, 2021
+/* Description: This class stores the properties and functions of the gem. It inherits the GameEntity class.
+*/
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,7 +30,9 @@ namespace PASS4
 
         private bool beenCollected = false;
 
-
+        //Pre: the sprite, destination rectangle, and source rectangle to be used for gems
+        //Post: none
+        //Description: This method initializes the graphics variables to the given arguments
         public Gem(Texture2D sprite, Rectangle destRec, Rectangle srcRec)
         {
             this.sprite = sprite;
@@ -34,6 +43,7 @@ namespace PASS4
             pos.Y = destRec.Y;
         }
 
+        //Pre: 
         public void Update(Player player, ref int numGemsCollected)
         {
             if(!beenCollected)

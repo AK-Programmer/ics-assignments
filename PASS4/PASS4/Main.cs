@@ -28,6 +28,13 @@ namespace PASS4
             Exit
         }
 
+        enum PlayState
+        {
+            EnterCommand,
+            Watch,
+            CloseError
+        }
+
         //Asset paths
         //Sprite file paths
         private const string IDLE_SPRITE_PATH = "Images/Sprites/Player/Idle";
@@ -49,9 +56,12 @@ namespace PASS4
         public const int TILE_SIZE = 50;
         private const int NUM_TILES_W = 20;
         private const int NUM_TILES_H = 12;
+        private const int LEVEL_TILES_H = 9;
+        private const int LEVEL_TILES_W = 20;
         private const int GEM_SIZE = 30;
         private const int CRATE_SIZE = 74;
         private const int KEY_SIZE = 30;
+        private const int PROGRESS_BAR_WIDTH = TILE_SIZE * 5;
 
 
         //Graphics & Display-related objects
@@ -74,6 +84,7 @@ namespace PASS4
         private Texture2D gemSprite;
         private Texture2D keySprite;
         private Texture2D doorSprite;
+        private Texture2D spikeSprite;
 
         //Fonts
         private SpriteFont gameFont;
@@ -109,21 +120,29 @@ namespace PASS4
         private Rectangle gemSrcRec = new Rectangle(5, 2, 12, 10);
         private Rectangle keySrcRec = new Rectangle(0, 0, 992, 1000);
         private Rectangle doorSrcRec = new Rectangle(0, 0, 46, 56);
+        private Rectangle spikeSrcRec = new Rectangle(0, 0, 142, 163);
 
         //Game variables
         private int numKeysCollected = 0;
         private int numGemsCollected = 0;
         private int totalNumGems = 0;
         private string commandSequence = "";
+        //All valid commands
         private char[] validCommandKeys = {'a', 'd', 'c', 'e', 'q', '+', '-', 's', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        //Error-message to be displayed
+        private string currentErrorMessage;
+        //Keeps track of whether the player has failed the current level
+        public static bool playerFailed = false;
 
         //Game-state variables
         GameState gameState = GameState.MainMenu;
-        int currentLevel = 0;
+        int currentLevel = 1;
         bool viewLegend = false;
 
         //Player movement variables
         public static bool isPlayerPushingCrate = false;
+
+        //Menu Buttons
 
         public Main()
         {
@@ -132,6 +151,10 @@ namespace PASS4
             IsMouseVisible = true;
         }
 
+
+        //Pre: none
+        //Post: none
+        //Description: this method sets screen-related variables and calls the Monogame initialize method.
         protected override void Initialize()
         {
             this._graphics.PreferredBackBufferWidth = TILE_SIZE * NUM_TILES_W;
@@ -160,11 +183,14 @@ namespace PASS4
             gemSprite = Content.Load<Texture2D>(GEM_SPRITE_PATH);
             keySprite = Content.Load<Texture2D>(KEY_SPRITE_PATH);
             doorSprite = Content.Load<Texture2D>(DOOR_SPRITE_PATH);
+            spikeSprite = Content.Load<Texture2D>(SPIKE_SPRITE_PATH);
 
             //Loading the game font
             gameFont = Content.Load<SpriteFont>(FONT_PATH);
 
+            //Setting the GraphicsDeviceManager in the helper class to the one used in main
             Helper.graphics = _graphics;
+
             //Adding various player sprites to playerSprite dictionary
             playerSprites.Add("jump", jumpSprite);
             playerSprites.Add("run", runSprite);
@@ -180,7 +206,11 @@ namespace PASS4
         //Description: This is the 'global' update method for the entire game. It updates all entities and collectibles and handles gameflow logic.
         protected override void Update(GameTime gameTime)
         {
-            UpdateGame();
+            if(!playerFailed)
+            {
+                UpdateGame();
+            }
+            
             base.Update(gameTime);
         }
 
@@ -190,31 +220,36 @@ namespace PASS4
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(63, 56, 81));
-
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null);
-
             DrawGame();
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method draws the entire UI (keys/gems, progress bar, entered commands, error messages, etc.) on top of the game itself.
         private void DrawUI()
         {
+            //The control center background rectangle
             Rectangle controlCenterRec = new Rectangle(0, TILE_SIZE * 9, NUM_TILES_W * TILE_SIZE, TILE_SIZE * 3);
+            //The progress bar background rectangle
             Rectangle progressBarBg = new Rectangle(TILE_SIZE, TILE_SIZE * 10, TILE_SIZE * 5, 20);
+            //The progress bar foreground rectangle
             Rectangle progressBarFg = new Rectangle(TILE_SIZE, TILE_SIZE * 10, TILE_SIZE * 5, 20);
 
+            //Textures for the rectangles above, generated with a Helper function
             Texture2D controlCenterTexture = Helper.GetColouredRec(controlCenterRec, Color.Black);
             Texture2D progressBarBgTexture = Helper.GetColouredRec(progressBarBg, Color.Gray);
-            Texture2D progressBarFgTexture = Helper.GetColouredRec(progressBarFg, Color.Green);
+            Texture2D progressBarFgTexture = Helper.GetColouredRec(progressBarFg, Color.LightGreen);
 
-            //Gems and Keys
+            //Display number of gems and keys collected
             _spriteBatch.Draw(gemSprite, new Rectangle(10, 10, 20, 20), new Rectangle(5, 2, 12, 10), Color.White);
             _spriteBatch.DrawString(gameFont, $"{numGemsCollected}/{totalNumGems}", new Vector2(35, 10), Color.White);
-
             _spriteBatch.Draw(keySprite, new Rectangle(70, 10, 20, 20), Color.White);
             _spriteBatch.DrawString(gameFont, numKeysCollected.ToString(), new Vector2(95, 10), Color.White);
+
 
             //Command center
             _spriteBatch.Draw(controlCenterTexture, controlCenterRec, Color.White);
@@ -224,15 +259,16 @@ namespace PASS4
             //Progress bar
             if(player.getControlSeqCurrentSize() > 0)
             {
+                //The percentage of the progress bar that should be filled
                 float progressBarProgress = (float) (player.getControlSeqTotalSize() - player.getControlSeqCurrentSize()) / player.getControlSeqTotalSize();
-                Console.WriteLine($"Progress: {(int) (progressBarProgress * TILE_SIZE * 5)}");
-                progressBarFg = new Rectangle(TILE_SIZE, TILE_SIZE * 10,(int) (progressBarProgress * TILE_SIZE*5), 20);
+                Console.WriteLine($"Progress: {(int) (progressBarProgress * PROGRESS_BAR_WIDTH)}");
+                //Setting the width of the % progress * progress bar max width
+                progressBarFg.Width = (int) (progressBarProgress * PROGRESS_BAR_WIDTH);
+                //Drawing the background and foreground of the progress bar
                 _spriteBatch.Draw(progressBarBgTexture, progressBarBg, Color.White);
                 _spriteBatch.Draw(progressBarFgTexture, progressBarFg, Color.White);
             }
-            
         }
-
 
         private void UpdateMainMenu()
         {
@@ -244,12 +280,15 @@ namespace PASS4
 
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method updates the game when gameState is in play mode
         private void UpdateGame()
         {
             //Update all entities
             for (int i = 0; i < entities.Length; i++)
             {
-                entities[i].Update(terrainRecs, entities, doors);
+                entities[i].Update(terrainRecs, entities, doors, spikes);
             }
 
             //Update all gems
@@ -287,51 +326,78 @@ namespace PASS4
                 commandSequence = "";
             }
         }
+
+        //Pre: none
+        //Post: none
+        //Description: This method draws the game when gameState is in play mode
         private void DrawGame()
         {
+            //Drawing terrain
             for (int i = 0; i < terrainRecs.Count; i++)
             {
                 _spriteBatch.Draw(terrainSprite, terrainRecs[i], Color.White);
             }
 
+            //Drawing all entities
             for (int i = 0; i < entities.Length; i++)
             {
                 entities[i].Draw(_spriteBatch);
             }
 
+            //Drawing gems
             for (int i = 0; i < gems.Length; i++)
             {
                 gems[i].Draw(_spriteBatch);
             }
 
+            //Drawing keys
             for (int i = 0; i < keys.Length; i++)
             {
                 keys[i].Draw(_spriteBatch);
             }
 
+            //Drawing doors
             for (int i = 0; i < doors.Length; i++)
             {
                 doors[i].Draw(_spriteBatch);
             }
 
+            //Drawing spikes
+            for(int i = 0; i < spikes.Length; i++)
+            {
+                spikes[i].Draw(_spriteBatch);
+            }
+
             DrawUI();
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method updates the game when gameState is in instructions mode
         private void UpdateInstructions()
         {
 
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method draws the game when gameState is in instructions mode
         private void DrawInstructions()
         {
 
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method updates the game when gameState is in high scores mode
         private void UpdateHighScores()
         {
 
         }
 
+        //Pre: none
+        //Post: none
+        //Description: This method draws the game when gameState is in high scores mode
         private void DrawHighScores()
         {
 
@@ -360,6 +426,7 @@ namespace PASS4
             crateDestRecs.Clear();
             gemDestRecs.Clear();
             spikeDestRecs.Clear();
+            doorDestRecs.Clear();
 
             //Resetting counters
             numGemsCollected = 0;
@@ -367,7 +434,7 @@ namespace PASS4
 
             //Adding all level borders
             //The floor of the level
-            terrainRecs.Add(new Rectangle(0, NUM_TILES_H * TILE_SIZE, NUM_TILES_W * TILE_SIZE, TILE_SIZE));
+            terrainRecs.Add(new Rectangle(0, (LEVEL_TILES_H) * TILE_SIZE, NUM_TILES_W * TILE_SIZE, TILE_SIZE));
             //The left wall of the level
             terrainRecs.Add(new Rectangle(-TILE_SIZE, 0, TILE_SIZE, NUM_TILES_H * TILE_SIZE));
             //The Right wall of the level
@@ -459,6 +526,12 @@ namespace PASS4
             for(int i = 0; i < doors.Length; i++)
             {
                 doors[i] = new Door(doorSprite, doorDestRecs[i], doorSrcRec);
+            }
+
+            //Initializing all spikes
+            for(int i = 0; i < spikes.Length; i++)
+            {
+                spikes[i] = new Spike(spikeSprite, spikeDestRecs[i], spikeSrcRec);
             }
 
             player = new Player(idleSprite, playerDestRec, playerSrcRec, playerSprites);

@@ -1,4 +1,12 @@
-﻿using System;
+﻿//Author: Adar Kahiri
+//File Name: Input.cs
+//Project Name: PASS4
+//Creation Date: Jan 26, 2021
+//Modified Date: Jan 27, 2021
+/* Description: This class contains methods related to receiving user-input.
+ */
+
+using System;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;

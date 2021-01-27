@@ -44,6 +44,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/8BitFont.spritefont
 
+#begin Fonts/TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TitleFont.spritefont
+
 #begin Images/Sprites/Level Assets/Big Diamond Idle (18x14).png
 /importer:TextureImporter
 /processor:TextureProcessor

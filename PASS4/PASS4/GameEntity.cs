@@ -1,5 +1,5 @@
 ﻿//Author: Adar Kahiri
-//File Name: Main.cs
+//File Name: GameEntity.cs
 //Project Name: PASS4
 //Creation Date: Jan 6, 2021
 //Modified Date: Jan 22, 2021
@@ -53,7 +53,7 @@ namespace PASS4
 
         }
 
-        public abstract void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors);
+        public abstract void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors, Spike[] spikes);
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

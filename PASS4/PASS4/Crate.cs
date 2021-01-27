@@ -1,5 +1,5 @@
 ﻿//Author: Adar Kahiri
-//File Name: Main.cs
+//File Name: Crate.cs
 //Project Name: PASS4
 //Creation Date: Jan 6, 2021
 //Modified Date: Jan 27, 2021
@@ -26,7 +26,7 @@ namespace PASS4
             collideRightTerrain = false;
         }
 
-        public override void Update(List<Rectangle> terrain, GameEntity [] entities, Door[] doors)
+        public override void Update(List<Rectangle> terrain, GameEntity [] entities, Door[] doors, Spike[] spikes)
         {
             collideLeft = false;
             collideRight = false;
@@ -85,6 +85,12 @@ namespace PASS4
             for (int i = 0; i < terrain.Count; i++)
             {
                 HandleTerrainCollision(terrain[i]);
+            }
+
+            //Collision with spikes
+            for(int i = 0; i < spikes.Length; i++)
+            {
+                HandleTerrainCollision(spikes[i].GetDestRec());
             }
 
             //Updating crate's position based on its velocity

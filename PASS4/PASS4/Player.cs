@@ -1,5 +1,5 @@
 ﻿//Author: Adar Kahiri
-//File Name: Main.cs
+//File Name: Player.cs
 //Project Name: PASS4
 //Creation Date: Jan 7, 2021
 //Modified Date: Jan 27, 2021
@@ -59,7 +59,7 @@ namespace PASS4
             targetPosX = destRec.X;
         }
 
-        public override void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors)
+        public override void Update(List<Rectangle> terrain, GameEntity[] entities, Door[] doors, Spike[] spikes)
         {
             collideBottom = false;
             collideTop = false;
@@ -111,6 +111,15 @@ namespace PASS4
                 if (destRec.Intersects(doors[i].GetDestRec()) && !doors[i].GetBeenOpened())
                 {
                     HandleTerrainCollision(doors[i].GetDestRec());
+                }
+            }
+
+            //Collision handling with spikes
+            for(int i = 0; i < spikes.Length; i++)
+            {
+                if(destRec.Intersects(spikes[i].GetDestRec()))
+                {
+                    Main.playerFailed = true;
                 }
             }
 
@@ -312,16 +321,20 @@ namespace PASS4
                 throw new FormatException("The control sequence must not exceed 68 characters.");
             }
 
+            //While there are still commands left in the controlSequence string, continue parsing the string
             while(controlSequence.Length > 0)
             {
                 whileCount++;
+                //First, check if the character is one of the simple commands.
                 if ((controlSequence[0] == 'd' || controlSequence[0] == 'a' || controlSequence[0] == 'c' || controlSequence[0] == 'e'
                     || controlSequence[0] == 'q' || controlSequence[0] == '+' || controlSequence[0] == '-'))
                 {
+                    //If it is a simple command and the parser is not currently in a loop, simply add it to the queue
                     if (!inLoop)
                     {
                         currentControlSeq.Enqueue(controlSequence[0]);
                     }
+                    //Otherwise, add the character to the loopedSequence string, which will be looped over however many times the loop is run
                     else
                     {
                         loopedSequence += controlSequence[0];
@@ -329,6 +342,7 @@ namespace PASS4
 
                     controlSequence = controlSequence.Remove(0, 1);
                 }
+                //If there is a start of a loop, first ensure that the parser is not already in a loop (no loops inside loops!). 
                 else if (controlSequence[0] == 's')
                 {
                     if(inLoop)
@@ -337,8 +351,10 @@ namespace PASS4
                     }
 
                     inLoop = true;
+                    //Remove the first character from controlSequence to get the next character in the next iteration.
                     controlSequence = controlSequence.Remove(0, 1);
 
+                    //Then, the number of iterations should come right after so set numLoopIter to that (with error-handling).
                     try
                     {
                         numLoopIter = (int)Char.GetNumericValue(controlSequence[0]);
@@ -349,6 +365,7 @@ namespace PASS4
                         throw new FormatException("Loop iteration number must be a valid positive integer!");
                     }
                 }
+                //If there is an end of a loop, Set inLoop to false, and add loopedSequence to the queue numLoopIter times. 
                 else if(controlSequence[0] == 'f')
                 {
                     inLoop = false;
@@ -361,14 +378,16 @@ namespace PASS4
                     }
 
                     loopedSequence = "";
+                    //Remove the first character from controlSequence to get the next character in the next iteration.
                     controlSequence = controlSequence.Remove(0, 1);
                 }
+                //Otherwise, the character is invalid, so throw an exception.
                 else
                 {
                     throw new FormatException("Invalid character. Refer to the instructions to view all valid characters.");
                 }
             }
-
+            //If the parser has finished parsing and inLoop is still true then a loop hasn't been closed, so throw an exception.
             if(inLoop)
             {
                 throw new FormatException("All loops must be closed!");
@@ -376,11 +395,17 @@ namespace PASS4
 
         }
 
-
+        //Pre: none
+        //Post: returns the total size of the current command sequence
+        //Description: get method for controlSeqTotalSize
         public int getControlSeqTotalSize()
         {
             return currentControlSeqTotalSize;
         }
+
+        //Pre: none
+        //Post: returns the current size of the current command sequence
+        //Description: calls the .Size method of CharQueue.
         public int getControlSeqCurrentSize()
         {
             return currentControlSeq.Size();
